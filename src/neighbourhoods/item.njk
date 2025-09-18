@@ -1,41 +1,55 @@
+{# Breadcrumbs #}
 <div class="breadcrumbs"><a href="/neighbourhoods/">Neighbourhoods</a> › {{ n.title }}</div>
 
+{# HERO with overlay title + optional intro #}
 {% if n.hero_image %}
-  {% set alt = (n.title or n.name) ~ ' hero image' %}
-  <div class="heroimg" style="margin:-4px 0 10px">
-    {% optimizedImage n.hero_image, alt, [800, 1200, 1600], "(max-width: 900px) 100vw, 900px" %}
+  {% set alt = (n.title or n.name) ~ ' hero' %}
+  <div class="hero">
+    {% optimizedImage n.hero_image, alt, [900, 1200, 1600], "(max-width: 1000px) 100vw, 1000px" %}
+    <div class="overlay">
+      <div>
+        <h1>{{ n.title }}</h1>
+        {% if n.intro %}<p class="lead">{{ n.intro }}</p>{% endif %}
+      </div>
+    </div>
   </div>
+{% else %}
+  <h1>{{ n.title }}</h1>
+  {% if n.intro %}<p class="lead">{{ n.intro }}</p>{% endif %}
 {% endif %}
 
-<h1>{{ n.title }}</h1>
-{% if n.intro %}<p class="lead">{{ n.intro }}</p>{% endif %}
-
+{# Feature pills (from 'pills' column) #}
 {% if n.tags %}
-  <div class="section" aria-label="Tags">
+  <div class="section" aria-label="Features">
     {% for t in (n.tags | split(',')) %}
       {% if t | trim %}<span class="pill">{{ t | trim }}</span>{% endif %}
     {% endfor %}
   </div>
 {% endif %}
 
-<div class="section" style="display:flex; gap:10px; flex-wrap:wrap">
-  <a class="btn brand" href="https://fernie.realestate/recip.html">Search Listings →</a>
-  <a class="btn" href="mailto:chris@fernie.realestate?subject={{ (n.title or 'Neighbourhood') | urlencode }}%20enquiry">Ask a question</a>
+{# CTA cards #}
+<div class="cta-grid">
+  <div class="cta">
+    <h3>Search listings</h3>
+    <p>See what’s available in {{ n.title }} right now.</p>
+    <a class="btn brand" href="https://fernie.realestate/recip.html">Browse homes →</a>
+  </div>
+  <div class="cta">
+    <h3>Get alerts</h3>
+    <p>New listings in {{ n.title }} delivered to your inbox.</p>
+    <a class="btn" href="mailto:chris@fernie.realestate?subject={{ (n.title or 'Neighbourhood') | urlencode }}%20listing%20alerts">Set up alerts →</a>
+  </div>
+  <div class="cta">
+    <h3>Ask a question</h3>
+    <p>Schools, trails, commute—happy to help.</p>
+    <a class="btn" href="mailto:chris@fernie.realestate?subject={{ (n.title or 'Neighbourhood') | urlencode }}%20question">Email Chris →</a>
+  </div>
 </div>
 
-{% if n.lifestyle %}<h2>Lifestyle</h2><p>{{ n.lifestyle }}</p>{% endif %}
-{% if n.location  %}<h2>Location</h2><p>{{ n.location }}</p>{% endif %}
-{% if n.history   %}<h2>History</h2><p>{{ n.history }}</p>{% endif %}
-
-{% if n.schools or n.amenities or n.trails %}
-  <h2>Nearby</h2>
-  <ul>
-    {% if n.schools   %}<li><strong>Schools:</strong> {{ n.schools }}</li>{% endif %}
-    {% if n.amenities %}<li><strong>Amenities:</strong> {{ n.amenities }}</li>{% endif %}
-    {% if n.trails    %}<li><strong>Trails:</strong> {{ n.trails }}</li>{% endif %}
-  </ul>
+{# Main description (HTML allowed from 'about' column) #}
+{% if n.about %}
+  <h2>About {{ n.title }}</h2>
+  <div class="section">
+    {{ n.about | safe }}
+  </div>
 {% endif %}
-
-<div class="section" style="margin-top:18px">
-  <a class="btn brand" href="https://fernie.realestate/recip.html">See current listings in {{ n.title }} →</a>
-</div>
