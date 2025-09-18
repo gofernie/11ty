@@ -1,6 +1,6 @@
 :root{
   --ink:#0f172a; --muted:#475569; --bg:#fff; --card:#f8fafc; --line:#e2e8f0; --brand:#0ea5e9;
-  --radius:16px; --container:1200px;
+  --radius:12px; --container:1200px;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -32,7 +32,7 @@ h3{font-size:1.1rem; margin:0 0 .2rem}
 footer{border-top:1px solid var(--line); margin-top:28px}
 
 /* hero overlay + default crop (used on non-detail pages) */
-.hero{position:relative; border-radius:18px; overflow:hidden; margin:-2px 0 14px}
+.hero{position:relative; border-radius:var(--radius); overflow:hidden; margin:-2px 0 14px}
 .hero picture,.hero img{display:block; width:100%; height:clamp(240px, 38vw, 520px); object-fit:cover}
 .hero .overlay{
   position:absolute; inset:0; display:flex; align-items:flex-end;
@@ -45,9 +45,12 @@ footer{border-top:1px solid var(--line); margin-top:28px}
 /* thinner hero just for neighbourhood detail pages */
 .hero.hero--detail picture,
 .hero.hero--detail img{
-  height: clamp(140px, 22vw, 280px); /* ← tweak these three numbers to taste */
+  height: clamp(140px, 22vw, 280px);
   object-fit: cover;
 }
+
+/* intro copy that sits under the hero */
+.lead--below-hero{ margin-top:8px; }
 
 /* CTA cards */
 .cta-grid{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin:12px 0 6px}
@@ -60,7 +63,7 @@ footer{border-top:1px solid var(--line); margin-top:28px}
 @media(min-width:680px){.card-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1024px){.card-grid{grid-template-columns:repeat(3,1fr)}}
 
-.wcard{display:block;background:#fff;border:1px solid var(--line);border-radius:20px;
+.wcard{display:block;background:#fff;border:1px solid var(--line);border-radius:calc(var(--radius) + 4px);
   overflow:hidden;color:inherit;text-decoration:none;
   box-shadow:0 1px 0 rgba(16,24,40,.04);transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
 .wcard:hover{transform:translateY(-2px);box-shadow:0 12px 20px rgba(2,8,20,.08);border-color:#cbd5e1}
