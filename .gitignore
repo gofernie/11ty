@@ -1,0 +1,17 @@
+# Node / Eleventy
+node_modules/
+_site/
+.cache/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Env files (keep secrets out of Git)
+.env
+.env.local
