@@ -1,6 +1,6 @@
 :root{
   --ink:#0f172a; --muted:#475569; --bg:#fff; --card:#f8fafc; --line:#e2e8f0; --brand:#0ea5e9;
-  --radius:16px; --container:1080px;
+  --radius:16px; --container:1200px;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -33,7 +33,7 @@ footer{border-top:1px solid var(--line); margin-top:28px}
 
 /* hero overlay + crop */
 .hero{position:relative; border-radius:18px; overflow:hidden; margin:-2px 0 14px}
-.hero picture,.hero img{display:block; width:100%; height:clamp(260px, 42vw, 560px); object-fit:cover}
+.hero picture,.hero img{display:block; width:100%; height:clamp(260px, 40vw, 560px); object-fit:cover}
 .hero .overlay{
   position:absolute; inset:0; display:flex; align-items:flex-end;
   background:linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.15) 45%, rgba(0,0,0,0) 70%);
@@ -48,7 +48,7 @@ footer{border-top:1px solid var(--line); margin-top:28px}
 .cta h3{margin:0 0 .2rem}
 .cta p{margin:0 0 .6rem; color:var(--muted); font-size:.95rem}
 
-/* --- Neighbourhood card grid (Wealthsimple-style) --- */
+/* --- Neighbourhood card grid --- */
 .card-grid{display:grid;gap:16px}
 @media(min-width:680px){.card-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1024px){.card-grid{grid-template-columns:repeat(3,1fr)}}
