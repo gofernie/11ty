@@ -4,10 +4,15 @@ module.exports = function (eleventyConfig) {
   // Copy /public to the site root
   eleventyConfig.addPassthroughCopy({ "public": "/" });
 
-  // Responsive image shortcode
+  // Responsive image shortcode (now includes 1080px)
   eleventyConfig.addNunjucksAsyncShortcode(
     "optimizedImage",
-    async function (src, alt, widths = [480, 800, 1200], sizes = "(max-width: 880px) 100vw, 880px") {
+    async function (
+      src,
+      alt,
+      widths = [480, 720, 1080, 1600],
+      sizes = "(max-width: 1080px) 100vw, 1080px"
+    ) {
       if (!alt) throw new Error(`optimizedImage shortcode: missing alt for ${src}`);
 
       const metadata = await Image(src, {
@@ -22,23 +27,17 @@ module.exports = function (eleventyConfig) {
     }
   );
 
-  // ---- Add these filters ----
-
-  // date filter used in base.njk (supports "now" and "%Y")
+  // Filters used in templates
   eleventyConfig.addNunjucksFilter("date", (input, format = "%Y") => {
     const d = input === "now" ? new Date() : new Date(input);
-    if (format === "%Y" || format === "YYYY" || format === "yyyy") return String(d.getFullYear());
+    if (["%Y", "YYYY", "yyyy"].includes(format)) return String(d.getFullYear());
     return d.toISOString();
   });
 
-  // split filter for tags/pills: {{ n.tags | split(',') }}
   eleventyConfig.addNunjucksFilter("split", (value, sep = ",") => {
     if (Array.isArray(value)) return value;
     if (value == null) return [];
-    return String(value)
-      .split(sep)
-      .map(s => s.trim())
-      .filter(Boolean);
+    return String(value).split(sep).map(s => s.trim()).filter(Boolean);
   });
 
   return {
