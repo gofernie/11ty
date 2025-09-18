@@ -1,4 +1,4 @@
-{# HERO with overlay title + optional intro #}
+{# HERO with overlay title only #}
 {% if n.hero_image %}
   {% set alt = (n.title or n.name) ~ ' hero' %}
   <div class="hero hero--detail">
@@ -6,13 +6,16 @@
     <div class="overlay">
       <div>
         <h1>{{ n.title }}</h1>
-        {% if n.intro %}<p class="lead">{{ n.intro }}</p>{% endif %}
       </div>
     </div>
   </div>
 {% else %}
   <h1>{{ n.title }}</h1>
-  {% if n.intro %}<p class="lead">{{ n.intro }}</p>{% endif %}
+{% endif %}
+
+{# Intro copy now sits below the hero #}
+{% if n.intro %}
+  <p class="lead lead--below-hero">{{ n.intro }}</p>
 {% endif %}
 
 {# Feature pills (from 'tags' column) #}
