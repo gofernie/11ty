@@ -1,56 +1,31 @@
-const EleventyFetch = require("@11ty/eleventy-fetch");
+// _data/neighbourhoods.js
+// npm i csv-parse
+import { parse } from "csv-parse/sync";
 
-// gviz JSON → rows
-function gvizToRows(text) {
-  const json = JSON.parse(text.replace(/^[\s\S]*setResponse\(/, "").replace(/\);\s*$/, ""));
-  const cols = (json.table?.cols || []).map(c => (c.label || c.id || "").toLowerCase());
-  return (json.table?.rows || []).map(r => {
-    const obj = {};
-    (r.c || []).forEach((cell, i) => obj[cols[i]] = cell && cell.v != null ? String(cell.v) : "");
-    return obj;
-  });
-}
+const SHEET_ID  = process.env.SHEET_ID  || "1SD2jDWJhxCyi5MXkCWW7o5WnbmXOvDFAxZlnBkx-8WI";
+const SHEET_GID = process.env.SHEET_GID || "1029998690";
 
-function slugify(s) {
-  return String(s || "")
-    .trim().toLowerCase()
-    .replace(/[^a-z0-9-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
 
-// YOUR sheet
-const SHEET_ID = "1D11GZExD-PfY3IcWPC3Xf9jxxUNlFuuSMCrMEGzySS0";
-const GID = "1011805222";
-const GVIZ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}`;
+export default async function () {
+  const res = await fetch(CSV_URL);
+  if (!res.ok) throw new Error(`Sheet fetch failed: ${res.status} ${res.statusText}`);
+  const csv = await res.text();
 
-module.exports = async function () {
-  const text = await EleventyFetch(GVIZ, { duration: "1h", type: "text" });
-
-  const rows = gvizToRows(text).map(r => {
-    const title = r.title || r.name || "";
-    const slug  = slugify(r.slug || title);
-    const hero  = r.img || r.hero || r.hero_image || "";
-    const thumb = r.thumb || hero;
-    const order = Number.parseFloat(r.order || "") || Number.POSITIVE_INFINITY;
-    const publishedRaw = (r.published || "").trim().toLowerCase();
-    const published = !publishedRaw || ["y","yes","true","1","publish","published"].includes(publishedRaw);
-
-    return {
-      slug,
-      title,
-      intro: r.desc || r.description || "",   // small lead under title/cards
-      about: r.about || "",                   // can contain HTML
-      hero_image: hero,
-      thumb,
-      tags: r.pills || r.tags || "",          // comma-separated
-      order,
-      published,
-    };
-  })
-  // valid + published only
-  .filter(r => r.slug && r.title && r.published)
-  // sort by order then title
-  .sort((a,b) => (a.order - b.order) || a.title.localeCompare(b.title));
+  const rows = parse(csv, { columns: true, skip_empty_lines: true })
+    .map((r) =>
+      Object.fromEntries(
+        Object.entries(r).map(([k, v]) => [String(k).trim(), typeof v === "string" ? v.trim() : v])
+      )
+    )
+    .map((r) => {
+      const publishedRaw = String(r.published ?? "").toLowerCase();
+      const published = !/^(false|no|0)$/i.test(publishedRaw);
+      const orderNum = Number(r.order ?? 999);
+      return { ...r, published, orderNum };
+    })
+    .filter((r) => r.slug && r.published)
+    .sort((a, b) => a.orderNum - b.orderNum);
 
   return rows;
-};
+}
