@@ -41,6 +41,11 @@ footer{border-top:1px solid var(--line); margin-top:28px}
 }
 .hero h1{color:#fff; margin:0}
 .hero .lead{color:#e2e8f0; margin:.25rem 0 0}
+/* smaller hero for neighbourhood detail pages */
+.hero.hero--detail picture,
+.hero.hero--detail img{
+  height: clamp(220px, 34vw, 420px);
+}
 
 /* CTA cards */
 .cta-grid{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin:12px 0 6px}
