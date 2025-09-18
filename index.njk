@@ -1,4 +1,3 @@
-{# index.njk #}
 ---
 layout: layouts/base.njk
 title: Fernie Real Estate
@@ -19,28 +18,31 @@ title: Fernie Real Estate
 <section class="container" aria-labelledby="neigh-title">
   <h2 id="neigh-title" class="section-title">Neighbourhoods</h2>
 
-  {% set items = neighbourhoods | slice(0, 8) %}
   <ul class="grid" role="list">
-    {% for r in items %}
-      {% set slug = (r.slug or "") | trim %}
-      {% set title = (r.title or slug | replace("-", " ") ) | title %}
-      {% set img = (r.hero_image or "") | trim %}
-      {% set desc = (r.description or "") | trim %}
-      <li class="card">
-        <a class="card-link" href="/neighbourhoods/{{ slug }}/">
-          <div class="media">
-            {% if img %}
-              <img src="{{ img }}" alt="{{ title }} — Fernie neighbourhood" loading="lazy" decoding="async" />
-            {% else %}
-              <div class="media-fallback" aria-hidden="true">{{ title | first | upper }}</div>
-            {% endif %}
-          </div>
-          <div class="body">
-            <h3 class="name">{{ title }}</h3>
-            {% if desc %}<p class="desc">{{ desc }}</p>{% endif %}
-          </div>
-        </a>
-      </li>
+    {# render only the first 8 without using slice() #}
+    {% for r in neighbourhoods %}
+      {% if loop.index <= 8 %}
+        {% set slug = (r.slug | trim) %}
+        {% set displayTitle = r.title ? (r.title | trim) : (slug | replace('-', ' ') | trim) %}
+        {% set img = r.hero_image ? (r.hero_image | trim) : '' %}
+        {% set desc = r.description ? (r.description | trim) : '' %}
+
+        <li class="card">
+          <a class="card-link" href="/neighbourhoods/{{ slug }}/">
+            <div class="media">
+              {% if img %}
+                <img src="{{ img }}" alt="{{ displayTitle }} — Fernie neighbourhood" loading="lazy" decoding="async">
+              {% else %}
+                <div class="media-fallback" aria-hidden="true">{{ displayTitle }}</div>
+              {% endif %}
+            </div>
+            <div class="body">
+              <h3 class="name">{{ displayTitle }}</h3>
+              {% if desc %}<p class="desc">{{ desc }}</p>{% endif %}
+            </div>
+          </a>
+        </li>
+      {% endif %}
     {% endfor %}
   </ul>
 </section>
