@@ -7,12 +7,7 @@ module.exports = function (eleventyConfig) {
   // Responsive image shortcode
   eleventyConfig.addNunjucksAsyncShortcode(
     "optimizedImage",
-    async function (
-      src,
-      alt,
-      widths = [480, 800, 1200],
-      sizes = "(max-width: 880px) 100vw, 880px"
-    ) {
+    async function (src, alt, widths = [480, 800, 1200], sizes = "(max-width: 880px) 100vw, 880px") {
       if (!alt) throw new Error(`optimizedImage shortcode: missing alt for ${src}`);
 
       const metadata = await Image(src, {
@@ -27,11 +22,23 @@ module.exports = function (eleventyConfig) {
     }
   );
 
-  // ➜ Add a simple 'date' filter for Nunjucks (supports "now" and "%Y")
+  // ---- Add these filters ----
+
+  // date filter used in base.njk (supports "now" and "%Y")
   eleventyConfig.addNunjucksFilter("date", (input, format = "%Y") => {
     const d = input === "now" ? new Date() : new Date(input);
     if (format === "%Y" || format === "YYYY" || format === "yyyy") return String(d.getFullYear());
-    return d.toISOString(); // basic fallback for any other format
+    return d.toISOString();
+  });
+
+  // split filter for tags/pills: {{ n.tags | split(',') }}
+  eleventyConfig.addNunjucksFilter("split", (value, sep = ",") => {
+    if (Array.isArray(value)) return value;
+    if (value == null) return [];
+    return String(value)
+      .split(sep)
+      .map(s => s.trim())
+      .filter(Boolean);
   });
 
   return {
