@@ -1,29 +1,34 @@
-<h1>Fernie Neighbourhood Guides</h1>
-<p class="lead">Fast-loading guides powered by Google Sheets.</p>
+---
+title: Neighbourhoods
+layout: base.njk
+---
 
-<div class="grid cols-3 section">
+<h1>Neighbourhoods</h1>
+<p class="lead">Browse all neighbourhood guides.</p>
+
+<div class="card-grid">
 {% for n in neighbourhoods %}
-  <article class="card">
-    <a href="/neighbourhoods/{{ n.slug }}/">
-      <div class="media">
-        {% set img = n.thumb or n.hero_image %}
-        {% if img %}
-          {% set alt = (n.title or n.name) ~ ' thumbnail' %}
-          {% optimizedImage img, alt, [480, 800], "(max-width: 600px) 100vw, 33vw" %}
-        {% endif %}
-      </div>
-      <div class="pad">
-        <h3 style="margin:.2rem 0 .2rem">{{ n.title or n.name }}</h3>
-        {% if n.intro %}<p class="muted" style="margin:.2rem 0 .4rem">{{ n.intro }}</p>{% endif %}
+  <a class="wcard" href="/neighbourhoods/{{ n.slug }}/">
+    <figure class="wcard-media">
+      {% set img = n.thumb or n.hero_image %}
+      {% if img %}
+        {% set alt = (n.title or n.name) ~ ' thumbnail' %}
+        {% optimizedImage img, alt, [480, 720, 960], "(max-width: 1024px) 100vw, 33vw" %}
+      {% else %}
+        <div class="wcard-placeholder" aria-hidden="true"></div>
+      {% endif %}
+      <figcaption>
+        <h3>{{ n.title }}</h3>
         {% if n.tags %}
-          <div aria-label="Tags">
+          <div class="pills">
             {% for t in (n.tags | split(',')) %}
-              {% if t | trim %}<span class="pill">{{ t | trim }}</span>{% endif %}
+              {% if t %}<span class="pill">{{ t }}</span>{% endif %}
             {% endfor %}
           </div>
         {% endif %}
-      </div>
-    </a>
-  </article>
+      </figcaption>
+    </figure>
+    {% if n.intro %}<p class="wcard-intro">{{ n.intro }}</p>{% endif %}
+  </a>
 {% endfor %}
 </div>
