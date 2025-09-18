@@ -5,7 +5,8 @@
 {% if n.hero_image %}
   {% set alt = (n.title or n.name) ~ ' hero' %}
   <div class="hero">
-    {% optimizedImage n.hero_image, alt, [900, 1200, 1600], "(max-width: 1000px) 100vw, 1000px" %}
+   {% optimizedImage n.hero_image, alt, [1080, 1440, 1920], "(max-width: 1080px) 100vw, 1080px" %}
+
     <div class="overlay">
       <div>
         <h1>{{ n.title }}</h1>
