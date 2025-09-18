@@ -1,63 +1,34 @@
 ---
 layout: base.njk
-title: Fernie Neighbourhood Guides
-permalink: /index.html
+title: Neighbourhoods
+permalink: /neighbourhoods/index.html
 ---
 
-<h1>Fernie Neighbourhood Guides</h1>
-<p class="lead">Fast, mobile-first mini-guides powered by Google Sheets. Explore the areas, then see current listings.</p>
+<h1>Neighbourhoods</h1>
+<p class="lead">Browse all neighbourhood guides.</p>
 
-<div class="cta-grid">
-  <div class="cta cta--search">
-    <div class="ico" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.2-4.2M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+<div class="card-grid">
+{% for n in (neighbourhoods | sort(attribute="order")) %}
+  <a class="wcard" href="/neighbourhoods/{{ n.slug }}/">
+    <figure class="wcard-media">
+      {% set alt = (n.title or n.name) ~ ' overview' %}
+      {% if n.hero_image %}
+        {% optimizedImage n.hero_image, alt, [480,720,960,1200], "(max-width: 1200px) 100vw, 33vw" %}
+      {% else %}
+        <div class="wcard-placeholder"></div>
+      {% endif %}
+      <figcaption><h3>{{ n.title }}</h3></figcaption>
+    </figure>
+    <div class="wcard-intro">
+      {{ (n.desc or n.about) | striptags | truncate(220) }}
+      {% if n.tags %}
+      <div class="pills">
+        {% for t in (n.tags | split(',')) %}
+          {% if t | trim %}<span class="pill">{{ t | trim }}</span>{% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
-    <div>
-      <h3>Search listings</h3>
-      <p>Browse every home on the market in Fernie.</p>
-      <a class="btn brand" href="https://fernie.realestate/recip.html">Start searching →</a>
-    </div>
-  </div>
-
-  <div class="cta cta--alerts">
-    <div class="ico" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M15 17H5l2-2v-3a5 5 0 1 1 10 0v3l2 2h-4M9 17v1a3 3 0 1 0 6 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div>
-      <h3>Get alerts</h3>
-      <p>New listings emailed to you in real time.</p>
-      <a class="btn" href="mailto:chris@fernie.realestate?subject=Listing%20alerts">Set up alerts →</a>
-    </div>
-  </div>
-
-  <div class="cta cta--ask">
-    <div class="ico" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M21 8v10a2 2 0 0 1-2 2H5l-2 2V6a2 2 0 0 1 2-2h9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 3.5a2.5 2.5 0 1 0 5 0 2.5 2.5 0 0 0-5 0Z" fill="currentColor"/></svg>
-    </div>
-    <div>
-      <h3>Ask a question</h3>
-      <p>Schools, trails, commute—happy to help.</p>
-      <a class="btn" href="mailto:chris@fernie.realestate?subject=Question">Email Chris →</a>
-    </div>
-  </div>
-</div>
-
-<h2>Featured neighbourhoods</h2>
-<div class="mini-grid">
-{% set sorted = neighbourhoods | sort(attribute="order") %}
-{% for n in sorted %}
-  {% if loop.index <= 3 %}
-    <a class="wcard" href="/neighbourhoods/{{ n.slug }}/">
-      <figure class="wcard-media" style="aspect-ratio:4/3">
-        {% set alt = (n.title or n.name) ~ ' overview' %}
-        {% if n.hero_image %}
-          {% optimizedImage n.hero_image, alt, [480,720,960,1200], "(max-width: 1200px) 100vw, 25vw" %}
-        {% else %}
-          <div class="wcard-placeholder"></div>
-        {% endif %}
-        <figcaption><h3>{{ n.title }}</h3></figcaption>
-      </figure>
-    </a>
-  {% endif %}
+  </a>
 {% endfor %}
 </div>
