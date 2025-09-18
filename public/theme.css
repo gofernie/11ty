@@ -1,4 +1,4 @@
-:root{--ink:#0f172a;--muted:#475569;--bg:#fff;--card:#f8fafc;--line:#e2e8f0;--brand:#0ea5e9;--radius:16px;--container:980px}
+:root{--ink:#0f172a;--muted:#475569;--bg:#fff;--card:#f8fafc;--line:#e2e8f0;--brand:#0ea5e9;--radius:16px;--container:1080px}
 *{box-sizing:border-box}html,body{margin:0}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
 .wrap{max-width:var(--container);margin:0 auto;padding:16px}
 header{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:10}
