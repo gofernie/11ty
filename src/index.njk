@@ -1,0 +1,27 @@
+<h1>Fernie Neighbourhood Guides</h1>
+<p class="lead">Fast-loading guides powered by Google Sheets.</p>
+
+<div class="grid cols-3 section">
+{% for n in neighbourhoods %}
+  <article class="card">
+    <a href="/neighbourhoods/{{ n.slug }}/">
+      <div class="media">
+        {% if n.thumb or n.hero_image %}
+          {% optimizedImage (n.thumb or n.hero_image), (n.title + ' thumbnail'), [480,800], "(max-width: 600px) 100vw, 33vw" %}
+        {% endif %}
+      </div>
+      <div class="pad">
+        <h3 style="margin:.2rem 0 .2rem">{{ n.title or n.name }}</h3>
+        {% if n.intro %}<p class="muted" style="margin:.2rem 0 .4rem">{{ n.intro }}</p>{% endif %}
+        {% if n.tags %}
+          <div aria-label="Tags">
+            {% for t in (n.tags | split(',') ) %}
+              {% if t | trim %}<span class="pill">{{ t | trim }}</span>{% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </a>
+  </article>
+{% endfor %}
+</div>

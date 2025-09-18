@@ -1,0 +1,19 @@
+{
+  "name": "fernie-microsite-11ty",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy",
+    "clean": "rimraf _site .cache",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-fetch": "^4.0.0",
+    "@11ty/eleventy-img": "^5.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.0"
+  }
+}
