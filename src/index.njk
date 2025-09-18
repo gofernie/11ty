@@ -13,7 +13,7 @@ layout: base.njk
       {% set img = n.thumb or n.hero_image %}
       {% if img %}
         {% set alt = (n.title or n.name) ~ ' thumbnail' %}
-        {% optimizedImage img, alt, [480, 720, 960, 1080], "(max-width: 1080px) 100vw, 33vw" %}
+        {% optimizedImage img, alt, [480, 720, 960, 1200], "(max-width: 1200px) 100vw, 33vw" %}
       {% else %}
         <div class="wcard-placeholder" aria-hidden="true"></div>
       {% endif %}
