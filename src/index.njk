@@ -6,8 +6,10 @@
   <article class="card">
     <a href="/neighbourhoods/{{ n.slug }}/">
       <div class="media">
-        {% if n.thumb or n.hero_image %}
-          {% optimizedImage (n.thumb or n.hero_image), (n.title + ' thumbnail'), [480,800], "(max-width: 600px) 100vw, 33vw" %}
+        {% set img = n.thumb or n.hero_image %}
+        {% if img %}
+          {% set alt = (n.title or n.name) ~ ' thumbnail' %}
+          {% optimizedImage img, alt, [480, 800], "(max-width: 600px) 100vw, 33vw" %}
         {% endif %}
       </div>
       <div class="pad">
@@ -15,7 +17,7 @@
         {% if n.intro %}<p class="muted" style="margin:.2rem 0 .4rem">{{ n.intro }}</p>{% endif %}
         {% if n.tags %}
           <div aria-label="Tags">
-            {% for t in (n.tags | split(',') ) %}
+            {% for t in (n.tags | split(',')) %}
               {% if t | trim %}<span class="pill">{{ t | trim }}</span>{% endif %}
             {% endfor %}
           </div>
