@@ -4,14 +4,14 @@ module.exports = function (eleventyConfig) {
   // Copy /public to the site root
   eleventyConfig.addPassthroughCopy({ "public": "/" });
 
-  // Responsive image shortcode (now includes 1080px)
+  // Responsive image shortcode — now sized for a 1200px container
   eleventyConfig.addNunjucksAsyncShortcode(
     "optimizedImage",
     async function (
       src,
       alt,
-      widths = [480, 720, 1080, 1600],
-      sizes = "(max-width: 1080px) 100vw, 1080px"
+      widths = [480, 720, 1080, 1200, 1600],
+      sizes = "(max-width: 1200px) 100vw, 1200px"
     ) {
       if (!alt) throw new Error(`optimizedImage shortcode: missing alt for ${src}`);
 
