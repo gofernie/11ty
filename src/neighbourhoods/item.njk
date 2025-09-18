@@ -1,8 +1,9 @@
 <div class="breadcrumbs"><a href="/neighbourhoods/">Neighbourhoods</a> › {{ n.title }}</div>
 
 {% if n.hero_image %}
+  {% set alt = (n.title or n.name) ~ ' hero image' %}
   <div class="heroimg" style="margin:-4px 0 10px">
-    {% optimizedImage n.hero_image, (n.title + ' hero image'), [800,1200,1600], "(max-width: 900px) 100vw, 900px" %}
+    {% optimizedImage n.hero_image, alt, [800, 1200, 1600], "(max-width: 900px) 100vw, 900px" %}
   </div>
 {% endif %}
 
@@ -17,38 +18,24 @@
   </div>
 {% endif %}
 
-<!-- Quick actions -->
 <div class="section" style="display:flex; gap:10px; flex-wrap:wrap">
   <a class="btn brand" href="https://fernie.realestate/recip.html">Search Listings →</a>
   <a class="btn" href="mailto:chris@fernie.realestate?subject={{ (n.title or 'Neighbourhood') | urlencode }}%20enquiry">Ask a question</a>
 </div>
 
-<!-- Content sections (only show if present) -->
-{% if n.lifestyle %}
-  <h2>Lifestyle</h2>
-  <p>{{ n.lifestyle }}</p>
-{% endif %}
-
-{% if n.location %}
-  <h2>Location</h2>
-  <p>{{ n.location }}</p>
-{% endif %}
-
-{% if n.history %}
-  <h2>History</h2>
-  <p>{{ n.history }}</p>
-{% endif %}
+{% if n.lifestyle %}<h2>Lifestyle</h2><p>{{ n.lifestyle }}</p>{% endif %}
+{% if n.location  %}<h2>Location</h2><p>{{ n.location }}</p>{% endif %}
+{% if n.history   %}<h2>History</h2><p>{{ n.history }}</p>{% endif %}
 
 {% if n.schools or n.amenities or n.trails %}
   <h2>Nearby</h2>
   <ul>
-    {% if n.schools %}<li><strong>Schools:</strong> {{ n.schools }}</li>{% endif %}
+    {% if n.schools   %}<li><strong>Schools:</strong> {{ n.schools }}</li>{% endif %}
     {% if n.amenities %}<li><strong>Amenities:</strong> {{ n.amenities }}</li>{% endif %}
-    {% if n.trails %}<li><strong>Trails:</strong> {{ n.trails }}</li>{% endif %}
+    {% if n.trails    %}<li><strong>Trails:</strong> {{ n.trails }}</li>{% endif %}
   </ul>
 {% endif %}
 
-<!-- Optional CTA footer -->
 <div class="section" style="margin-top:18px">
   <a class="btn brand" href="https://fernie.realestate/recip.html">See current listings in {{ n.title }} →</a>
 </div>
