@@ -1,34 +1,35 @@
 ---
-layout: base.njk
-title: Neighbourhoods
-permalink: /neighbourhoods/index.html
+layout: base.njk   # (use this if your layout is at src/_includes/base.njk)
+title: Fernie Real Estate
 ---
+<section class="hero" aria-labelledby="hero-title">
+  <img src="https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty1.jpeg?inline=true"
+       alt="Fernie, BC — mountain real estate" decoding="async" fetchpriority="high" />
+  <div class="overlay"><h1 id="hero-title">Fernie Real Estate</h1></div>
+</section>
 
-<h1>Neighbourhoods</h1>
-<p class="lead">Browse all neighbourhood guides.</p>
-
-<div class="card-grid">
-{% for n in (neighbourhoods | sort(attribute="order")) %}
-  <a class="wcard" href="/neighbourhoods/{{ n.slug }}/">
-    <figure class="wcard-media">
-      {% set alt = (n.title or n.name) ~ ' overview' %}
-      {% if n.hero_image %}
-        {% optimizedImage n.hero_image, alt, [480,720,960,1200], "(max-width: 1200px) 100vw, 33vw" %}
-      {% else %}
-        <div class="wcard-placeholder"></div>
+<section class="container" aria-labelledby="neigh-title">
+  <h2 id="neigh-title" class="section-title">Neighbourhoods</h2>
+  <ul class="grid" role="list">
+    {% for r in neighbourhoods %}
+      {% if loop.index <= 8 %}
+        {% set slug  = (r.slug | trim) %}
+        {% set title = r.title ? (r.title | trim) : (slug | replace('-', ' ') | trim) %}
+        {% set img   = r.hero_image ? (r.hero_image | trim) : (r.img ? (r.img | trim) : '') %}
+        {% set desc  = r.description ? (r.description | trim) : '' %}
+        <li class="card">
+          <a class="card-link" href="/neighbourhoods/{{ slug }}/">
+            <div class="media">
+              {% if img %}<img src="{{ img }}" alt="{{ title }}" loading="lazy" decoding="async">
+              {% else %}<div class="media-fallback" aria-hidden="true">{{ title }}</div>{% endif %}
+            </div>
+            <div class="body">
+              <h3 class="name">{{ title }}</h3>
+              {% if desc %}<p class="desc">{{ desc }}</p>{% endif %}
+            </div>
+          </a>
+        </li>
       {% endif %}
-      <figcaption><h3>{{ n.title }}</h3></figcaption>
-    </figure>
-    <div class="wcard-intro">
-      {{ (n.desc or n.about) | striptags | truncate(220) }}
-      {% if n.tags %}
-      <div class="pills">
-        {% for t in (n.tags | split(',')) %}
-          {% if t | trim %}<span class="pill">{{ t | trim }}</span>{% endif %}
-        {% endfor %}
-      </div>
-      {% endif %}
-    </div>
-  </a>
-{% endfor %}
-</div>
+    {% endfor %}
+  </ul>
+</section>
