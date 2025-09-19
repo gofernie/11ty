@@ -2,63 +2,66 @@
 const https = require("https");
 const { parse } = require("csv-parse/sync");
 
-// Support either a full published CSV URL or just the 2PACX ID.
-const SHEET_URL = process.env.SHEET_URL || "";           // full CSV URL ok
-const SHEET_ID  = process.env.SHEET_ID  || "";           // just the 2PACX-... id
-const SHEET_GID = process.env.SHEET_GID || "";           // optional
+// Use either a full published CSV URL or the 2PACX ID (+ optional gid)
+const SHEET_URL = process.env.SHEET_URL || "";
+const SHEET_ID  = process.env.SHEET_ID  || "";
+const SHEET_GID = process.env.SHEET_GID || "";
 
 function buildCsvUrl() {
-  // If user provided a full URL, normalize and return it.
   if (SHEET_URL) {
-    // Accept both ".../pub?output=csv" and ".../pub?gid=...&single=true&output=csv"
     try {
       const u = new URL(SHEET_URL.trim());
-      // Ensure output=csv is present
       const p = u.searchParams;
       p.set("output", "csv");
-      // Optional but helps with multi-sheet: single=true + gid
-      if (SHEET_GID) p.set("gid", SHEET_GID);
       p.set("single", "true");
+      if (SHEET_GID) p.set("gid", SHEET_GID);
+      p.set("cachebust", Date.now().toString());
       u.search = p.toString();
       return u.toString();
     } catch {
-      // Fall through to ID mode if malformed
+      /* fall through to ID mode */
     }
   }
-
-  // ID mode (preferred if you only paste the 2PACX id)
   if (!SHEET_ID) return "";
-  const gidParam = SHEET_GID ? `&gid=${encodeURIComponent(SHEET_GID)}` : "";
-  // This is the canonical published CSV format
-  return `https://docs.google.com/spreadsheets/d/e/2PACX-1vTvU7gKNuEasTwqi-NksMwDqvP6-bA_kbZYA1k7wl-ZjNWlOHCJPPYOeSAX8F7BHSCcwlD-RKakcN9a/pub?output=csv`;
+  const gid = SHEET_GID ? `&gid=${encodeURIComponent(SHEET_GID)}` : "";
+  return `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?single=true${gid}&output=csv&cachebust=${Date.now()}`;
 }
 
-function fetchText(url) {
+function fetchFollow(url, redirectsLeft = 5) {
   if (!url) return Promise.resolve("");
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      const statusOk = res.statusCode >= 200 && res.statusCode < 300;
+    const req = https.get(url, {
+      headers: {
+        "User-Agent": "Netlify-Build/1.0 (+eleventy)",
+        "Accept": "text/csv, */*;q=0.8",
+      }
+    }, (res) => {
+      const { statusCode, headers } = res;
+      const isRedirect = [301, 302, 303, 307, 308].includes(statusCode);
+      if (isRedirect) {
+        if (!headers.location) return reject(new Error(`Redirect with no Location header from ${url}`));
+        if (redirectsLeft <= 0) return reject(new Error(`Too many redirects fetching ${url}`));
+        const next = new URL(headers.location, url).toString();
+        res.resume(); // drain
+        return resolve(fetchFollow(next, redirectsLeft - 1));
+      }
+
+      if (statusCode < 200 || statusCode >= 300) {
+        res.resume();
+        return reject(new Error(`HTTP ${statusCode} from Google Sheets. URL: ${url}`));
+      }
+
       let data = "";
       res.on("data", (c) => (data += c));
-      res.on("end", () => {
-        if (!statusOk) {
-          return reject(
-            new Error(`HTTP ${res.statusCode} from Google Sheets. URL: ${url}`)
-          );
-        }
-        resolve(data);
-      });
-    }).on("error", reject);
+      res.on("end", () => resolve(data));
+    });
+    req.on("error", reject);
   });
 }
 
 function isHtml(str = "") {
   const head = str.slice(0, 200).trim().toLowerCase();
   return head.startsWith("<!doctype html") || head.startsWith("<html");
-}
-
-function parseCsv(text) {
-  return parse(text, { columns: true, skip_empty_lines: true });
 }
 
 function toSlug(s = "") {
@@ -74,18 +77,17 @@ module.exports = async function () {
     return [];
   }
 
-  const raw = await fetchText(url);
+  const text = await fetchFollow(url);
 
-  // Guard: Google sometimes returns an HTML interstitial if the sheet isn’t published or the URL is wrong.
-  if (isHtml(raw)) {
-    const preview = raw.slice(0, 180).replace(/\s+/g, " ");
+  if (isHtml(text)) {
+    const preview = text.slice(0, 180).replace(/\s+/g, " ");
     throw new Error(
-      `Expected CSV but got HTML. Likely causes: sheet not 'Published to the web', wrong URL/ID, or private access. ` +
-      `Check your Netlify env vars.\nRequested: ${url}\nFirst 180 chars: ${preview}`
+      `Expected CSV but got HTML. Check that the sheet is 'Published to the web' and the URL/ID is correct.\n` +
+      `Requested: ${url}\nFirst 180 chars: ${preview}`
     );
   }
 
-  const rows = parseCsv(raw);
+  const rows = parse(text, { columns: true, skip_empty_lines: true });
 
   const cleaned = (rows || [])
     .map((r) => {
