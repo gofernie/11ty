@@ -5,15 +5,16 @@
   "scripts": {
     "dev": "npx @11ty/eleventy --serve",
     "build": "npx @11ty/eleventy",
-    "clean": "rimraf _site .cache",
-    "start": "npm run dev"
+    "clean": "rimraf _site .cache"
   },
   "dependencies": {
-    "@11ty/eleventy": "^3.0.0",
-    "@11ty/eleventy-fetch": "^4.0.0",
-    "@11ty/eleventy-img": "^5.0.0"
+    "@11ty/eleventy": "^3.1.2",
+    "csv-parse": "^5.5.6"
   },
   "devDependencies": {
-    "rimraf": "^6.0.0"
+    "rimraf": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
