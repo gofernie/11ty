@@ -1,35 +1,10 @@
+{# src/index.njk #}
 ---
-layout: base.njk   # (use this if your layout is at src/_includes/base.njk)
-title: Fernie Real Estate
+layout: layouts/base
+title: "Home"
 ---
-<section class="hero" aria-labelledby="hero-title">
-  <img src="https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty1.jpeg?inline=true"
-       alt="Fernie, BC — mountain real estate" decoding="async" fetchpriority="high" />
-  <div class="overlay"><h1 id="hero-title">Fernie Real Estate</h1></div>
-</section>
-
-<section class="container" aria-labelledby="neigh-title">
-  <h2 id="neigh-title" class="section-title">Neighbourhoods</h2>
-  <ul class="grid" role="list">
-    {% for r in neighbourhoods %}
-      {% if loop.index <= 8 %}
-        {% set slug  = (r.slug | trim) %}
-        {% set title = r.title ? (r.title | trim) : (slug | replace('-', ' ') | trim) %}
-        {% set img   = r.hero_image ? (r.hero_image | trim) : (r.img ? (r.img | trim) : '') %}
-        {% set desc  = r.description ? (r.description | trim) : '' %}
-        <li class="card">
-          <a class="card-link" href="/neighbourhoods/{{ slug }}/">
-            <div class="media">
-              {% if img %}<img src="{{ img }}" alt="{{ title }}" loading="lazy" decoding="async">
-              {% else %}<div class="media-fallback" aria-hidden="true">{{ title }}</div>{% endif %}
-            </div>
-            <div class="body">
-              <h3 class="name">{{ title }}</h3>
-              {% if desc %}<p class="desc">{{ desc }}</p>{% endif %}
-            </div>
-          </a>
-        </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
+<section class="hero">
+  <h1>Find your place in Fernie</h1>
+  <p>Fast, lightweight guides powered by Eleventy.</p>
+  <p><a class="button" href="/neighbourhoods/">Browse Neighbourhoods</a></p>
 </section>
