@@ -1,4 +1,3 @@
-{# src/neighbourhoods/index.njk #}
 ---
 layout: layouts/base
 title: "Neighbourhoods"
