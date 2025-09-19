@@ -1,9 +1,12 @@
+# netlify.toml
 [build]
   command = "npm run build"
   publish = "_site"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
+  SHEET_ID = "2PACX-...your-id-here..." # <-- set in the Netlify UI instead of committing if you prefer
+  # SHEET_GID = "123456789"            # optional, if your sheet uses a non-default gid
 
 [[headers]]
   for = "/img/*"
@@ -13,6 +16,4 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
-    X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
