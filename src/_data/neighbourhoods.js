@@ -2,8 +2,8 @@
 const https = require("https");
 const { parse } = require("csv-parse/sync");
 
-const SHEET_ID = process.env.SHEET_ID; // set in Netlify
-const GID = process.env.SHEET_GID || ""; // optional; or hardcode
+const SHEET_ID = process.env.SHEET_ID; // set in Netlify UI
+const GID = process.env.SHEET_GID || "";
 
 const CSV_URL = SHEET_ID
   ? `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv${GID ? `&gid=${GID}` : ""}&cachebust=${Date.now()}`
@@ -35,7 +35,6 @@ function toSlug(s = "") {
 
 module.exports = async function() {
   const rows = await fetchCSV(CSV_URL);
-  // Normalize and filter published rows if you have a Published column
   const cleaned = (rows || [])
     .map(r => ({
       title: r.title || r.Name || r.neighbourhood || "",
