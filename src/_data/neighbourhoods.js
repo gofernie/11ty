@@ -1,44 +1,93 @@
-// Uses Google "gviz" JSON (no extra packages) and maps `img` -> `hero_image`.
-const SHEET_ID  = "1SD2jDWJhxCyi5MXkCWW7o5WnbmXOvDFAxZlnBkx-8WI";
-const SHEET_GID = "1029998690";
-const GVIZ_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${SHEET_GID}&tqx=out:json`;
+// Fetches Google Sheet (published as CSV) -> Array of rows
+// REQUIRED ENV: SHEET_ID (the long e/2PACX-... id without the "d/e/" prefix)
+// OPTIONAL: SHEET_GID
+// Example public CSV URL usually looks like:
+// https://docs.google.com/spreadsheets/d/e/<SHEET_ID>/pub?output=csv&gid=<GID>
 
-function gvizToArrayOfObjects(json) {
-  const cols = json.table.cols.map(c => (c.label || c.id || "").trim());
-  return json.table.rows.map(row => {
-    const obj = {};
-    row.c.forEach((cell, i) => {
-      const key = cols[i] || `col${i}`;
-      obj[key] = (cell && cell.v != null) ? String(cell.v).trim() : "";
-    });
-    return obj;
+const https = require("https");
+
+function fetchText(url) {
+  return new Promise((resolve, reject) => {
+    https
+      .get(url, (res) => {
+        if (res.statusCode !== 200) {
+          reject(new Error(`Sheets fetch failed: ${res.statusCode} ${res.statusMessage}`));
+          res.resume(); return;
+        }
+        let data = "";
+        res.setEncoding("utf8");
+        res.on("data", (chunk) => (data += chunk));
+        res.on("end", () => resolve(data));
+      })
+      .on("error", reject);
   });
 }
-const normalize = k => k.toLowerCase().replace(/\s+/g, "_");
+
+// Tiny CSV parser that handles quoted commas and double quotes
+function parseCSV(text) {
+  const rows = [];
+  let cell = "", row = [], inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i], next = text[i + 1];
+    if (ch === '"') {
+      if (inQuotes && next === '"') { cell += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if (ch === "," && !inQuotes) {
+      row.push(cell); cell = "";
+    } else if ((ch === "\n" || ch === "\r") && !inQuotes) {
+      if (cell || row.length) { row.push(cell); rows.push(row); cell = ""; row = []; }
+    } else {
+      cell += ch;
+    }
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+
+function normalizeHeaders(heads) {
+  return heads.map(h => String(h || "").trim().toLowerCase());
+}
+
+function toSlug(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 module.exports = async function () {
-  const res = await fetch(GVIZ_URL, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Sheet fetch failed: ${res.status} ${res.statusText}`);
-  const text  = await res.text();
-  const start = text.indexOf("{"), end = text.lastIndexOf("}");
-  const data  = JSON.parse(text.slice(start, end + 1));
+  const SHEET_ID = process.env.SHEET_ID || process.env.GOOGLE_SHEET_ID;
+  if (!SHEET_ID) throw new Error("Missing SHEET_ID/GOOGLE_SHEET_ID");
 
-  const rows = gvizToArrayOfObjects(data)
-    .map(r => {
-      const n = {};
-      for (const [k, v] of Object.entries(r)) n[normalize(k)] = v;
+  const gid = process.env.SHEET_GID || "";
+  const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv${gid ? `&gid=${gid}` : ""}`;
 
-      // Your sheet uses 'img'—alias it to hero_image so templates work
-      const hero_image = n.hero_image || n.img || n.image || n.photo || "";
+  const csv = await fetchText(url);
+  const table = parseCSV(csv);
+  if (!table.length) return [];
 
-      const published = !/^(false|no|0)$/i.test(String(n.published ?? ""));
-      const orderNum  = Number(n.order ?? 999);
+  const headers = normalizeHeaders(table[0]);
+  const rows = table.slice(1).map(r => {
+    const o = {};
+    headers.forEach((h, i) => (o[h] = String(r[i] ?? "").trim()));
+    return o;
+  });
 
-      return { ...n, hero_image, published, orderNum };
-    })
-    .filter(r => (r.slug || "").trim() && r.published)
-    .sort((a,b) => a.orderNum - b.orderNum);
+  // Expected headers: slug, title, desc, about, img, order, published, pills
+  // Tolerant fallback for missing slug
+  const cleaned = rows.map(r => ({
+    slug: r.slug || toSlug(r.title),
+    title: r.title || "",
+    desc: r.desc || "",
+    about: r.about || "",
+    img: r.img || "",
+    order: Number(r.order || 9999),
+    published: (r.published || "1").toString(),
+    pills: r.pills || "",
+  }))
+  .filter(r => r.slug && r.title && r.published === "1")
+  .sort((a, b) => a.order - b.order);
 
-  console.log("[neighbourhoods] loaded", rows.length, "rows from Google Sheets (gviz + img alias)");
-  return rows;
+  return cleaned;
 };
