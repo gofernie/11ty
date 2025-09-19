@@ -1,88 +1,17 @@
+{# src/neighbourhoods/item.njk #}
 ---
-layout: layouts/base.njk
+layout: layouts/base
 pagination:
   data: neighbourhoods
   size: 1
-  alias: n
-permalink: "neighbourhoods/{{ n.slug }}/index.html"
+  alias: row
+permalink: "/neighbourhoods/{{ row.slug | slug }}/"
 eleventyComputed:
-  title: "{{ n.title }}"
+  title: "{{ row.title }}"
 ---
 
-<article class="wrap">
-  <!-- HERO with title overlay -->
-  <section class="hero">
-    {% if n.img %}
-      <img src="{{ n.img }}" alt="{{ n.title }}" width="1400" height="560">
-    {% endif %}
-    <div class="overlay"><h1>{{ n.title }}</h1></div>
-  </section>
-
-  <!-- Short description directly under hero -->
-  {% if n.desc %}
-    <p class="desc">{{ n.desc }}</p>
-  {% endif %}
-
-  {# Pills: only on detail page #}
-  {% set raw = n.pills or '' %}
-  {% set list = (raw.indexOf('|') > -1) ? raw.split('|') : raw.split(',') %}
-  {% set pills = [] %}
-  {% for p in list %}
-    {% set t = p | trim %}
-    {% if t and not pills.includes(t) %}
-      {% set _ = pills.push(t) %}
-    {% endif %}
-  {% endfor %}
-  {% if pills.length %}
-    <ul class="pills" aria-label="Quick highlights">
-      {% for p in pills.slice(0,5) %}
-        <li>{{ p }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-  <!-- Long HTML content from Sheet -->
-  <section class="about">
-    {{ n.about | safe }}
-  </section>
+<article class="about">
+  <h1>{{ row.title }}</h1>
+  {% if row.desc %}<p class="lead">{{ row.desc }}</p>{% endif %}
+  {% if row.about %}{{ row.about | safe }}{% endif %}
 </article>
-
-<style>
-  .wrap { margin: 0 auto; max-width: 900px; padding: 1.25rem; }
-
-  .hero { position: relative; border-radius: 1rem; overflow: hidden; }
-  .hero img { width: 100%; height: clamp(220px, 38vw, 420px); object-fit: cover; display: block; }
-  .overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.35), rgba(0,0,0,.10) 40%, rgba(0,0,0,0));
-    display: flex; align-items: flex-end; padding: 1rem 1.25rem;
-  }
-  .overlay h1 {
-    color: #fff; margin: 0; font-weight: 700;
-    font-size: clamp(1.6rem, 3.8vw, 2.6rem);
-    text-shadow: 0 2px 14px rgba(0,0,0,.35);
-  }
-
-  .desc {
-    margin: 0.85rem 0 0;
-    color: var(--muted,#475569);
-    font-size: 1.05rem;
-    line-height: 1.4;
-  }
-
-  .pills {
-    list-style: none; padding: 0; margin: .75rem 0 1.25rem;
-    display: flex; flex-wrap: wrap; gap: .5rem;
-  }
-  .pills li {
-    padding: .35rem .6rem;
-    background: var(--chip-bg, #f1f5f9);
-    border: 1px solid rgba(0,0,0,.06);
-    border-radius: 999px;
-    font-size: .9rem; color: var(--ink,#0f172a);
-  }
-
-  .about { margin-top: 1rem; }
-  .about h3 { font-size: 1.15rem; font-weight: 600; margin: 1.1rem 0 .4rem; color: var(--ink,#0f172a); }
-  .about p { margin: 0 0 .7rem; line-height: 1.65; color: var(--ink,#0f172a); }
-</style>
