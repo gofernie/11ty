@@ -2,13 +2,20 @@
 permalink: /css/theme.css
 ---
 
-/* your styles here (keep whatever you had before) */
-body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.5; margin: 0; padding: 2rem; }
-.container { max-width: 960px; margin: 0 auto; }
-.site-header, .site-footer { padding: 1rem 0; }
-.site-header .brand { font-weight: 700; margin-right: 1rem; text-decoration: none; }
-.nav a { margin-right: 1rem; text-decoration: none; }
-h1 { font-size: 2.2rem; margin: 0 0 0.5rem; }
-p { margin: 0.5rem 0; }
-a { color: #0b63ce; }
-a.button { display:inline-block; padding: .6rem 1rem; border:1px solid #0b63ce; border-radius:.5rem; text-decoration:none; }
+/* Basic theme */
+:root { --blue: #0b63ce; }
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.5; margin: 0; }
+.container { max-width: 960px; margin: 0 auto; padding: 1.25rem; }
+.site-header, .site-footer { border-bottom: 1px solid #eee; }
+.site-footer { border-top: 1px solid #eee; border-bottom: 0; color: #666; }
+.brand { font-weight: 700; text-decoration: none; color: inherit; margin-right: 1rem; }
+.nav a { margin-right: .75rem; text-decoration: none; color: var(--blue); }
+h1 { font-size: 2rem; margin: 1rem 0 .5rem; }
+p { margin: .5rem 0; }
+a { color: var(--blue); }
+a.button { display:inline-block; padding: .55rem 1rem; border:1px solid var(--blue); border-radius:.5rem; text-decoration:none; }
+.cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: .75rem; margin-top: 1rem; }
+.card { display:block; padding: .85rem; border:1px solid #e5e5e5; border-radius:.5rem; background:#fff; text-decoration:none; color:inherit; }
+.card:hover { border-color: var(--blue); }
+.lead { font-size: 1.05rem; color:#444; }
