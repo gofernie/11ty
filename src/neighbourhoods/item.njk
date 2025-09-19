@@ -18,7 +18,7 @@ eleventyComputed:
     <div class="overlay"><h1>{{ n.title }}</h1></div>
   </section>
 
-  <!-- Short description under hero -->
+  <!-- Short description directly under hero -->
   {% if n.desc %}
     <p class="desc">{{ n.desc }}</p>
   {% endif %}
@@ -63,7 +63,12 @@ eleventyComputed:
     text-shadow: 0 2px 14px rgba(0,0,0,.35);
   }
 
-  .desc { margin: .85rem 0 0; color: var(--muted,#475569); font-size: 1.02rem; }
+  .desc {
+    margin: 0.85rem 0 0;
+    color: var(--muted,#475569);
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
 
   .pills {
     list-style: none; padding: 0; margin: .75rem 0 1.25rem;
