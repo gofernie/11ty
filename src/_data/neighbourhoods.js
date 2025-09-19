@@ -1,29 +1,54 @@
-// Fetches Google Sheet (published as CSV) -> Array of rows
-// REQUIRED ENV: SHEET_ID (the long e/2PACX-... id without the "d/e/" prefix)
-// OPTIONAL: SHEET_GID
-// Example public CSV URL usually looks like:
-// https://docs.google.com/spreadsheets/d/e/<SHEET_ID>/pub?output=csv&gid=<GID>
-
+// Redirect-aware Google Sheets CSV fetcher for 11ty
 const https = require("https");
+const { URL } = require("url");
 
-function fetchText(url) {
+const MAX_REDIRECTS = 5;
+
+function fetchText(url, redirects = 0) {
   return new Promise((resolve, reject) => {
+    console.log(`[neighbourhoods] Fetching: ${url}`);
     https
       .get(url, (res) => {
-        if (res.statusCode !== 200) {
-          reject(new Error(`Sheets fetch failed: ${res.statusCode} ${res.statusMessage}`));
-          res.resume(); return;
+        const { statusCode, headers, statusMessage } = res;
+
+        // Follow redirects (301/302/303/307/308)
+        if ([301, 302, 303, 307, 308].includes(statusCode)) {
+          const location = headers.location;
+          if (!location) {
+            reject(new Error(`Redirect (${statusCode}) with no Location header`));
+            return;
+          }
+          if (redirects >= MAX_REDIRECTS) {
+            reject(new Error(`Too many redirects. Last Location: ${location}`));
+            return;
+          }
+          // Resolve relative redirects against the current URL
+          const next = new URL(location, url).toString();
+          console.log(`[neighbourhoods] Redirect ${statusCode} → ${next}`);
+          res.resume(); // drain
+          resolve(fetchText(next, redirects + 1));
+          return;
         }
+
+        if (statusCode !== 200) {
+          let body = "";
+          res.on("data", (c) => (body += c));
+          res.on("end", () => {
+            reject(new Error(`Sheets fetch failed: ${statusCode} ${statusMessage}\nBody: ${body.slice(0,300)}...`));
+          });
+          return;
+        }
+
         let data = "";
         res.setEncoding("utf8");
         res.on("data", (chunk) => (data += chunk));
         res.on("end", () => resolve(data));
       })
-      .on("error", reject);
+      .on("error", (err) => reject(err));
   });
 }
 
-// Tiny CSV parser that handles quoted commas and double quotes
+// Tiny CSV parser (handles quotes and escaped quotes)
 function parseCSV(text) {
   const rows = [];
   let cell = "", row = [], inQuotes = false;
@@ -44,9 +69,7 @@ function parseCSV(text) {
   return rows;
 }
 
-function normalizeHeaders(heads) {
-  return heads.map(h => String(h || "").trim().toLowerCase());
-}
+const normalizeHeaders = (heads) => heads.map(h => String(h || "").trim().toLowerCase());
 
 function toSlug(s) {
   return String(s || "")
@@ -58,24 +81,26 @@ function toSlug(s) {
 
 module.exports = async function () {
   const SHEET_ID = process.env.SHEET_ID || process.env.GOOGLE_SHEET_ID;
-  if (!SHEET_ID) throw new Error("Missing SHEET_ID/GOOGLE_SHEET_ID");
+  const SHEET_GID = process.env.SHEET_GID || "";
+  if (!SHEET_ID) {
+    throw new Error("Missing SHEET_ID/GOOGLE_SHEET_ID env var. Set it in Netlify → Site configuration → Build & deploy → Environment variables.");
+  }
 
-  const gid = process.env.SHEET_GID || "";
-  const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv${gid ? `&gid=${gid}` : ""}`;
+  // Note: we intentionally use /pub?output=csv; Google may redirect → we follow it.
+  const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv${SHEET_GID ? `&gid=${SHEET_GID}` : ""}`;
 
   const csv = await fetchText(url);
   const table = parseCSV(csv);
-  if (!table.length) return [];
+  if (!table.length) throw new Error("CSV parsed, but contained 0 rows. Is the sheet empty or not published as CSV?");
 
   const headers = normalizeHeaders(table[0]);
   const rows = table.slice(1).map(r => {
-    const o = {};
-    headers.forEach((h, i) => (o[h] = String(r[i] ?? "").trim()));
-    return o;
+    const obj = {};
+    headers.forEach((h, i) => (obj[h] = String(r[i] ?? "").trim()));
+    return obj;
   });
 
-  // Expected headers: slug, title, desc, about, img, order, published, pills
-  // Tolerant fallback for missing slug
+  // Expect: slug, title, desc, about, img, order, published, pills
   const cleaned = rows.map(r => ({
     slug: r.slug || toSlug(r.title),
     title: r.title || "",
@@ -89,5 +114,6 @@ module.exports = async function () {
   .filter(r => r.slug && r.title && r.published === "1")
   .sort((a, b) => a.order - b.order);
 
+  console.log(`[neighbourhoods] Loaded rows: ${cleaned.length}`);
   return cleaned;
 };
