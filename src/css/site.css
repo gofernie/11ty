@@ -1,0 +1,16 @@
+/* src/css/site.css */
+:root { --ink:#0f172a; --bg:#fff; --brand:#0a66c2; }
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+.container{max-width:1100px;margin-inline:auto;padding:1rem}
+.site-header{border-bottom:1px solid #eee}
+.brand{font-weight:700;margin-right:1rem;text-decoration:none;color:var(--ink)}
+.nav a{margin-right:1rem;text-decoration:none;color:var(--brand)}
+.nav a:hover{text-decoration:underline}
+.hero{padding:2rem 0}
+.button{display:inline-block;padding:.6rem 1rem;border:1px solid var(--brand);text-decoration:none}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin:1rem 0}
+.card{display:block;padding:1rem;border:1px solid #eee;border-radius:.75rem;text-decoration:none;color:inherit}
+.card:hover{outline:2px solid var(--brand)}
+.about h1{margin:.2rem 0 1rem}
+.lead{font-size:1.1rem;opacity:.9}
