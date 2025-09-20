@@ -1,16 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% if title %}{{ title }} · {% endif %}Fernie Real Estate</title>
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
 <body>
 
+  <!-- Sticky site header -->
   <header class="site-header">
-    <div class="container">
+    <div class="container header-inner">
+      <!-- Left: text logo -->
       <a class="brand" href="/">Fernie Real Estate</a>
+
+      <!-- Right: primary nav -->
       <nav class="nav">
         <a href="/">Home</a>
         <a href="/neighbourhoods/">Neighbourhoods</a>
@@ -18,16 +22,17 @@
     </div>
   </header>
 
-  <main id="main" class="container">
+  <!-- Main content -->
+  <main id="main">
     {{ content | safe }}
   </main>
 
+  <!-- Site footer -->
   <footer class="site-footer">
     <div class="container">
-      <small>&copy; {{ "now" | date("yyyy") }} Fernie Real Estate</small>
+      <small>© Fernie Real Estate</small>
     </div>
   </footer>
 
 </body>
 </html>
-
