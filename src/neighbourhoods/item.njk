@@ -12,22 +12,7 @@ eleventyComputed:
 <article class="neighbourhood">
   <p class="eyebrow">Neighbourhood</p>
   <h1>{{ row.title }}</h1>
-
-  {% if row.desc %}
-    <p class="lead">{{ row.desc }}</p>
-  {% endif %}
-
-  {% if row.about %}
-    {{ row.about | safe }}
-  {% endif %}
-
-  {% if row.stats %}
-    <dl class="stats">
-      {% for k, v in row.stats %}
-        <dt>{{ k }}</dt><dd>{{ v }}</dd>
-      {% endfor %}
-    </dl>
-  {% endif %}
-
+  {% if row.desc %}<p class="lead">{{ row.desc }}</p>{% endif %}
+  {% if row.about %}{{ row.about | safe }}{% endif %}
   <p><a class="btn btn--outline" href="/neighbourhoods/">← Back to all neighbourhoods</a></p>
 </article>
