@@ -1,23 +1,14 @@
 ---
 layout: base
 title: "Neighbourhoods"
-pagination:
-  data: neighbourhoods
-  size: 1000
-permalink: "/neighbourhoods/"
-eleventyComputed:
-  collectionsList: neighbourhoods
+permalink: /neighbourhoods/
 ---
 
-
 <h1>Neighbourhoods</h1>
-<div class="cards">
-  {% for n in collectionsList %}
+<ul>
+  {% for n in neighbourhoods %}
     {% if n.slug %}
-      <a class="card" href="/neighbourhoods/{{ n.slug }}/">
-        <h3>{{ n.title }}</h3>
-        {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
-      </a>
+      <li><a href="/neighbourhoods/{{ n.slug | slug }}/">{{ n.title }}</a></li>
     {% endif %}
   {% endfor %}
-</div>
+</ul>
