@@ -18,7 +18,14 @@
   </main>
 
   <footer class="site-footer">
-    <small>&copy; {{ (collections && collections.all && collections.all[0]) ? (collections.all | length) : "" }} Fernie</small>
+    <small>
+      &copy; 
+      {# Nunjucks can't do JS ternary; use an if #}
+      {% if collections and collections.all %}
+        {{ collections.all | length }}
+      {% endif %}
+      Fernie
+    </small>
   </footer>
 </body>
 </html>
