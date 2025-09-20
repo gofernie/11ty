@@ -2,20 +2,71 @@
 permalink: /css/theme.css
 ---
 
-/* Basic theme */
-:root { --blue: #0b63ce; }
-* { box-sizing: border-box; }
-body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.5; margin: 0; }
-.container { max-width: 960px; margin: 0 auto; padding: 1.25rem; }
-.site-header, .site-footer { border-bottom: 1px solid #eee; }
-.site-footer { border-top: 1px solid #eee; border-bottom: 0; color: #666; }
-.brand { font-weight: 700; text-decoration: none; color: inherit; margin-right: 1rem; }
-.nav a { margin-right: .75rem; text-decoration: none; color: var(--blue); }
-h1 { font-size: 2rem; margin: 1rem 0 .5rem; }
-p { margin: .5rem 0; }
-a { color: var(--blue); }
-a.button { display:inline-block; padding: .55rem 1rem; border:1px solid var(--blue); border-radius:.5rem; text-decoration:none; }
-.cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: .75rem; margin-top: 1rem; }
-.card { display:block; padding: .85rem; border:1px solid #e5e5e5; border-radius:.5rem; background:#fff; text-decoration:none; color:inherit; }
-.card:hover { border-color: var(--blue); }
-.lead { font-size: 1.05rem; color:#444; }
+/* ===== Base theme ===== */
+:root { --blue:#0b63ce; --ink:#0d1321; --muted:#5b6473; --border:#e6e8ec; --bg:#ffffff; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);line-height:1.55;background:#fff}
+a{color:var(--blue);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:0 1.2rem}
+.site-header,.site-footer{border-bottom:1px solid var(--border)}
+.site-footer{border-top:1px solid var(--border);border-bottom:0;color:var(--muted)}
+.brand{font-weight:700;text-decoration:none;color:inherit;margin-right:1rem}
+.nav a{margin-right:.9rem}
+
+/* ===== Buttons ===== */
+.btn{display:inline-block;padding:.62rem 1rem;border-radius:.6rem;font-weight:600;line-height:1;border:1px solid transparent;transition:all .15s ease}
+.btn--primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn--primary:hover{filter:brightness(0.95)}
+.btn--outline{border-color:var(--blue);color:var(--blue);background:transparent}
+.btn--outline:hover{background:rgba(11,99,206,.06)}
+
+/* ===== Full-bleed hero ===== */
+.hero--bleed{
+  position:relative;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
+  width:100vw;
+  min-height:52vh;
+  background-image:var(--hero-image);
+  background-size:cover;
+  background-position:center;
+  display:flex;
+  align-items:flex-end;
+}
+.hero__overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.55) 70%);
+}
+.hero__inner{
+  position:relative;z-index:1;
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  padding:5.5rem 1.2rem 3rem;
+  color:#fff;
+}
+.eyebrow{letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;opacity:.9;margin:0 0 .25rem}
+.hero__title{font-size:clamp(2rem,4.5vw,3.2rem);line-height:1.1;margin:.25rem 0 .5rem}
+.hero__lead{font-size:clamp(1rem,2vw,1.2rem);opacity:.95;margin:0 0 1rem}
+.hero__cta{margin-top:.5rem}
+
+/* ===== Sections & card grid ===== */
+.section{padding:2.2rem 0}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1rem;
+}
+.card{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:1rem;
+  padding:1.2rem 1.2rem 1rem;
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+  display:flex;flex-direction:column;gap:.6rem;
+}
+.card__icon{font-size:2rem}
+.card__title{margin:.2rem 0 .2rem;font-size:1.25rem}
+.card__text{margin:0 0 .6rem;color:var(--muted)}
+.card .btn{align-self:flex-start}
