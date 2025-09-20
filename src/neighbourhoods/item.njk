@@ -3,16 +3,27 @@ layout: base
 pagination:
   data: neighbourhoods
   size: 1
-  alias: row
-permalink: "/neighbourhoods/{{ row.slug | slug }}/"
+  alias: n
+permalink: "/neighbourhoods/{{ n.slug }}/index.html"
 eleventyComputed:
-  title: "{{ row.title }}"
+  title: "{{ n.title }}"
 ---
 
-<article class="neighbourhood">
-  <p class="eyebrow">Neighbourhood</p>
-  <h1>{{ row.title }}</h1>
-  {% if row.desc %}<p class="lead">{{ row.desc }}</p>{% endif %}
-  {% if row.about %}{{ row.about | safe }}{% endif %}
-  <p><a class="btn btn--outline" href="/neighbourhoods/">← Back to all neighbourhoods</a></p>
-</article>
+{# Detail page header like before: hero with gradient overlay #}
+<section class="hero hero--detail" style="--hero-img: url('{{ n.img or "/img/placeholders/hood.jpg" }}')">
+  <div class="hero__overlay"></div>
+  <div class="hero__inner container">
+    <p class="eyebrow">Neighbourhood</p>
+    <h1 class="hero__title">{{ n.title }}</h1>
+    {% if n.desc %}<p class="hero__subhead">{{ n.desc }}</p>{% endif %}
+  </div>
+</section>
+
+<section class="container section about">
+  {% if n.about %}
+    {{ n.about | safe }}
+  {% else %}
+    <h3>About</h3>
+    <p>Stay tuned—full write-up coming soon.</p>
+  {% endif %}
+</section>
