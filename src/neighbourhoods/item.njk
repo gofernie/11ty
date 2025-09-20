@@ -1,5 +1,5 @@
 ---
-layout: layouts/base
+layout: base
 pagination:
   data: neighbourhoods
   size: 1
@@ -8,6 +8,7 @@ permalink: "/neighbourhoods/{{ row.slug | slug }}/"
 eleventyComputed:
   title: "{{ row.title }}"
 ---
+
 
 {# src/neighbourhoods/item.njk #}
 
