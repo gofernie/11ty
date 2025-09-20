@@ -1,43 +1,47 @@
-// Only paginate the detail page template (item.njk).
-// Do NOT paginate index.njk, so it can output /neighbourhoods/ just once.
+// src/neighbourhoods/neighbourhoods.11tydata.js
+// Goal: paginate ONLY the detail template (item.njk).
+// index.njk must remain a single, non-paginated page at /neighbourhoods/.
+
+const path = require("path");
 
 module.exports = {
-  // Conditionally enable pagination only for item.njk
-  pagination: data => {
-    // Normalize the path for safety across environments
-    const p = (data.page && data.page.inputPath) || "";
-    // Adjust the endsWith check if your path differs
-    if (p.endsWith("/src/neighbourhoods/item.njk")) {
+  // Pagination: only apply to item.njk
+  pagination: (data) => {
+    const inputPath = (data.page && data.page.inputPath) || "";
+    const file = path.basename(inputPath);
+
+    // Paginate only the detail template
+    if (file === "item.njk") {
       return {
         data: "neighbourhoods",
         size: 1,
         alias: "row",
       };
     }
+
     // Disable pagination for everything else (e.g., index.njk)
     return false;
   },
 
   eleventyComputed: {
-    // Compute correct permalinks for each template:
-    permalink: data => {
-      const p = (data.page && data.page.inputPath) || "";
+    // Permalinks: detail pages get /neighbourhoods/<slug>/, index is /neighbourhoods/
+    permalink: (data) => {
+      const inputPath = (data.page && data.page.inputPath) || "";
+      const file = path.basename(inputPath);
 
-      // Detail pages from item.njk
-      if (p.endsWith("/src/neighbourhoods/item.njk") && data.row) {
+      if (file === "item.njk" && data.row) {
         return `/neighbourhoods/${data.row.slug}/`;
       }
 
-      // The listing page (index.njk) stays at /neighbourhoods/
-      if (p.endsWith("/src/neighbourhoods/index.njk")) {
+      if (file === "index.njk") {
         return "/neighbourhoods/";
       }
 
-      // Fallback to whatever the template sets (or default behavior)
+      // default (let the template decide)
       return data.permalink;
     },
 
-    // Optional: title for detail pages
-    title: data => (data.row ? data.row.title : data.title),
+    // Titles: use row.title on detail pages, keep existing on others
+    title: (data) => (data.row ? data.row.title : data.title),
   },
 };
