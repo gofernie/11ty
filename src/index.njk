@@ -1,66 +1,59 @@
 ---
-layout: base
+layout: layouts/base
 title: "Home"
+permalink: /
 ---
 
-{# === FULL-BLEED HERO === #}
+{# Full-bleed hero with your image #}
 <section
   class="hero"
-  style="background-image: url('https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty5.jpeg?inline=true');"
-  aria-label="Fernie mountain skyline"
+  style="background-image:url('https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty5.jpeg?inline=true');"
 >
-  <div class="hero__content">
+  <div class="container hero-inner">
     <h1>Find Your Place in Fernie</h1>
-    <p>Explore neighbourhood guides, local insights, and listings—fast and lightweight with Eleventy.</p>
-    <p>
-      <a class="btn btn--primary" href="{{ '/neighbourhoods/' | url }}">Browse Neighbourhoods</a>
+    <p class="lead">
+      Explore neighbourhood guides, local insights, and listings—fast and lightweight with Eleventy.
     </p>
+    <a class="cta" href="/neighbourhoods/">Browse Neighbourhoods</a>
   </div>
 </section>
 
-{# === THREE FEATURE CARDS === #}
+{# Feature cards #}
 <section class="section">
   <div class="container">
     <div class="cards">
       <article class="card">
         <h3>Personalized Search</h3>
         <p>Curated neighbourhood insights to match your lifestyle, budget, and timeline.</p>
-        <a class="btn btn--outline" href="{{ '/neighbourhoods/' | url }}">Explore homes</a>
       </article>
-
       <article class="card">
         <h3>Financial Tools</h3>
         <p>Get mortgage-ready with quick calculators and first-time buyer guides.</p>
-        <a class="btn btn--outline" href="{{ '/neighbourhoods/' | url }}">Get pre-approved</a>
       </article>
-
       <article class="card">
         <h3>Local Expertise</h3>
         <p>Lean on trusted local pros and smooth the path from search to closing.</p>
-        <a class="btn btn--outline" href="{{ '/neighbourhoods/' | url }}">Talk to an expert</a>
       </article>
     </div>
   </div>
 </section>
 
-{# === NEIGHBOURHOOD TEASER GRID (first 6) === #}
+{# Neighbourhood highlights (first 6 from data) #}
 <section class="section">
   <div class="container">
-    <h2>Neighbourhood Highlights</h2>
+    <h2 class="mt-0">Neighbourhood Highlights</h2>
+    <p class="sub">A quick taste of Fernie’s areas. Dive deeper to see them all.</p>
+
     <div class="cards">
-      {% set list = (neighbourhoods | default([])).slice(0, 6) %}
+      {% set list = neighbourhoods | slice(0,6) %}
       {% for n in list %}
         {% if n.slug %}
-          <a class="card" href="{{ '/neighbourhoods/' | url }}{{ n.slug | slug }}/">
+          <a class="card" href="/neighbourhoods/{{ n.slug | slug }}/">
             <h3>{{ n.title }}</h3>
             {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
           </a>
         {% endif %}
       {% endfor %}
     </div>
-
-    <p style="margin-top:1.25rem">
-      <a class="btn btn--primary" href="{{ '/neighbourhoods/' | url }}">See all neighbourhoods</a>
-    </p>
   </div>
 </section>
