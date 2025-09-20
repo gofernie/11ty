@@ -1,31 +1,27 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{{ title or "Fernie Microsite" }}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/site.css" />
 </head>
 <body>
   <header class="site-header">
-    <a href="/" class="logo">Fernie</a>
-    <nav class="nav"><a href="/neighbourhoods/">Neighbourhoods</a></nav>
+    <div class="container">
+      <a class="logo" href="/">Fernie</a>
+      <nav class="nav">
+        <a href="/neighbourhoods/">Neighbourhoods</a>
+      </nav>
+    </div>
   </header>
 
-  <main id="main">
-    {{ content | safe }}
-  </main>
+  {{ content | safe }}
 
   <footer class="site-footer">
-    <small>
-      &copy; 
-      {# Nunjucks can't do JS ternary; use an if #}
-      {% if collections and collections.all %}
-        {{ collections.all | length }}
-      {% endif %}
-      Fernie
-    </small>
+    <div class="container">
+      <small>&copy; {% if collections and collections.all %}{{ collections.all | length }}{% endif %} Fernie</small>
+    </div>
   </footer>
 </body>
 </html>
