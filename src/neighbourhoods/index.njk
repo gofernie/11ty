@@ -1,20 +1,29 @@
 ---
 layout: base
-title: "Neighbourhoods"
-permalink: /neighbourhoods/
+title: Fernie Neighbourhoods
 ---
 
+<section class="hero hero--slim">
+  <div class="container">
+    <h1 class="hero__title">Fernie Neighbourhoods</h1>
+    <p class="hero__subhead">Browse every area at a glance.</p>
+  </div>
+</section>
 
-<section class="hoods">
-  <h1>Neighbourhood Guides</h1>
-  <div class="cards">
-    {% for n in neighbourhoods %}
-      {% if n.slug %}
-        <a class="card" href="/neighbourhoods/{{ n.slug | slug }}/">
-          <h3>{{ n.title }}</h3>
-          {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
+<section class="container section">
+  <div class="cards cards--neighbourhoods">
+    {% for n in neighbourhoods or [] %}
+      <article class="n-card">
+        <a class="n-card__link" href="/neighbourhoods/{{ n.slug }}/">
+          <figure class="n-card__media">
+            <img src="{{ n.img or '/img/placeholders/hood.jpg' }}" alt="{{ n.title }}" loading="lazy" />
+          </figure>
+          <div class="n-card__body">
+            <h3 class="n-card__title">{{ n.title }}</h3>
+            <p class="n-card__desc">{{ n.desc }}</p>
+          </div>
         </a>
-      {% endif %}
+      </article>
     {% endfor %}
   </div>
 </section>
