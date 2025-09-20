@@ -4,6 +4,8 @@ title: "Neighbourhoods"
 permalink: /neighbourhoods/
 ---
 
+{# src/neighbourhoods/index.njk #}
+
 <section class="hoods">
   <h1>Neighbourhood Guides</h1>
   <p class="intro">
@@ -11,53 +13,16 @@ permalink: /neighbourhoods/
   </p>
 
   <div class="cards">
-    {% for n in neighbourhoods %}
+    {# `neighbourhoods` comes from src/_data/neighbourhoods.js #}
+    {% set list = neighbourhoods | default([]) %}
+
+    {% for n in list %}
       {% if n.slug %}
         <a class="card" href="/neighbourhoods/{{ n.slug | slug }}/">
           <h3>{{ n.title }}</h3>
-          {% if n.desc %}
-            <p>{{ n.desc }}</p>
-          {% endif %}
+          {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
         </a>
       {% endif %}
     {% endfor %}
   </div>
 </section>
-
-<style>
-  .hoods {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-  }
-  .hoods h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-  }
-  .intro {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-  }
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
-  }
-  .card {
-    display: block;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    background: #fff;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-  }
-  .card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-  }
-  .card h3 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-  }
-</style>
