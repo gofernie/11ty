@@ -1,59 +1,48 @@
 ---
 layout: layouts/base
 title: "Home"
-permalink: /
 ---
 
-{# Full-bleed hero with your image #}
 <section
   class="hero"
   style="background-image:url('https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty5.jpeg?inline=true');"
 >
-  <div class="container hero-inner">
-    <h1>Find Your Place in Fernie</h1>
+  <div class="hero-inner container">
+    <h1 class="mt-0">Find Your Place in Fernie</h1>
     <p class="lead">
       Explore neighbourhood guides, local insights, and listings—fast and lightweight with Eleventy.
     </p>
-    <a class="cta" href="/neighbourhoods/">Browse Neighbourhoods</a>
+    <p class="mt-3">
+      <a class="button" href="/neighbourhoods/">Browse Neighbourhoods</a>
+    </p>
   </div>
 </section>
 
-{# Feature cards #}
-<section class="section">
+<section class="features">
   <div class="container">
-    <div class="cards">
-      <article class="card">
+    <div class="section-head">
+      <h2 class="mt-0">What you’ll get</h2>
+      <p class="mb-0">Clear guidance, practical tools, and local expertise.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card col-4">
         <h3>Personalized Search</h3>
         <p>Curated neighbourhood insights to match your lifestyle, budget, and timeline.</p>
+        <a class="button" href="/neighbourhoods/">Explore homes</a>
       </article>
-      <article class="card">
+
+      <article class="card col-4">
         <h3>Financial Tools</h3>
         <p>Get mortgage-ready with quick calculators and first-time buyer guides.</p>
+        <a class="button" href="/neighbourhoods/">Get pre-approved</a>
       </article>
-      <article class="card">
+
+      <article class="card col-4">
         <h3>Local Expertise</h3>
-        <p>Lean on trusted local pros and smooth the path from search to closing.</p>
+        <p>Talk to trusted local pros and make your move with confidence.</p>
+        <a class="button" href="/neighbourhoods/">Talk to an expert</a>
       </article>
-    </div>
-  </div>
-</section>
-
-{# Neighbourhood highlights (first 6 from data) #}
-<section class="section">
-  <div class="container">
-    <h2 class="mt-0">Neighbourhood Highlights</h2>
-    <p class="sub">A quick taste of Fernie’s areas. Dive deeper to see them all.</p>
-
-    <div class="cards">
-      {% set list = neighbourhoods | slice(0,6) %}
-      {% for n in list %}
-        {% if n.slug %}
-          <a class="card" href="/neighbourhoods/{{ n.slug | slug }}/">
-            <h3>{{ n.title }}</h3>
-            {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
-          </a>
-        {% endif %}
-      {% endfor %}
     </div>
   </div>
 </section>
