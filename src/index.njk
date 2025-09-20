@@ -3,91 +3,64 @@ layout: base
 title: "Home"
 ---
 
-<style>
-  /* Reset margin/padding on body to make hero full viewport */
-  body {
-    margin: 0;
-    padding: 0;
-  }
+{# === FULL-BLEED HERO === #}
+<section
+  class="hero"
+  style="background-image: url('https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty5.jpeg?inline=true');"
+  aria-label="Fernie mountain skyline"
+>
+  <div class="hero__content">
+    <h1>Find Your Place in Fernie</h1>
+    <p>Explore neighbourhood guides, local insights, and listings—fast and lightweight with Eleventy.</p>
+    <p>
+      <a class="btn btn--primary" href="{{ '/neighbourhoods/' | url }}">Browse Neighbourhoods</a>
+    </p>
+  </div>
+</section>
 
-  /* Full-bleed hero */
-  .hero {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Full screen height */
-    background: url("https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty5.jpeg?inline=true")
-      no-repeat center center;
-    background-size: cover;
-    color: white;
-    text-align: center;
-    padding: 2rem;
-  }
+{# === THREE FEATURE CARDS === #}
+<section class="section">
+  <div class="container">
+    <div class="cards">
+      <article class="card">
+        <h3>Personalized Search</h3>
+        <p>Curated neighbourhood insights to match your lifestyle, budget, and timeline.</p>
+        <a class="btn btn--outline" href="{{ '/neighbourhoods/' | url }}">Explore homes</a>
+      </article>
 
-  .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-  }
+      <article class="card">
+        <h3>Financial Tools</h3>
+        <p>Get mortgage-ready with quick calculators and first-time buyer guides.</p>
+        <a class="btn btn--outline" href="{{ '/neighbourhoods/' | url }}">Get pre-approved</a>
+      </article>
 
-  .hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
-    margin: 0 auto 1.5rem;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-  }
+      <article class="card">
+        <h3>Local Expertise</h3>
+        <p>Lean on trusted local pros and smooth the path from search to closing.</p>
+        <a class="btn btn--outline" href="{{ '/neighbourhoods/' | url }}">Talk to an expert</a>
+      </article>
+    </div>
+  </div>
+</section>
 
-  .hero .button {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    font-weight: bold;
-    background: white;
-    color: black;
-    border-radius: 0.4rem;
-    text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
+{# === NEIGHBOURHOOD TEASER GRID (first 6) === #}
+<section class="section">
+  <div class="container">
+    <h2>Neighbourhood Highlights</h2>
+    <div class="cards">
+      {% set list = (neighbourhoods | default([])).slice(0, 6) %}
+      {% for n in list %}
+        {% if n.slug %}
+          <a class="card" href="{{ '/neighbourhoods/' | url }}{{ n.slug | slug }}/">
+            <h3>{{ n.title }}</h3>
+            {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
 
-  .hero .button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Styled nav bar */
-  header.site-header {
-    background: black;
-    color: white;
-    padding: 1rem 2rem;
-  }
-
-  header.site-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  header.site-header .brand {
-    font-weight: bold;
-    font-size: 1.3rem;
-    color: white;
-    text-decoration: none;
-  }
-
-  header.site-header .nav a {
-    color: #f2f2f2;
-    text-decoration: none;
-    margin-left: 1.5rem;
-    transition: color 0.2s ease;
-  }
-
-  header.site-header .nav a:hover {
-    color: #ffffff;
-  }
-</style>
-
-<section class="hero">
-  <h1>Find Your Place in Fernie</h1>
-  <p>Explore neighbourhood guides, discover local lifestyle insights, and start your Fernie real estate journey today.</p>
-  <a class="button" href="/neighbourhoods/">Browse Neighbourhoods</a>
+    <p style="margin-top:1.25rem">
+      <a class="btn btn--primary" href="{{ '/neighbourhoods/' | url }}">See all neighbourhoods</a>
+    </p>
+  </div>
 </section>
