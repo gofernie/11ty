@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% if title %}{{ title }} · {% endif %}Fernie Real Estate</title>
+  <link rel="stylesheet" href="/css/theme.css" />
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/">Fernie Real Estate</a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/neighbourhoods/">Neighbourhoods</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main">
+    {{ content | safe }}
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <small>&copy; {{ "now" | date("yyyy") }} Fernie Real Estate</small>
+    </div>
+  </footer>
+
+</body>
+</html>
