@@ -13,10 +13,7 @@ permalink: /neighbourhoods/
   </p>
 
   <div class="cards">
-    {# `neighbourhoods` comes from src/_data/neighbourhoods.js #}
-    {% set list = neighbourhoods | default([]) %}
-
-    {% for n in list %}
+    {% for n in neighbourhoods %}
       {% if n.slug %}
         <a class="card" href="/neighbourhoods/{{ n.slug | slug }}/">
           <h3>{{ n.title }}</h3>
