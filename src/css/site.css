@@ -1,16 +1,82 @@
-/* src/css/site.css */
-:root { --ink:#0f172a; --bg:#fff; --brand:#0a66c2; }
+/* Base */
+:root{
+  --ink:#111827; --muted:#6b7280; --bg:#ffffff; --card:#ffffff; --line:#e5e7eb;
+  --brand:#0b6efd; --brand-ink:#ffffff;
+  --radius:16px; --shadow:0 6px 24px rgba(0,0,0,.08);
+  --max:1200px;
+}
 *{box-sizing:border-box}
-body{margin:0;font:16px/1.5 system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
-.container{max-width:1100px;margin-inline:auto;padding:1rem}
-.site-header{border-bottom:1px solid #eee}
-.brand{font-weight:700;margin-right:1rem;text-decoration:none;color:var(--ink)}
-.nav a{margin-right:1rem;text-decoration:none;color:var(--brand)}
-.nav a:hover{text-decoration:underline}
-.hero{padding:2rem 0}
-.button{display:inline-block;padding:.6rem 1rem;border:1px solid var(--brand);text-decoration:none}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin:1rem 0}
-.card{display:block;padding:1rem;border:1px solid #eee;border-radius:.75rem;text-decoration:none;color:inherit}
-.card:hover{outline:2px solid var(--brand)}
-.about h1{margin:.2rem 0 1rem}
-.lead{font-size:1.1rem;opacity:.9}
+html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+
+/* Layout */
+.container{max-width:var(--max);margin:0 auto;padding:0 20px}
+.section{padding:56px 0}
+.section__head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:20px}
+.section__title{margin:0;font-size:clamp(24px,3vw,34px);line-height:1.2}
+.link-more{font-weight:600;text-decoration:none;color:var(--brand)}
+a{color:inherit}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line)}
+.site-header .container{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 20px}
+.logo{font-weight:800;text-decoration:none}
+.nav a{margin-left:16px;text-decoration:none;color:#334155}
+.nav a:hover{color:var(--brand)}
+
+/* Buttons */
+.btn{display:inline-block;background:var(--brand);color:var(--brand-ink);padding:12px 18px;border-radius:999px;text-decoration:none;font-weight:600}
+
+/* Hero */
+.hero{position:relative}
+.hero--fullbleed{
+  min-height:100vh; /* full viewport height */
+  background-image:var(--hero-img);
+  background-size:cover;background-position:center;
+  display:flex;align-items:center
+}
+.hero--detail{
+  min-height:48vh;background-image:var(--hero-img);
+  background-size:cover;background-position:center;display:flex;align-items:end
+}
+.hero--slim{padding:40px 0;background:#f8fafc;border-bottom:1px solid var(--line)}
+.hero__overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.35),rgba(0,0,0,.35))}
+.hero__inner{position:relative;color:#fff;padding:64px 0}
+.hero__title{margin:0 0 12px;font-size:clamp(28px,5vw,52px);line-height:1.1}
+.hero__subhead{margin:0 0 16px;font-size:clamp(16px,2.4vw,20px);color:#e5e7eb}
+.eyebrow{letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin:0 0 8px;color:#d1d5db}
+
+/* Feature cards */
+.cards{display:grid;gap:20px}
+.cards--features{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 6px}
+.card__link{display:inline-block;margin-top:8px;color:var(--brand);font-weight:600;text-decoration:none}
+
+/* Neighbourhood cards */
+.cards--neighbourhoods{grid-template-columns:repeat(3,1fr)}
+.n-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;box-shadow:var(--shadow);transition:transform .15s ease}
+.n-card:hover{transform:translateY(-3px)}
+.n-card__link{display:block;color:inherit;text-decoration:none}
+.n-card__media{aspect-ratio:3/2;margin:0;background:#f1f5f9;overflow:hidden}
+.n-card__media img{width:100%;height:100%;object-fit:cover;display:block}
+.n-card__body{padding:14px 16px}
+.n-card__title{margin:0 0 6px;font-size:18px}
+.n-card__desc{margin:0;color:var(--muted);font-size:14px}
+
+/* Article / About */
+.about h3{margin-top:1.2rem;margin-bottom:.4rem;font-weight:600}
+.about h3:first-of-type{margin-top:0}
+.about p{margin:.5rem 0}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--line);padding:24px 0;background:#fff;color:#475569}
+
+/* Responsive */
+@media (max-width: 960px){
+  .cards--features{grid-template-columns:1fr}
+  .cards--neighbourhoods{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width: 640px){
+  .cards--neighbourhoods{grid-template-columns:1fr}
+}
