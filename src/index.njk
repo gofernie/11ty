@@ -2,8 +2,54 @@
 layout: base
 title: "Home"
 ---
-<section class="hero">
-  <h1>Find your place in Fernie</h1>
-  <p>Fast, lightweight guides powered by Eleventy.</p>
-  <p><a class="button" href="/neighbourhoods/">Browse Neighbourhoods</a></p>
+
+{# Full-bleed hero #}
+<section
+  class="hero hero--bleed"
+  style="--hero-image: url('https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty5.jpeg?inline=true');"
+  aria-label="Fernie mountain skyline"
+>
+  <div class="hero__overlay"></div>
+  <div class="hero__inner">
+    <p class="eyebrow">Fernie Real Estate</p>
+    <h1 class="hero__title">Find your place in Fernie</h1>
+    <p class="hero__lead">Fast, lightweight guides powered by Eleventy—so you can explore neighbourhoods and make confident decisions.</p>
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="/neighbourhoods/">Browse neighbourhoods</a>
+    </div>
+  </div>
+</section>
+
+{# Feature cards #}
+<section class="section">
+  <div class="container">
+    <div class="cards">
+      <article class="card">
+        <div class="card__icon" aria-hidden="true">🏠</div>
+        <h3 class="card__title">Personalized search</h3>
+        <p class="card__text">
+          Explore homes your way with curated lists and neighbourhood insights tailored to your needs.
+        </p>
+        <a class="btn btn--outline" href="/neighbourhoods/">Explore homes</a>
+      </article>
+
+      <article class="card">
+        <div class="card__icon" aria-hidden="true">💳</div>
+        <h3 class="card__title">Financial tools</h3>
+        <p class="card__text">
+          Get mortgage-ready with quick pre-approval resources and guides for first-time buyers.
+        </p>
+        <a class="btn btn--outline" href="/neighbourhoods/">Get pre-approved</a>
+      </article>
+
+      <article class="card">
+        <div class="card__icon" aria-hidden="true">🤝</div>
+        <h3 class="card__title">Expert guidance</h3>
+        <p class="card__text">
+          Connect with local pros and RBC® specialists to make your move smooth from start to finish.
+        </p>
+        <a class="btn btn--outline" href="/neighbourhoods/">Get connected</a>
+      </article>
+    </div>
+  </div>
 </section>
