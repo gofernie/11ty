@@ -1,32 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% if title %}{{ title }} · {% endif %}Fernie Real Estate</title>
-  <link rel="stylesheet" href="/css/theme.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title or "Fernie Microsite" }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
-  <!-- Header / Nav -->
   <header class="site-header">
-    <div class="container nav-container">
-      <a class="brand" href="/">Fernie Real Estate</a>
-      <nav class="nav">
-        <a href="/">Home</a>
-        <a href="/neighbourhoods/">Neighbourhoods</a>
-      </nav>
-    </div>
+    <a href="/" class="logo">Fernie</a>
+    <nav class="nav"><a href="/neighbourhoods/">Neighbourhoods</a></nav>
   </header>
 
-  <!-- Page content -->
   <main id="main">
     {{ content | safe }}
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <small>&copy; {{ "now" | date("yyyy") }} Fernie Real Estate</small>
-    </div>
+    <small>&copy; {{ (collections && collections.all && collections.all[0]) ? (collections.all | length) : "" }} Fernie</small>
   </footer>
 </body>
 </html>
