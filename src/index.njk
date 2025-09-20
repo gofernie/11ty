@@ -3,53 +3,91 @@ layout: base
 title: "Home"
 ---
 
-{# Full-bleed hero #}
-<section
-  class="hero hero--bleed"
-  style="--hero-image: url('https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty5.webp?inline=true');"
-  aria-label="Fernie mountain skyline"
->
-  <div class="hero__overlay"></div>
-  <div class="hero__inner">
-    <p class="eyebrow">Fernie Real Estate</p>
-    <h1 class="hero__title">Find your place in Fernie</h1>
-    <p class="hero__lead">Fast, lightweight guides powered by Eleventy—so you can explore neighbourhoods and make confident decisions.</p>
-    <div class="hero__cta">
-      <a class="btn btn--primary" href="/neighbourhoods/">Browse neighbourhoods</a>
-    </div>
-  </div>
-</section>
+<style>
+  /* Reset margin/padding on body to make hero full viewport */
+  body {
+    margin: 0;
+    padding: 0;
+  }
 
-{# Feature cards #}
-<section class="section">
-  <div class="container">
-    <div class="cards">
-      <article class="card">
-        <div class="card__icon" aria-hidden="true">🏠</div>
-        <h3 class="card__title">Personalized search</h3>
-        <p class="card__text">
-          Explore homes your way with curated lists and neighbourhood insights tailored to your needs.
-        </p>
-        <a class="btn btn--outline" href="/neighbourhoods/">Explore homes</a>
-      </article>
+  /* Full-bleed hero */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full screen height */
+    background: url("https://private-office.myrealpage.com/w/w=chris-crump2.myrealpagewebsite.com,m=__manage__/_media/quick-uploads/stock/ty5.jpeg?inline=true")
+      no-repeat center center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+  }
 
-      <article class="card">
-        <div class="card__icon" aria-hidden="true">💳</div>
-        <h3 class="card__title">Financial tools</h3>
-        <p class="card__text">
-          Get mortgage-ready with quick pre-approval resources and guides for first-time buyers.
-        </p>
-        <a class="btn btn--outline" href="/neighbourhoods/">Get pre-approved</a>
-      </article>
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  }
 
-      <article class="card">
-        <div class="card__icon" aria-hidden="true">🤝</div>
-        <h3 class="card__title">Expert guidance</h3>
-        <p class="card__text">
-          Connect with local pros and RBC® specialists to make your move smooth from start to finish.
-        </p>
-        <a class="btn btn--outline" href="/neighbourhoods/">Get connected</a>
-      </article>
-    </div>
-  </div>
+  .hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero .button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-weight: bold;
+    background: white;
+    color: black;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .hero .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Styled nav bar */
+  header.site-header {
+    background: black;
+    color: white;
+    padding: 1rem 2rem;
+  }
+
+  header.site-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  header.site-header .brand {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: white;
+    text-decoration: none;
+  }
+
+  header.site-header .nav a {
+    color: #f2f2f2;
+    text-decoration: none;
+    margin-left: 1.5rem;
+    transition: color 0.2s ease;
+  }
+
+  header.site-header .nav a:hover {
+    color: #ffffff;
+  }
+</style>
+
+<section class="hero">
+  <h1>Find Your Place in Fernie</h1>
+  <p>Explore neighbourhood guides, discover local lifestyle insights, and start your Fernie real estate journey today.</p>
+  <a class="button" href="/neighbourhoods/">Browse Neighbourhoods</a>
 </section>
