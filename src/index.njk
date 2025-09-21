@@ -1,44 +1,78 @@
 ---
 layout: base
-title: Fernie Neighbourhoods
-permalink: /neighbourhoods/
+title: Home – Fernie Real Estate
 hero:
   src: "/img/hero/fernie-hero.webp"
   fallback: "/img/hero/bob.jpg"
-  alt: "Fernie"
-  title: "Fernie Neighbourhoods"
-  subtitle: "Browse every area at a glance."
+  alt: "Fernie mountains at sunrise"
+  title: "Find Your Place in Fernie"
+  subtitle: "Local insight, neighbourhood guides, and listings."
+  height: 72vh
 ---
 
-<section aria-labelledby="grid-title">
-  <h2 id="grid-title" style="margin-top:0">All neighbourhoods</h2>
+{# ── Three service cards ── #}
+<section aria-labelledby="services">
+  <h2 id="services" style="margin-top:0">Everything you need to buy in Fernie</h2>
+  <div class="feature-cards">
+    <article class="feature-card">
+      <div class="feature-card__icon">🏡</div>
+      <h3>Personalized search</h3>
+      <p>Find your home, your way with customizable filters, saved searches, and smart recommendations.</p>
+      <a class="feature-card__link" href="/search/">Explore homes</a>
+    </article>
 
-  <div class="grid-tiles">
-    {% for n in neighbourhoods %}
-      {# robust slug/name/desc handling #}
-      {% set slug = n.slug or ((n.name or n.title) | slug) %}
-      {% set prettyName = n.name or n.title or (slug | replace('-', ' ')) %}
-      {% set blurb = n.desc or n.summary or n.description or n.subtitle %}
+    <article class="feature-card">
+      <div class="feature-card__icon">💳</div>
+      <h3>Financial tools</h3>
+      <p>Buying is a big decision—estimate payments, compare scenarios, and get pre-approved online.</p>
+      <a class="feature-card__link" href="/finance/">Get pre-approved</a>
+    </article>
 
-      <article class="card">
-        <a href="/neighbourhoods/{{ slug }}/" style="display:block">
-          <div class="card__media">
-            <picture>
-              <source srcset="/img/neighbourhoods/{{ slug }}.webp" type="image/webp">
-              <img src="/img/neighbourhoods/{{ slug }}.jpg"
-                   alt="{{ prettyName }} photo" loading="lazy" decoding="async">
-            </picture>
-          </div>
-          <div class="card__body">
-            <h3 class="card__title">{{ prettyName }}</h3>
-            {% if blurb %}
-              <p class="card__text">{{ blurb }}</p>
-            {% else %}
-              <p class="card__text">Local info coming soon.</p>
-            {% endif %}
-          </div>
-        </a>
-      </article>
-    {% endfor %}
+    <article class="feature-card">
+      <div class="feature-card__icon">🤝</div>
+      <h3>Expert guidance</h3>
+      <p>Matched with trusted local experts so you get the support you need, when you need it.</p>
+      <a class="feature-card__link" href="/contact/">Get connected</a>
+    </article>
   </div>
+</section>
+
+{# ── Mini neighbourhood grid (inline, first 6) ── #}
+<section aria-labelledby="home-neighbourhoods">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:1rem">
+    <h2 id="home-neighbourhoods">Neighbourhoods</h2>
+    <a href="/neighbourhoods/">View all →</a>
+  </div>
+
+  {% set items = (neighbourhoods or []) | slice(0, 6) %}
+  {% if items and items.length %}
+    <div class="grid-tiles grid-tiles--home">
+      {% for n in items %}
+        {% set slug = n.slug or ((n.name or n.title) | slug) %}
+        {% set prettyName = n.name or n.title or (slug | replace('-', ' ')) %}
+        {% set blurb = n.desc or n.summary or n.description or n.subtitle %}
+
+        <article class="card">
+          <a href="/neighbourhoods/{{ slug }}/" style="display:block">
+            <div class="card__media">
+              <picture>
+                <source srcset="/img/neighbourhoods/{{ slug }}.webp" type="image/webp">
+                <img src="/img/neighbourhoods/{{ slug }}.jpg" alt="{{ prettyName }}">
+              </picture>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">{{ prettyName }}</h3>
+              {% if blurb %}
+                <p class="card__text">{{ blurb }}</p>
+              {% else %}
+                <p class="card__text">Local info coming soon.</p>
+              {% endif %}
+            </div>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="color:#64748b">No neighbourhoods to display.</p>
+  {% endif %}
 </section>
