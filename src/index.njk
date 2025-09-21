@@ -3,9 +3,15 @@ layout: base.njk
 title: "Home – Fernie Real Estate"
 ---
 
-<section class="container">
-  <h1>Everything you need to buy in Fernie</h1>
+{# Full-bleed 70vh hero with overlay title #}
+<section class="home-hero" aria-label="Fernie">
+  <div class="home-hero__overlay">
+    <h1 class="home-hero__title">Everything you need to buy in Fernie</h1>
+  </div>
+</section>
 
+<section class="container">
+  <!-- Cozy promo cards -->
   <div class="promo-grid">
     <article class="promo">
       <div class="promo-icon" aria-hidden="true">🏡</div>
@@ -31,36 +37,66 @@ title: "Home – Fernie Real Estate"
 </section>
 
 <section class="container">
-  <h2>Neighbourhoods</h2>
-
+  <h2 style="margin-top:8px;">Neighbourhoods</h2>
+  {# mini cards: titles only, no images #}
   {% set rows = neighbourhoods | default([]) %}
-  {% if rows and rows.length %}
-    <ul class="mini-list">
-      {% for r in rows %}
-        <li>
-          <a href="/neighbourhoods/{{ r.slug }}/">{{ r.title }}</a>
-          {% if r.desc %}<span class="muted">— {{ r.desc }}</span>{% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-    <p style="margin-top:12px;"><a href="/neighbourhoods/">Browse all neighbourhoods →</a></p>
-  {% else %}
-    <p class="muted">No neighbourhoods to display.</p>
-  {% endif %}
+  <div class="mini-hoods">
+    {% for r in rows %}
+      <a class="mini-hood" href="/neighbourhoods/{{ r.slug }}/">
+        <span class="mini-hood__name">{{ r.title }}</span>
+      </a>
+    {% endfor %}
+    {% if not rows or not rows.length %}
+      <p class="muted">No neighbourhoods to display.</p>
+    {% endif %}
+  </div>
 </section>
 
 <style>
-h1{font-size:clamp(26px,4vw,36px);margin:8px 0 18px}
-h2{font-size:clamp(20px,3vw,26px);margin:20px 0 10px}
-.muted{color:#64748b}
+/* Hero */
+.home-hero{
+  height:70vh; min-height:420px;
+  background:url("/img/hero/hero.webp") center/cover no-repeat;
+  position:relative;
+}
+.home-hero__overlay{
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  background:linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.45));
+}
+.home-hero__title{
+  color:#fff; font-size:clamp(28px,5vw,48px); line-height:1.05;
+  text-align:center; letter-spacing:.3px; padding:.25em .6em;
+}
 
-/* Promos (reuse same look as /neighbourhoods/) */
-.promo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px);margin:8px 0 24px}
-@media (max-width:900px){.promo-grid{grid-template-columns:1fr}}
-.promo{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:clamp(14px,2vw,20px);box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.promo-icon{font-size:24px;line-height:1;margin-bottom:8px}
+/* Promos with cozy almost-white tones + lift on hover */
+.promo-grid{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(12px,2vw,20px); margin:-36px 0 24px; /* slightly overlap hero visually */
+}
+@media (max-width:900px){.promo-grid{grid-template-columns:1fr; margin:12px 0 24px}}
+.promo{
+  background:var(--cozy); border:1px solid var(--border);
+  border-radius:16px; padding:clamp(16px,2vw,22px);
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.promo:hover{ transform:translateY(-4px); box-shadow:var(--shadow); background:var(--cozy-2) }
+.promo-icon{font-size:24px; line-height:1; margin-bottom:8px}
 
-/* Mini list */
-.mini-list{padding-left:1rem;margin:0 0 0.5rem}
-.mini-list li{margin:0.25rem 0}
+/* Mini neighbourhood cards (titles only) */
+.mini-hoods{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+@media (max-width:900px){.mini-hoods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.mini-hoods{grid-template-columns:1fr}}
+.mini-hood{
+  display:flex; align-items:center; padding:12px 14px;
+  background:#fff; border:1px solid var(--border); border-radius:12px;
+  text-decoration:none; color:inherit; transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.mini-hood:hover{ transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.08); background:#fbfbfb }
+.mini-hood__name{font-weight:600}
+.muted{color:var(--muted)}
 </style>
