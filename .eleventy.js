@@ -3,20 +3,17 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/img");
   eleventyConfig.addPassthroughCopy("src/css");
 
-  // Allow both "base" and "base.njk" in front-matter
+  // Pages can use `layout: base` or `layout: base.njk`
   eleventyConfig.addLayoutAlias("base", "base.njk");
   eleventyConfig.addLayoutAlias("base.njk", "base.njk");
-  // If any old pages still say layout: layout/base.njk, map that too
+  // Safety for any old references:
   eleventyConfig.addLayoutAlias("layout/base.njk", "base.njk");
 
   return {
-    dir: {
-      input: "src",
-      includes: ".",     // <<< look in src/ for layouts/includes
-      output: "_site",
-    },
+    dir: { input: "src", includes: ".", output: "_site" }, // look in src/ for layouts
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk",
     templateFormats: ["njk", "md", "html"],
   };
 };
+
