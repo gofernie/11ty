@@ -1,5 +1,5 @@
 ---
-layout: base         # if your pages still say `base.njk`, keep it; either works with the alias
+layout: base      # or base.njk; your alias handles both
 title: Home – Fernie Real Estate
 hero:
   src: "/img/hero/fernie-hero.webp"
@@ -9,34 +9,34 @@ hero:
   subtitle: "Local insight, neighbourhood guides, and listings."
 ---
 
-{# ── Three service cards ── #}
+{# 3 service cards like your screenshot #}
 <section aria-labelledby="services">
   <h2 id="services" style="margin-top:0">Everything you need to buy in Fernie</h2>
   <div class="feature-cards">
     <article class="feature-card">
       <div class="feature-card__icon">🏡</div>
       <h3>Personalized search</h3>
-      <p>Find homes your way with smart filters, saved searches, and market insights tailored to you.</p>
+      <p>Find your home, your way with customizable filters, saved searches, and smart recommendations.</p>
       <a class="btn btn-outline" href="/search/">Explore homes</a>
     </article>
 
     <article class="feature-card">
       <div class="feature-card__icon">💳</div>
       <h3>Financial tools</h3>
-      <p>Estimate payments, compare scenarios, and get pre-approved online—quick and simple.</p>
+      <p>Buying is a big decision—estimate payments, compare scenarios, and get pre-approved online.</p>
       <a class="btn btn-outline" href="/finance/">Get pre-approved</a>
     </article>
 
     <article class="feature-card">
       <div class="feature-card__icon">🤝</div>
       <h3>Expert guidance</h3>
-      <p>We’ll match you with trusted local experts so you get support when you need it.</p>
+      <p>Matched with trusted local experts so you get the support you need, when you need it.</p>
       <a class="btn btn-outline" href="/contact/">Get connected</a>
     </article>
   </div>
 </section>
 
-{# ── Mini neighbourhood grid (first 6) ── #}
+{# Mini neighbourhood grid (first 6) #}
 <section aria-labelledby="home-neighbourhoods">
   <div style="display:flex;align-items:baseline;justify-content:space-between;gap:1rem">
     <h2 id="home-neighbourhoods">Neighbourhoods</h2>
@@ -49,7 +49,6 @@ hero:
       {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&', 'and')) %}
       {% set imgw = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
       {% set imgj = n.image_jpg or (imgw | replace('.webp','.jpg')) %}
-
       <article class="card">
         <a href="/neighbourhoods/{{ slug }}/" style="display:block">
           <div class="card__media">
