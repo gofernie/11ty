@@ -18,6 +18,7 @@ hero:
       {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&', 'and')) %}
       {% set imgw = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
       {% set imgj = n.image_jpg or (imgw | replace('.webp','.jpg')) %}
+
       <article class="card">
         <a href="/neighbourhoods/{{ slug }}/" style="display:block">
           <div class="card__media">
