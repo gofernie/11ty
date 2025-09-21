@@ -1,24 +1,55 @@
 ---
-layout: base
+layout: base         # if your pages still say `base.njk`, keep it; either works with the alias
 title: Home – Fernie Real Estate
 hero:
   src: "/img/hero/fernie-hero.webp"
   fallback: "/img/hero/bob.jpg"
-  alt: "Fernie"
+  alt: "Fernie mountains at sunrise"
   title: "Find Your Place in Fernie"
   subtitle: "Local insight, neighbourhood guides, and listings."
 ---
 
-<section aria-labelledby="home-neighbourhoods">
-  <h2 id="home-neighbourhoods">Neighbourhoods</h2>
-  <p>Browse a few highlights. See all <a href="/neighbourhoods/">neighbourhoods →</a></p>
+{# ── Three service cards ── #}
+<section aria-labelledby="services">
+  <h2 id="services" style="margin-top:0">Everything you need to buy in Fernie</h2>
+  <div class="feature-cards">
+    <article class="feature-card">
+      <div class="feature-card__icon">🏡</div>
+      <h3>Personalized search</h3>
+      <p>Find homes your way with smart filters, saved searches, and market insights tailored to you.</p>
+      <a class="btn btn-outline" href="/search/">Explore homes</a>
+    </article>
 
-  {% set cards = neighbourhoods | slice(0, 3) %}
+    <article class="feature-card">
+      <div class="feature-card__icon">💳</div>
+      <h3>Financial tools</h3>
+      <p>Estimate payments, compare scenarios, and get pre-approved online—quick and simple.</p>
+      <a class="btn btn-outline" href="/finance/">Get pre-approved</a>
+    </article>
+
+    <article class="feature-card">
+      <div class="feature-card__icon">🤝</div>
+      <h3>Expert guidance</h3>
+      <p>We’ll match you with trusted local experts so you get support when you need it.</p>
+      <a class="btn btn-outline" href="/contact/">Get connected</a>
+    </article>
+  </div>
+</section>
+
+{# ── Mini neighbourhood grid (first 6) ── #}
+<section aria-labelledby="home-neighbourhoods">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:1rem">
+    <h2 id="home-neighbourhoods">Neighbourhoods</h2>
+    <a href="/neighbourhoods/">View all →</a>
+  </div>
+
+  {% set cards = neighbourhoods | slice(0, 6) %}
   <div class="grid-tiles grid-tiles--home">
     {% for n in cards %}
       {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&', 'and')) %}
       {% set imgw = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
       {% set imgj = n.image_jpg or (imgw | replace('.webp','.jpg')) %}
+
       <article class="card">
         <a href="/neighbourhoods/{{ slug }}/" style="display:block">
           <div class="card__media">
