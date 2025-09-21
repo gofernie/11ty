@@ -1,8 +1,8 @@
 ---
-layout: layout/base.njk
+layout: layout/base.njk       # ✅ path is relative to src/_includes/
 title: Home – Fernie Real Estate
 hero:
-  src: "/img/hero/fernie-hero.webp"
+  src: "/img/hero/fernie-hero.webp"   # ensure file exists in src/img/hero/
   fallback: "/img/hero/fernie-hero.jpg"
   alt: "Fernie mountains at sunrise"
   title: "Find Your Place in Fernie"
@@ -11,5 +11,5 @@ hero:
 
 <section>
   <h2>Welcome</h2>
-  <p>This is your Eleventy home page. If your hero image appears above, your paths are correct.</p>
+  <p>If the hero image appears above, your image paths and passthrough are correct.</p>
 </section>
