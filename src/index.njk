@@ -8,5 +8,30 @@ hero:
   title: "Find Your Place in Fernie"
   subtitle: "Local insight, neighbourhood guides, and listings."
 ---
-<h2>Build sanity check</h2>
-<p>If you can see the hero and this heading after deploy, the layout path is fixed.</p>
+
+<section aria-labelledby="home-neighbourhoods">
+  <h2 id="home-neighbourhoods">Neighbourhoods</h2>
+  <p>Browse a few highlights. See all <a href="/neighbourhoods/">neighbourhoods →</a></p>
+
+  {% set cards = neighbourhoods | slice(0, 3) %}
+  <div class="grid-tiles grid-tiles--home">
+    {% for n in cards %}
+      {# Try to use n.image if provided; otherwise fall back to /img/neighbourhoods/<slug>.webp #}
+      {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&', 'and')) %}
+      {% set img  = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
+      <article class="card">
+        <div class="card__media">
+          <picture>
+            <source srcset="{{ img }}" type="image/webp">
+            <img src="{{ img | replace('.webp','.jpg') }}" alt="{{ n.name }}">
+          </picture>
+          <span class="badge">{{ n.name }}</span>
+        </div>
+        <div class="card__body">
+          <h3 class="card__title">{{ n.name }}</h3>
+          <p class="card__text">{{ n.summary }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
