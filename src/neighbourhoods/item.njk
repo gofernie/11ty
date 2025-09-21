@@ -4,26 +4,37 @@ pagination:
   data: neighbourhoods
   size: 1
   alias: n
-permalink: "/neighbourhoods/{{ n.slug }}/index.html"
-eleventyComputed:
-  title: "{{ n.title }}"
+
+# permalink uses derived slug, so you don't need a slug column
+permalink: "/neighbourhoods/{{ (n.slug or (n.name | lower | replace(' ', '-') | replace('&','and'))) }}/"
+
+# Full-bleed hero (base.njk handles the bleed)
+hero:
+  src: "/img/neighbourhoods/{{ (n.slug or (n.name | lower | replace(' ', '-') | replace('&','and'))) }}.webp"
+  fallback: "/img/neighbourhoods/{{ (n.slug or (n.name | lower | replace(' ', '-') | replace('&','and'))) }}.jpg"
+  alt: "{{ n.name }}"
+  title: "{{ n.name }}"
+  subtitle: "{{ n.summary }}"
+  height: 60vh
 ---
 
-{# Detail page header like before: hero with gradient overlay #}
-<section class="hero hero--detail" style="--hero-img: url('{{ n.img or "/img/placeholders/hood.jpg" }}')">
-  <div class="hero__overlay"></div>
-  <div class="hero__inner container">
-    <p class="eyebrow">Neighbourhood</p>
-    <h1 class="hero__title">{{ n.title }}</h1>
-    {% if n.desc %}<p class="hero__subhead">{{ n.desc }}</p>{% endif %}
-  </div>
-</section>
-
-<section class="container section about">
-  {% if n.about %}
-    {{ n.about | safe }}
+{# Main content (1200px container via layout) #}
+<section aria-labelledby="about-area">
+  <h2 id="about-area">About {{ n.name }}</h2>
+  {% if n.description %}
+    <p>{{ n.description }}</p>
   {% else %}
-    <h3>About</h3>
-    <p>Stay tuned—full write-up coming soon.</p>
+    <p>{{ n.summary }}</p>
   {% endif %}
+
+  {# Optional: key facts if you have them in data #}
+  {% if n.facts %}
+  <ul>
+    {% for f in n.facts %}
+      <li>{{ f }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <p><a href="/neighbourhoods/">← Back to all neighbourhoods</a></p>
 </section>
