@@ -15,16 +15,13 @@ hero:
 
   <div class="grid-tiles">
     {% for n in neighbourhoods %}
-      {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&', 'and')) %}
-      {% set imgw = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
-      {% set imgj = n.image_jpg or (imgw | replace('.webp','.jpg')) %}
-
+      {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&','and')) %}
       <article class="card">
         <a href="/neighbourhoods/{{ slug }}/" style="display:block">
           <div class="card__media">
             <picture>
-              <source srcset="{{ imgw }}" type="image/webp">
-              <img src="{{ imgj }}" alt="{{ n.name }}">
+              <source srcset="/img/neighbourhoods/{{ slug }}.webp" type="image/webp">
+              <img src="/img/neighbourhoods/{{ slug }}.jpg" alt="{{ n.name }}">
             </picture>
             <span class="badge">{{ n.name }}</span>
           </div>
