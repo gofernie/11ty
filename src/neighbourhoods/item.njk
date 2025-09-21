@@ -5,26 +5,28 @@ pagination:
   size: 1
   alias: n
 
-# Use computed data so {{ ... }} gets rendered
+# Compute once so front-matter templating works even with pagination
 eleventyComputed:
-  slug: "{{ n.slug or (n.name | slug) }}"
+  slug: "{{ (n.slug) or ((n.name or n.title) | slug) }}"
+  prettyName: "{{ (n.name) or (n.title) or ( ( (n.slug) or ((n.name or n.title) | slug) ) | replace('-', ' ') ) }}"
+  blurb: "{{ (n.summary) or (n.description) or (n.subtitle) }}"
   permalink: "/neighbourhoods/{{ slug }}/"
   hero:
     src: "/img/neighbourhoods/{{ slug }}.webp"
     fallback: "/img/neighbourhoods/{{ slug }}.jpg"
-    alt: "{{ n.name }}"
-    title: "{{ n.name }}"
-    subtitle: "{{ n.summary }}"
+    alt: "{{ prettyName }}"
+    title: "{{ prettyName }}"
+    subtitle: "{{ blurb }}"
     height: "60vh"
 ---
 
 <section aria-labelledby="about-area">
-  <h2 id="about-area">About {{ n.name }}</h2>
+  <h2 id="about-area">About {{ prettyName }}</h2>
 
-  {% if n.description %}
-    <p>{{ n.description }}</p>
+  {% if blurb %}
+    <p>{{ blurb }}</p>
   {% else %}
-    <p>{{ n.summary }}</p>
+    <p>Local info coming soon.</p>
   {% endif %}
 
   {% if n.facts %}
