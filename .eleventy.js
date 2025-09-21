@@ -2,7 +2,7 @@
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/img");
 
-  // Optional aliases (helps if some pages still say layout/base.njk)
+  // Aliases so either style works
   eleventyConfig.addLayoutAlias("base", "base.njk");
   eleventyConfig.addLayoutAlias("layout/base.njk", "base.njk");
 
