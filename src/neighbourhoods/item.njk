@@ -53,13 +53,21 @@
   </div>
 </section>
 
-{# Handle pills as array OR comma-separated string #}
-{% set pillsArr = (n.pills and n.pills.push) ? n.pills : (n.pills ? n.pills | split(',') : []) %}
+{# --- FIXED PILL LOGIC --- #}
+{% set pillsArr = [] %}
+{% if n.pills is defined and n.pills %}
+  {% if n.pills is array %}
+    {% set pillsArr = n.pills %}
+  {% else %}
+    {% set pillsArr = n.pills | split(',') %}
+  {% endif %}
+{% endif %}
+
 {% if pillsArr and pillsArr.length %}
 <section class="pills container" aria-label="Highlights">
   <ul class="pill-list">
     {% for pill in pillsArr %}
-      {% set label = (pill | trim) %}
+      {% set label = pill | trim %}
       {% if label %}
         <li class="pill">{{ label }}</li>
       {% endif %}
@@ -74,7 +82,7 @@
 {% endblock %}
 
 <style>
-/* Layout container (max 1200px as requested) */
+/* Layout container (max 1200px) */
 .container {
   max-width: 1200px;
   margin: 0 auto;
