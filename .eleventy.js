@@ -2,18 +2,17 @@
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/img");
   eleventyConfig.addPassthroughCopy("src/css");
+  eleventyConfig.addWatchTarget("src/components"); // auto-reload when components change
 
-  // Pages can use `layout: base` or `layout: base.njk`
+  // allow both layout: base and layout: base.njk
   eleventyConfig.addLayoutAlias("base", "base.njk");
   eleventyConfig.addLayoutAlias("base.njk", "base.njk");
-  // Safety for any old references:
   eleventyConfig.addLayoutAlias("layout/base.njk", "base.njk");
 
   return {
-    dir: { input: "src", includes: ".", output: "_site" }, // look in src/ for layouts
+    dir: { input: "src", includes: ".", output: "_site" }, // 👈 includes live in src/
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk",
     templateFormats: ["njk", "md", "html"],
   };
 };
-
