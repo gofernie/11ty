@@ -3,8 +3,8 @@ layout: base.njk
 title: Home – Fernie Real Estate
 hero:
   src: "/img/hero/fernie-hero.webp"
-  fallback: "/img/hero/fernie-hero.jpg"
-  alt: "Fernie mountains at sunrise"
+  fallback: "/img/hero/bob.jpg"
+  alt: "Fernie"
   title: "Find Your Place in Fernie"
   subtitle: "Local insight, neighbourhood guides, and listings."
 ---
@@ -16,21 +16,23 @@ hero:
   {% set cards = neighbourhoods | slice(0, 3) %}
   <div class="grid-tiles grid-tiles--home">
     {% for n in cards %}
-      {# Try to use n.image if provided; otherwise fall back to /img/neighbourhoods/<slug>.webp #}
       {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&', 'and')) %}
-      {% set img  = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
+      {% set imgw = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
+      {% set imgj = n.image_jpg or (imgw | replace('.webp','.jpg')) %}
       <article class="card">
-        <div class="card__media">
-          <picture>
-            <source srcset="{{ img }}" type="image/webp">
-            <img src="{{ img | replace('.webp','.jpg') }}" alt="{{ n.name }}">
-          </picture>
-          <span class="badge">{{ n.name }}</span>
-        </div>
-        <div class="card__body">
-          <h3 class="card__title">{{ n.name }}</h3>
-          <p class="card__text">{{ n.summary }}</p>
-        </div>
+        <a href="/neighbourhoods/{{ slug }}/" style="display:block">
+          <div class="card__media">
+            <picture>
+              <source srcset="{{ imgw }}" type="image/webp">
+              <img src="{{ imgj }}" alt="{{ n.name }}">
+            </picture>
+            <span class="badge">{{ n.name }}</span>
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">{{ n.name }}</h3>
+            <p class="card__text">{{ n.summary }}</p>
+          </div>
+        </a>
       </article>
     {% endfor %}
   </div>
