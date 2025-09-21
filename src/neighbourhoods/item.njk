@@ -3,19 +3,11 @@ layout: base.njk
 title: "{{ n and n.title ? n.title : 'Neighbourhood' }}"
 ---
 
-<section class="hero">
-  {% if n.hero_image %}
-    <div class="hero-img" role="img" aria-label="{{ n.title }}">
-      <img src="{{ n.hero_image }}" alt="{{ n.title }}">
-      <div class="hero-overlay">
-        <h1 class="hero-title">{{ n.title }}</h1>
-      </div>
-    </div>
-  {% else %}
-    <div class="hero-fallback">
-      <h1 class="hero-title">{{ n.title }}</h1>
-    </div>
-  {% endif %}
+{# 30vh full-width header image with overlay title #}
+<section class="hood-hero" {% if n.hero_image %}style="--img:url('{{ n.hero_image }}')" {% endif %} aria-label="{{ n.title }}">
+  <div class="hood-hero__overlay">
+    <h1 class="hood-hero__title">{{ n.title }}</h1>
+  </div>
 </section>
 
 <section class="desc container">
@@ -24,35 +16,7 @@ title: "{{ n and n.title ? n.title : 'Neighbourhood' }}"
   {% endif %}
 </section>
 
-<section class="cards container">
-  <div class="card-grid">
-    <article class="card">
-      <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-        <path d="M12 2C8.686 2 6 4.686 6 8c0 4.418 6 14 6 14s6-9.582 6-14c0-3.314-2.686-6-6-6zm0 8.5A2.5 2.5 0 1 1 12 5a2.5 2.5 0 0 1 0 5.5z"/>
-      </svg>
-      <h3>Great Location</h3>
-      <p>Quick access to trails, shops, schools, and everyday amenities.</p>
-    </article>
-
-    <article class="card">
-      <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-        <path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/>
-      </svg>
-      <h3>Housing Options</h3>
-      <p>A mix of single-family homes, townhomes, and buildable lots.</p>
-    </article>
-
-    <article class="card">
-      <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-        <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm-7 8a7 7 0 0 1 14 0z"/>
-      </svg>
-      <h3>Community Vibe</h3>
-      <p>Friendly, outdoorsy feel with year-round recreation on the doorstep.</p>
-    </article>
-  </div>
-</section>
-
-{# Pills: accept array or CSV #}
+{# Pills: decorative; accept array or CSV #}
 {% set pillsArr = [] %}
 {% if n.pills is defined and n.pills %}
   {% if n.pills is array %}
@@ -78,30 +42,31 @@ title: "{{ n and n.title ? n.title : 'Neighbourhood' }}"
 </section>
 
 <style>
-.container{max-width:1200px;margin:0 auto;padding:clamp(12px,2vw,24px)}
-/* Hero */
-.hero-img{position:relative;max-height:420px;overflow:hidden}
-.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-overlay{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(to bottom,rgba(0,0,0,.25),rgba(0,0,0,.5))}
-.hero-title{color:#fff;font-size:clamp(28px,4vw,44px);line-height:1.1;text-align:center;letter-spacing:.3px;padding:.25em .6em}
-.hero-fallback{background:#0f172a;padding:clamp(48px,8vw,96px) 0;display:grid;place-items:center}
-.hero-fallback .hero-title{color:#fff}
+/* 30vh header image */
+.hood-hero{
+  height:30vh; min-height:240px;
+  background:var(--img, url("/img/hero/hero.webp")) center/cover no-repeat;
+  position:relative;
+}
+.hood-hero__overlay{
+  position:absolute; inset:0; display:grid; place-items:center;
+  background:linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.45));
+}
+.hood-hero__title{
+  color:#fff; font-size:clamp(24px,4vw,36px); line-height:1.08;
+  text-align:center; letter-spacing:.3px; padding:.25em .6em;
+}
+
 /* Desc */
+.container{max-width:1200px;margin:0 auto;padding:clamp(12px,2vw,24px)}
 .desc .lead{font-size:clamp(18px,2.1vw,22px);text-align:center;margin:24px auto 8px;color:#111827}
-/* Cards */
-.card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,24px);margin:28px 0 8px}
-@media (max-width:860px){.card-grid{grid-template-columns:1fr}}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:clamp(16px,2.2vw,22px);text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .2s ease, box-shadow .2s ease}
-.card:hover{transform:translateY(-4px);box-shadow:0 8px 22px rgba(0,0,0,.10)}
-.card .icon{width:40px;height:40px;fill:#111827;opacity:.9;margin:4px auto 10px;display:block}
-.card h3{font-size:1.125rem;margin:4px 0 6px;color:#0f172a;font-weight:600}
-.card p{margin:0;color:#374151;line-height:1.5}
+
 /* Pills */
 .pill-list{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;margin:14px 0 26px;padding:0;list-style:none}
-.pill{background:#f3f4f6;border:1px solid #e5e7eb;color:#374151;border-radius:9999px;padding:6px 12px;font-size:.9rem;font-weight:500;white-space:nowrap;transition:background .2s ease}
-.pill:hover{background:#e5e7eb}
+.pill{background:#f3f4f6;border:1px solid var(--border);color:#374151;border-radius:9999px;padding:6px 12px;font-size:.9rem;font-weight:500;white-space:nowrap}
+
 /* About */
-.about{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:clamp(18px,2.4vw,28px);color:#0f172a}
+.about{background:#fff;border:1px solid var(--border);border-radius:16px;padding:clamp(18px,2.4vw,28px);color:#0f172a}
 .about h3{font-size:1.25rem;font-weight:600;margin:1.1rem 0 .5rem}
 .about h3:first-of-type{margin-top:0}
 .about p{margin:.6rem 0 1rem}
