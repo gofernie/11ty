@@ -1,121 +1,39 @@
+{# src/base.njk #}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{{ title or "Fernie Real Estate" }}</title>
+  <title>{% if title %}{{ title }} · {% endif %}Fernie Real Estate</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="stylesheet" href="/css/site.css">
-
   <style>
-    :root {
-      --ink:#0f172a; --bg:#fff; --muted:#64748b; --card:#fff; --border:#dbe1ea;
-      /* hero defaults (override per page via front matter) */
-      --hero-min: 46vh;
-      --hero-pad-top: 3rem;
-      --hero-pad-bottom: 2.75rem;
-    }
-
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;}
-    .container{max-width:1200px;margin:0 auto;padding:0 1rem;}
-
-    /* Sticky nav */
-    header.site{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.1) blur(6px);border-bottom:1px solid #e5e7eb;}
-    header .container{display:flex;gap:.75rem;align-items:center;justify-content:space-between;padding:.75rem 1rem;}
-    a{color:inherit;text-decoration:none}
-    nav a{opacity:.9;margin-left:1rem}
-    nav a:hover{opacity:1;text-decoration:underline}
-
-    /* Full-bleed hero */
-    .hero{position:relative;width:100%;min-height:var(--hero-min)}
-    .hero picture,.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg, rgba(0,0,0,.48), rgba(0,0,0,.10))}
-    .hero__inner{position:relative;z-index:1;display:flex;align-items:flex-end;height:100%}
-    .hero__content{padding:var(--hero-pad-top) 1rem var(--hero-pad-bottom);color:#fff}
-    .hero h1{margin:0 0 .5rem;font-size:clamp(2.25rem,5vw,3.25rem);line-height:1.1}
-    .hero p{margin:.25rem 0 0;max-width:60ch;opacity:.95}
-
-    /* 3-up feature cards (with hover lift) */
-    .feature-cards{display:grid;gap:1.25rem;grid-template-columns:repeat(3,1fr)}
-    @media (max-width:980px){.feature-cards{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.feature-cards{grid-template-columns:1fr}}
-    .feature-card{
-      background:var(--card);border:1px solid var(--border);border-radius:16px;
-      padding:1.4rem;box-shadow:0 1px 1px rgba(0,0,0,.02);
-      display:flex;flex-direction:column;min-height:260px;
-      transition:transform .2s ease, box-shadow .2s ease;will-change:transform;
-    }
-    .feature-card:hover,
-    .feature-card:focus-within{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
-    .feature-card h3{margin:.35rem 0 .5rem;font-weight:800;font-size:1.45rem}
-    .feature-card p{margin:0 0 1.1rem;color:#475569}
-    .feature-card__icon{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-size:30px;background:#f1f5f9}
-    .feature-card__link{font-weight:700;text-underline-offset:3px;align-self:flex-start}
-    .feature-card__link:hover{text-decoration:underline}
-    .feature-card__link::after{content:" →";transition:transform .2s ease}
-    .feature-card__link:hover::after{transform:translateX(2px)}
-
-    /* Neighbourhood tiles */
-    .grid-tiles{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-    .grid-tiles--home{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-
-    /* ⬇️ UPDATED: hover-lift for generic .card tiles */
-    .card{
-      border-radius:16px;overflow:hidden;background:#f8fafc;
-      border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.04);
-      transition:transform .2s ease, box-shadow .2s ease;will-change:transform;
-    }
-    .card:hover,
-    .card:focus-within{
-      transform:translateY(-4px);
-      box-shadow:0 10px 24px rgba(0,0,0,.08);
-    }
-
-    .card__media{position:relative;aspect-ratio:16/9;background:#e5e7eb}
-    .card__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .badge{position:absolute;left:12px;top:12px;background:rgba(17,24,39,.78);color:#fff;padding:.25rem .5rem;border-radius:999px;font-size:.8rem;line-height:1}
-    .card__body{padding:1rem 1rem 1.25rem}
-    .card__title{margin:.25rem 0 .35rem;font-weight:700}
-    .card__text{margin:0;color:#475569}
-
-    main{padding:2rem 0}
-    section + section{margin-top:2rem}
+    :root{--ink:#0f172a}
+    html,body{margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;}
+    a{color:#0a66c2;text-decoration:none}
+    a:hover{text-decoration:underline}
+    header.site{padding:12px 18px;border-bottom:1px solid #e5e7eb}
+    .container{max-width:1200px;margin:0 auto;padding:clamp(12px,2vw,24px)}
+    footer.site{border-top:1px solid #e5e7eb;margin-top:32px;padding:18px;color:#475569}
   </style>
+  {% if head %}{{ head | safe }}{% endif %}
 </head>
 <body>
   <header class="site">
     <div class="container">
-      <a href="/">Fernie Real Estate</a>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/neighbourhoods/">Neighbourhoods</a>
-        <a href="/contact/">Contact</a>
-      </nav>
+      <strong>Fernie · Neighbourhoods</strong>
     </div>
   </header>
 
-  {% if hero and hero.src %}
-  <section class="hero"
-    aria-label="{{ hero.alt or 'Hero' }}"
-    style="
-      {% if hero.height %}--hero-min: {{ hero.height }};{% endif %}
-      {% if hero.padTop %}--hero-pad-top: {{ hero.padTop }};{% endif %}
-      {% if hero.padBottom %}--hero-pad-bottom: {{ hero.padBottom }};{% endif %}
-    ">
-    <picture>
-      <source srcset="{{ hero.src }}" type="image/webp">
-      <img src="{{ hero.fallback or hero.src }}" alt="{{ hero.alt or 'Hero image' }}" loading="eager" fetchpriority="high">
-    </picture>
-    <div class="hero__inner container">
-      <div class="hero__content">
-        {% if hero.title %}<h1>{{ hero.title | safe }}</h1>{% endif %}
-        {% if hero.subtitle %}<p>{{ hero.subtitle | safe }}</p>{% endif %}
-      </div>
-    </div>
-  </section>
-  {% endif %}
-
-  <main class="container">
+  <main id="main">
     {{ content | safe }}
   </main>
+
+  <footer class="site">
+    <div class="container">
+      © {{ (collections and collections.all) ? (collections.all | first | date('yyyy')) : '2025' }} Chris Crump
+    </div>
+  </footer>
 </body>
 </html>
