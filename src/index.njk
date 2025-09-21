@@ -1,5 +1,5 @@
 ---
-layout: base      # or base.njk; your alias handles both
+layout: base
 title: Home – Fernie Real Estate
 hero:
   src: "/img/hero/fernie-hero.webp"
@@ -7,9 +7,11 @@ hero:
   alt: "Fernie mountains at sunrise"
   title: "Find Your Place in Fernie"
   subtitle: "Local insight, neighbourhood guides, and listings."
+  height: 70vh          # ← change this per-page (e.g., 60vh, 80vh, "clamp(40vh, 52vh + 6vw, 80vh)")
+  padTop: 5rem          # optional
+  padBottom: 3rem       # optional
 ---
 
-{# 3 service cards like your screenshot #}
 <section aria-labelledby="services">
   <h2 id="services" style="margin-top:0">Everything you need to buy in Fernie</h2>
   <div class="feature-cards">
@@ -36,7 +38,6 @@ hero:
   </div>
 </section>
 
-{# Mini neighbourhood grid (first 6) #}
 <section aria-labelledby="home-neighbourhoods">
   <div style="display:flex;align-items:baseline;justify-content:space-between;gap:1rem">
     <h2 id="home-neighbourhoods">Neighbourhoods</h2>
