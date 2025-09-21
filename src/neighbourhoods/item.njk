@@ -5,29 +5,28 @@ pagination:
   size: 1
   alias: n
 
-# permalink uses derived slug, so you don't need a slug column
-permalink: "/neighbourhoods/{{ (n.slug or (n.name | lower | replace(' ', '-') | replace('&','and'))) }}/"
-
-# Full-bleed hero (base.njk handles the bleed)
-hero:
-  src: "/img/neighbourhoods/{{ (n.slug or (n.name | lower | replace(' ', '-') | replace('&','and'))) }}.webp"
-  fallback: "/img/neighbourhoods/{{ (n.slug or (n.name | lower | replace(' ', '-') | replace('&','and'))) }}.jpg"
-  alt: "{{ n.name }}"
-  title: "{{ n.name }}"
-  subtitle: "{{ n.summary }}"
-  height: 60vh
+# Use computed data so {{ ... }} gets rendered
+eleventyComputed:
+  slug: "{{ n.slug or (n.name | slug) }}"
+  permalink: "/neighbourhoods/{{ slug }}/"
+  hero:
+    src: "/img/neighbourhoods/{{ slug }}.webp"
+    fallback: "/img/neighbourhoods/{{ slug }}.jpg"
+    alt: "{{ n.name }}"
+    title: "{{ n.name }}"
+    subtitle: "{{ n.summary }}"
+    height: "60vh"
 ---
 
-{# Main content (1200px container via layout) #}
 <section aria-labelledby="about-area">
   <h2 id="about-area">About {{ n.name }}</h2>
+
   {% if n.description %}
     <p>{{ n.description }}</p>
   {% else %}
     <p>{{ n.summary }}</p>
   {% endif %}
 
-  {# Optional: key facts if you have them in data #}
   {% if n.facts %}
   <ul>
     {% for f in n.facts %}
