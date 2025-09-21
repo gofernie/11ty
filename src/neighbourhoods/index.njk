@@ -1,26 +1,35 @@
 ---
-layout: base
+layout: base.njk
 title: Fernie Neighbourhoods
+permalink: /neighbourhoods/
+hero:
+  src: "/img/hero/fernie-hero.webp"
+  fallback: "/img/hero/bob.jpg"
+  alt: "Fernie"
+  title: "Fernie Neighbourhoods"
+  subtitle: "Browse every area at a glance."
 ---
 
-<section class="hero hero--slim">
-  <div class="container">
-    <h1 class="hero__title">Fernie Neighbourhoods</h1>
-    <p class="hero__subhead">Browse every area at a glance.</p>
-  </div>
-</section>
+<section aria-labelledby="grid-title">
+  <h2 id="grid-title" style="margin-top:0">All neighbourhoods</h2>
 
-<section class="container section">
-  <div class="cards cards--neighbourhoods">
-    {% for n in neighbourhoods or [] %}
-      <article class="n-card">
-        <a class="n-card__link" href="/neighbourhoods/{{ n.slug }}/">
-          <figure class="n-card__media">
-            <img src="{{ n.img or '/img/placeholders/hood.jpg' }}" alt="{{ n.title }}" loading="lazy" />
-          </figure>
-          <div class="n-card__body">
-            <h3 class="n-card__title">{{ n.title }}</h3>
-            <p class="n-card__desc">{{ n.desc }}</p>
+  <div class="grid-tiles">
+    {% for n in neighbourhoods %}
+      {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&', 'and')) %}
+      {% set imgw = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
+      {% set imgj = n.image_jpg or (imgw | replace('.webp','.jpg')) %}
+      <article class="card">
+        <a href="/neighbourhoods/{{ slug }}/" style="display:block">
+          <div class="card__media">
+            <picture>
+              <source srcset="{{ imgw }}" type="image/webp">
+              <img src="{{ imgj }}" alt="{{ n.name }}">
+            </picture>
+            <span class="badge">{{ n.name }}</span>
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">{{ n.name }}</h3>
+            <p class="card__text">{{ n.summary }}</p>
           </div>
         </a>
       </article>
