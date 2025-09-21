@@ -1,66 +1,15 @@
 ---
-layout: base
-title: Find Your Place in Fernie
-hero_image: /img/hero/fernie-hero.jpg   # change to your image path
-hero_title: Find Your Place in Fernie
-hero_subtitle: Explore neighbourhood guides, local insights, and listings—fast and lightweight with Eleventy.
+layout: layout/base.njk
+title: Home – Fernie Real Estate
+hero:
+  src: "/img/hero/fernie-hero.webp"
+  fallback: "/img/hero/fernie-hero.jpg"
+  alt: "Fernie mountains at sunrise"
+  title: "Find Your Place in Fernie"
+  subtitle: "Local insight, neighbourhood guides, and listings."
 ---
 
-{# Full-bleed hero: spans full width & full height of the viewport #}
-<section class="hero hero--fullbleed" style="--hero-img: url('{{ hero_image }}')">
-  <div class="hero__overlay"></div>
-  <div class="hero__inner container">
-    <h1 class="hero__title">{{ hero_title }}</h1>
-    <p class="hero__subhead">{{ hero_subtitle }}</p>
-    <p><a class="btn" href="/neighbourhoods/">Browse Neighbourhoods</a></p>
-  </div>
-</section>
-
-<section class="container section">
-  <h2 class="section__title">What you’ll get</h2>
-
-  {# 3 feature cards side by side #}
-  <div class="cards cards--features">
-    <article class="card">
-      <h3>Personalized Search</h3>
-      <p>Curated neighbourhood insights to match your lifestyle, budget, and timeline.</p>
-      <a class="card__link" href="/neighbourhoods/">Explore homes</a>
-    </article>
-
-    <article class="card">
-      <h3>Financial Tools</h3>
-      <p>Get mortgage-ready with quick calculators and first-time buyer guides.</p>
-      <a class="card__link" href="#">Get pre-approved</a>
-    </article>
-
-    <article class="card">
-      <h3>Local Expertise</h3>
-      <p>Talk to trusted local pros and make your move with confidence.</p>
-      <a class="card__link" href="#">Talk to an expert</a>
-    </article>
-  </div>
-</section>
-
-{# Neighbourhood cards with images, pulled from data #}
-<section class="container section">
-  <div class="section__head">
-    <h2 class="section__title">Neighbourhoods</h2>
-    <a class="link-more" href="/neighbourhoods/">See all</a>
-  </div>
-
-  <div class="cards cards--neighbourhoods">
-    {% for n in neighbourhoods or [] %}
-      <article class="n-card">
-        <a class="n-card__link" href="/neighbourhoods/{{ n.slug }}/">
-          <figure class="n-card__media">
-            <img src="{{ n.img or '/img/placeholders/hood.jpg' }}" alt="{{ n.title }}" loading="lazy" />
-          </figure>
-          <div class="n-card__body">
-            <h3 class="n-card__title">{{ n.title }}</h3>
-            <p class="n-card__desc">{{ n.desc }}</p>
-          </div>
-        </a>
-      </article>
-    {% endfor %}
-  </div>
+<section>
+  <h2>Welcome</h2>
+  <p>This is your Eleventy home page. If your hero image appears above, your paths are correct.</p>
 </section>
