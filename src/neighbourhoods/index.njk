@@ -15,22 +15,27 @@ hero:
 
   <div class="grid-tiles">
     {% for n in neighbourhoods %}
-      {% set slug = n.slug or (n.name or n.title | slug) %}
+      {# robust slug/name/desc handling #}
+      {% set slug = n.slug or ((n.name or n.title) | slug) %}
       {% set prettyName = n.name or n.title or (slug | replace('-', ' ')) %}
-      {% set blurb = n.summary or n.description or n.subtitle %}
+      {% set blurb = n.desc or n.summary or n.description or n.subtitle %}
 
       <article class="card">
         <a href="/neighbourhoods/{{ slug }}/" style="display:block">
           <div class="card__media">
             <picture>
               <source srcset="/img/neighbourhoods/{{ slug }}.webp" type="image/webp">
-              <img src="/img/neighbourhoods/{{ slug }}.jpg" alt="{{ prettyName }}">
+              <img src="/img/neighbourhoods/{{ slug }}.jpg"
+                   alt="{{ prettyName }} photo" loading="lazy" decoding="async">
             </picture>
-            <span class="badge">{{ prettyName }}</span>
           </div>
           <div class="card__body">
             <h3 class="card__title">{{ prettyName }}</h3>
-            <p class="card__text">{{ blurb }}</p>
+            {% if blurb %}
+              <p class="card__text">{{ blurb }}</p>
+            {% else %}
+              <p class="card__text">Local info coming soon.</p>
+            {% endif %}
           </div>
         </a>
       </article>
