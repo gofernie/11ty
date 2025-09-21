@@ -1,12 +1,11 @@
 ---
 layout: base.njk
-title: "Fernie · Neighbourhoods"
+title: "Home – Fernie Real Estate"
 ---
 
 <section class="container">
   <h1>Everything you need to buy in Fernie</h1>
 
-  <!-- Wealthsimple-style promos (inline; no includes) -->
   <div class="promo-grid">
     <article class="promo">
       <div class="promo-icon" aria-hidden="true">🏡</div>
@@ -35,69 +34,33 @@ title: "Fernie · Neighbourhoods"
   <h2>Neighbourhoods</h2>
 
   {% set rows = neighbourhoods | default([]) %}
-  {% set hasAny = false %}
-
-  <div class="hood-grid">
-    {% for r in rows %}
-      {# published: accept true/1/"true"/"yes"/"y" #}
-      {% set pub = (r.published ?? r.Published ?? r.publish ?? r.Publish) %}
-      {% set s = (pub ~ "") | lower | trim %}
-      {% set isPub = (pub == true) or (pub == 1) or (s == "true") or (s == "yes") or (s == "y") or (s == "1") %}
-      {% if isPub %}
-        {% set hasAny = true %}
-        <a class="hood-card" href="/neighbourhoods/{{ r.slug }}/">
-          {% if r.hero_image %}
-            <div class="hood-media"><img src="{{ r.hero_image }}" alt="{{ r.title }}"></div>
-          {% endif %}
-          <div class="hood-body">
-            <h3 class="hood-title">{{ r.title }}</h3>
-            {% if r.desc %}<p class="hood-desc">{{ r.desc }}</p>{% endif %}
-
-            {% if r.pills %}
-              {% set pillsArr = r.pills if r.pills is array else (r.pills | split(',')) %}
-              {% if pillsArr and pillsArr.length %}
-                <ul class="pill-list">
-                  {% for p in pillsArr %}
-                    {% set label = p | trim %}
-                    {% if label %}<li class="pill">{{ label }}</li>{% endif %}
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            {% endif %}
-          </div>
-        </a>
-      {% endif %}
-    {% endfor %}
-  </div>
-
-  {% if not hasAny %}
-    <p>No neighbourhoods to display.</p>
+  {% if rows and rows.length %}
+    <ul class="mini-list">
+      {% for r in rows %}
+        <li>
+          <a href="/neighbourhoods/{{ r.slug }}/">{{ r.title }}</a>
+          {% if r.desc %}<span class="muted">— {{ r.desc }}</span>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <p style="margin-top:12px;"><a href="/neighbourhoods/">Browse all neighbourhoods →</a></p>
+  {% else %}
+    <p class="muted">No neighbourhoods to display.</p>
   {% endif %}
 </section>
 
 <style>
 h1{font-size:clamp(26px,4vw,36px);margin:8px 0 18px}
 h2{font-size:clamp(20px,3vw,26px);margin:20px 0 10px}
+.muted{color:#64748b}
 
-/* Promos */
+/* Promos (reuse same look as /neighbourhoods/) */
 .promo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px);margin:8px 0 24px}
 @media (max-width:900px){.promo-grid{grid-template-columns:1fr}}
 .promo{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:clamp(14px,2vw,20px);box-shadow:0 1px 4px rgba(0,0,0,.05)}
 .promo-icon{font-size:24px;line-height:1;margin-bottom:8px}
 
-/* Neighbourhood cards */
-.hood-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px)}
-@media (max-width:1000px){.hood-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){.hood-grid{grid-template-columns:1fr}}
-.hood-card{display:flex;flex-direction:column;text-decoration:none;background:#fff;color:inherit;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;transition:transform .18s ease, box-shadow .18s ease}
-.hood-card:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(0,0,0,.10)}
-.hood-media{aspect-ratio:16/9;background:#f3f4f6;overflow:hidden}
-.hood-media img{width:100%;height:100%;object-fit:cover;display:block}
-.hood-body{padding:14px}
-.hood-title{margin:.2rem 0 .4rem;font-size:1.1rem}
-.hood-desc{margin:0 0 .6rem;color:#475569}
-
-/* Pills */
-.pill-list{display:flex;flex-wrap:wrap;gap:8px 10px;margin:.2rem 0 0;padding:0;list-style:none}
-.pill{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:9999px;padding:4px 10px;font-size:.85rem;color:#374151}
+/* Mini list */
+.mini-list{padding-left:1rem;margin:0 0 0.5rem}
+.mini-list li{margin:0.25rem 0}
 </style>
