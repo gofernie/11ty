@@ -1,17 +1,16 @@
 // .eleventy.js
 module.exports = function (eleventyConfig) {
-  // Copy images straight through to _site
+  // Copy images through to _site
   eleventyConfig.addPassthroughCopy("src/img");
 
   return {
     dir: {
       input: "src",
-      includes: "_includes",
-      layouts: "_layouts",
+      includes: "_includes",   // ✅ single source of truth for layouts/partials
       output: "_site",
     },
-    templateFormats: ["njk", "md", "html"],
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk",
+    templateFormats: ["njk", "md", "html"],
   };
 };
