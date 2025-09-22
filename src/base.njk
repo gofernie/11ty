@@ -1,4 +1,3 @@
-{# src/base.njk #}
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ title or "Fernie Neighbourhoods" }}</title>
 
-  {# Properly link your external CSS file #}
+  <!-- Load external CSS normally -->
   <link rel="stylesheet" href="/css/site.css" />
 
-  {# Optional: inline theme tokens if they exist #}
+  <!-- If theme.njk exists, FORCE it to be CSS by wrapping in <style> -->
   {% if collections and collections.all %}
-    {% include "css/theme.njk" ignore missing %}
+    <style>{% include "css/theme.njk" ignore missing %}</style>
   {% endif %}
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <a class="brand" href="/">Fernie</a>
-    <nav>
+    <nav class="nav">
       <a href="/">Home</a>
       <a href="/neighbourhoods/">Neighbourhoods</a>
     </nav>
@@ -25,13 +24,11 @@
 
   {% block top %}{% endblock %}
 
-  <main>
-    {% block content %}
-      {{ content | safe }}
-    {% endblock %}
+  <main class="container">
+    {% block content %}{{ content | safe }}{% endblock %}
   </main>
 
-  <footer>
+  <footer class="container">
     <small>&copy; {% year %} Fernie</small>
   </footer>
 </body>
