@@ -1,10 +1,4 @@
-{# src/components/hero.njk #}
-{# Props:
-   mode: "full" | "thin"  (default: "thin")
-   title: string
-   img: string (URL)
-#}
-
+{# Props: mode "full" | "thin" (default "thin"), title, img #}
 {% set _mode = mode or "thin" %}
 {% if _mode == "full" %}
   {% set _cls = "full-bleed hero hero--full" %}
@@ -17,7 +11,6 @@
     <img class="hero__img" src="{{ img }}" alt="{{ title or '' }}" loading="eager">
   {% endif %}
   <div class="hero__overlay"></div>
-
   {% if title %}
     <div class="hero__content">
       <h1 class="hero__title">{{ title }}</h1>
