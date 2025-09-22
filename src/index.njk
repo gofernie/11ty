@@ -45,14 +45,7 @@ title: "Home – Fernie Real Estate"
     {% for r in rows %}
       <a class="mini-hood" href="/neighbourhoods/{{ r.slug }}/">
         <span class="mini-hood__name">{{ r.title }}</span>
-        {% if r.desc %}
-          {% set words = (r.desc | trim | split(' ')) %}
-          <span class="mini-hood__snippet">
-            {% for w in words %}
-              {% if loop.index0 < 20 %}{{ w }}{% if loop.index0 < 19 %} {% endif %}{% endif %}
-            {% endfor %}…
-          </span>
-        {% endif %}
+        {% if r.desc %}<span class="mini-hood__snippet">{{ r.desc | snippet(20) }}</span>{% endif %}
       </a>
     {% endfor %}
     {% if not rows or not rows.length %}
@@ -81,7 +74,7 @@ title: "Home – Fernie Real Estate"
 .promo-grid{
   display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
   gap:clamp(12px,2vw,20px);
-  margin:24px 0 28px;                /* ⬅︎ spacing from hero */
+  margin:28px 0 28px;                /* ⬅ spacing from hero increased */
 }
 @media (max-width:900px){.promo-grid{grid-template-columns:1fr}}
 
@@ -93,13 +86,13 @@ title: "Home – Fernie Real Estate"
   box-shadow:0 1px 4px rgba(0,0,0,.06);
   transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
 }
-.promo--a{ background:#fafaf9 }                 /* warm off-white */
-.promo--b{ background:#f7f8f9 }                 /* cool near-white */
-.promo--c{ background:#f8f7f5 }                 /* neutral/beige hint */
-.promo:hover{ transform:translateY(-4px); box-shadow:0 10px 22px rgba(0,0,0,.10) }
+.promo--a{ background:var(--cozy) }       /* warm off-white */
+.promo--b{ background:var(--cozy-2) }     /* cool near-white */
+.promo--c{ background:var(--cozy-3) }     /* neutral/beige hint */
+.promo:hover{ transform:translateY(-4px); box-shadow:var(--shadow) }
 .promo-icon{ font-size:24px; line-height:1; margin-bottom:8px }
 
-/* Mini neighbourhood cards (title + 20-word snippet, no images) */
+/* Mini neighbourhood cards (title + snippet, no images) */
 .mini-hoods{
   display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
   gap:12px;
