@@ -1,12 +1,11 @@
 ---
-layout: layouts/site.njk
+layout: site.njk
 title: Fernie Neighbourhoods
 permalink: /neighbourhoods/
 ---
 
 {% set dataRows = neighbourhoods | default([]) %}
 {% set collRows = collections['neighbourhoods'] | default([]) %}
-
 {% set rows = dataRows %}
 {% if not rows or (rows | length) == 0 %}
   {% set rows = collRows %}
