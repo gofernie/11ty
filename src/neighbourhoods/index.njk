@@ -17,12 +17,11 @@ title: "Fernie · Neighbourhoods"
           <h3 class="hood-title">{{ r.title }}</h3>
           {% if r.desc %}<p class="hood-desc">{{ r.desc }}</p>{% endif %}
           {% if r.pills %}
-            {% set pillsArr = r.pills if r.pills is array else (r.pills | split(',')) %}
+            {% set pillsArr = r.pills | pillsArray %}
             {% if pillsArr and pillsArr.length %}
               <ul class="pill-list">
                 {% for p in pillsArr %}
-                  {% set label = p | trim %}
-                  {% if label %}<li class="pill">{{ label }}</li>{% endif %}
+                  <li class="pill">{{ p }}</li>
                 {% endfor %}
               </ul>
             {% endif %}
@@ -38,21 +37,21 @@ title: "Fernie · Neighbourhoods"
 
 <section class="container" style="margin-top:12px;">
   <div class="promo-grid">
-    <article class="promo">
+    <article class="promo promo--a">
       <div class="promo-icon" aria-hidden="true">🏡</div>
       <h2>Personalized search</h2>
       <p>Find your home, your way with customizable filters, saved searches, and smart recommendations.</p>
       <p><a href="/search.html">Explore homes</a></p>
     </article>
 
-    <article class="promo">
+    <article class="promo promo--b">
       <div class="promo-icon" aria-hidden="true">💳</div>
       <h2>Financial tools</h2>
       <p>Estimate payments, compare scenarios, and get pre-approved online.</p>
       <p><a href="/mortgage.html">Get pre-approved</a></p>
     </article>
 
-    <article class="promo">
+    <article class="promo promo--c">
       <div class="promo-icon" aria-hidden="true">🤝</div>
       <h2>Expert guidance</h2>
       <p>Matched with trusted local experts so you get the support you need, when you need it.</p>
@@ -84,8 +83,9 @@ h1{font-size:clamp(26px,4vw,36px);margin:8px 0 18px}.muted{color:var(--muted)}
 /* Promos */
 .promo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px);margin:8px 0 24px}
 @media (max-width:900px){.promo-grid{grid-template-columns:1fr}}
-.promo{background:var(--cozy);border:1px solid var(--border);border-radius:16px;padding:clamp(16px,2vw,22px);
+.promo{border:1px solid var(--border);border-radius:16px;padding:clamp(16px,2vw,22px);
   box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
-.promo:hover{transform:translateY(-4px);box-shadow:var(--shadow);background:var(--cozy-2)}
+.promo--a{background:var(--cozy)} .promo--b{background:var(--cozy-2)} .promo--c{background:var(--cozy-3)}
+.promo:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .promo-icon{font-size:24px;line-height:1;margin-bottom:8px}
 </style>
