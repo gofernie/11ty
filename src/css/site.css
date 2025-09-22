@@ -1,24 +1,53 @@
-/* Layout helpers */
-.container { max-width: 1200px; margin: 0 auto; padding: 1.25rem; }
+/* Core */
+:root { --ink:#0f172a; --bg:#fff; --muted:#556; --ring:#e2e8f0; }
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body { font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; color:var(--ink); background:var(--bg); }
+.container { max-width:1200px; margin:0 auto; padding:1.25rem; }
 
-/* Header / nav */
-.site-header { display:flex; align-items:center; justify-content:space-between; }
-.brand { font-size:1.5rem; font-weight:700; text-decoration:none; color:inherit; }
-.nav a { margin-left:1rem; text-decoration:none; color:inherit; opacity:.9; }
+/* Sticky header */
+.site-header { position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--ring); }
+.header__row { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.brand { font-weight:800; font-size:1.2rem; text-decoration:none; color:inherit; }
+.nav { display:flex; gap:1rem; }
+.nav a { color:inherit; text-decoration:none; opacity:.9; }
 .nav a:hover { opacity:1; text-decoration:underline; }
 
-/* Hero */
-.hero { border-radius:16px; overflow:hidden; margin: 1rem 0 2rem; }
-.hero img { display:block; width:100%; height:auto; }
+/* Heroes */
+.full-bleed { width:100vw; margin-left:calc(50% - 50vw); }
+.hero { position:relative; overflow:hidden; border-radius:18px; }
+.hero--full { min-height:80vh; border-radius:0; }         /* Home */
+.hero--thin { min-height:40vh; }                          /* Index / Detail */
+.hero__img { width:100%; height:100%; object-fit:cover; display:block; }
+.hero__overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.25) 40%,rgba(0,0,0,.1) 70%,transparent); }
+.hero__content { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; padding:1.5rem; }
+.hero__title { font-size:clamp(2rem,6vw,4rem); font-weight:800; margin:0; }
 
-/* Cards (optional block) */
-.cards .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; }
-.card { display:block; border:1px solid #e2e8f0; border-radius:12px; background:#fff; padding:1rem;
-  transition: transform .2s ease, box-shadow .2s ease; }
-.card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
-.card img { width:100%; border-radius:8px; margin-bottom:.5rem; }
+/* Wealthsimple-style 3 cards */
+.ws3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin:2rem 0; }
+@media (max-width:900px){ .ws3 { grid-template-columns:1fr; } }
+.ws3 .card { background:#fff; border:1px solid var(--ring); border-radius:16px; padding:1.25rem; text-decoration:none; color:inherit;
+  transition:transform .18s ease, box-shadow .18s ease; }
+.ws3 .card:hover { transform:translateY(-4px); box-shadow:0 10px 24px rgba(0,0,0,.08); }
+.ws3 .card h3 { margin:.25rem 0 .5rem; font-size:1.1rem; }
 
-/* Typography */
-body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-  font-size:16px; line-height:1.6; color:#0f172a; background:#fff; }
-h1,h2,h3 { margin-top:0; }
+/* Mini neighbourhood cards */
+.mini-cards .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem; }
+.mini-cards .card { border:1px solid var(--ring); border-radius:14px; overflow:hidden; text-decoration:none; color:inherit; background:#fff; }
+.mini-cards .card img { width:100%; height:140px; object-fit:cover; display:block; }
+.mini-cards .card .txt { padding:.75rem 1rem; }
+.mini-cards .card strong { display:block; margin-bottom:.15rem; }
+
+/* Neighbourhood grids (index) */
+.hood-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
+.hood-card { display:block; border:1px solid var(--ring); border-radius:16px; overflow:hidden; background:#fff; text-decoration:none; color:inherit; }
+.hood-card img { width:100%; height:180px; object-fit:cover; display:block; }
+.hood-card .box { padding:1rem; }
+.hood-card .desc { color:#4b5563; font-size:.95rem; margin:.25rem 0 0; }
+
+/* Pills (detail) */
+.pills { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.25rem; }
+.pill { padding:.35rem .6rem; border:1px solid var(--ring); border-radius:999px; font-size:.85rem; background:#f8fafc; color:#0f172a; }
+
+/* Footer */
+.footer { border-top:1px solid var(--ring); margin-top:2rem; padding-top:1rem; }
