@@ -1,79 +1,17 @@
-{# src/neighbourhoods/index.njk #}
 ---
-permalink: "/neighbourhoods/"
+layout: base.njk
+title: Neighbourhoods
 ---
+<h1>Neighbourhoods</h1>
 
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Neighbourhoods | Fernie</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    :root{
-      --ink:#0f172a; --muted:#475569; --card:#ffffff; --edge:#e5e7eb;
-    }
-    body{font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
-         margin:0; color:var(--ink); background:#fafafa;}
-    .container{max-width:1200px; margin:0 auto; padding:24px;}
-    h1{font-size:clamp(1.6rem,2.5vw,2.2rem); margin:8px 0 24px;}
-    .grid{
-      display:grid; gap:18px;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    }
-    .card{
-      background:var(--card); border:1px solid var(--edge);
-      border-radius:16px; overflow:hidden; display:flex; flex-direction:column;
-      box-shadow:0 6px 18px rgba(0,0,0,.04);
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .card:hover{ transform: translateY(-3px);
-      box-shadow:0 10px 28px rgba(0,0,0,.08); }
-    .card a{ color:inherit; text-decoration:none; display:flex; flex-direction:column; height:100%; }
-    .thumb{
-      aspect-ratio: 16/9; width:100%; object-fit:cover; display:block;
-      background:#ddd;
-    }
-    .content{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; }
-    .title{ font-size:1.05rem; font-weight:650; line-height:1.25; }
-    .meta{ color:var(--muted); font-size:.92rem; }
-    .pillrow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-    .pill{
-      font-size:.72rem; color:#0b5; background:#e9f9f0; border:1px solid #cdeede;
-      padding:.2rem .5rem; border-radius:999px;
-    }
-  </style>
-</head>
-<body>
-  <main class="container">
-    <h1>Fernie Neighbourhoods</h1>
-
-    <div class="grid">
-      {# `neighbourhoods` is the array from the data file of the same name #}
-      {% for n in neighbourhoods %}
-        {% set href = "/neighbourhoods/" + n.slug + "/" %}
-        {% set img = n.img_url or ("/img/neighbourhoods/" + n.slug + ".jpg") %}
-
-        <article class="card">
-          <a href="{{ href }}">
-            <img class="thumb" src="{{ img | url }}" alt="{{ n.title }}">
-            <div class="content">
-              <div class="title">{{ n.title }}</div>
-              {% if n.desc %}
-                <div class="meta">{{ n.desc | safe }}</div>
-              {% endif %}
-
-              {% if n.pills %}
-                {% set pills = n.pills | split(',') | slice(0,5) %}
-                <div class="pillrow">
-                  {% for p in pills %}<span class="pill">{{ p | trim }}</span>{% endfor %}
-                </div>
-              {% endif %}
-            </div>
-          </a>
-        </article>
-      {% endfor %}
-    </div>
-  </main>
-</body>
-</html>
+<ul class="neighbourhoods">
+  {% for n in neighbourhoods %}
+    {% if n.slug %}
+      <li>
+        <a href="/neighbourhoods/{{ n.slug }}/">
+          {{ n.title or (n.slug | replace("-", " ") | title) }}
+        </a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
