@@ -1,15 +1,14 @@
 ---
 layout: base.njk
-title: Home
+title: Fernie Real Estate
 ---
-{% block top %}
-  <section class="hero">
-    <img src="/img/hero/fernie-hero.webp" alt="Fernie mountain panorama" width="1600" height="800" loading="eager" />
-  </section>
+
+{# Full-bleed 80vh hero #}
+{% block top_full %}
+  {% include "components/hero.njk" with { mode: "full", title: "Fernie Real Estate", img: "/img/hero/fernie-hero.webp" } %}
 {% endblock %}
 
 {% block content %}
-  <h1>Where do you want to start?</h1>
-  <p>Explore Fernie real estate, fast.</p>
-  {% include "components/mini-neighbourhoods.njk" ignore missing %}
+  {% include "components/wealth-cards.njk" %}
+  {% include "components/mini-neighbourhoods.njk" %}
 {% endblock %}
