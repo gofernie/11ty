@@ -1,16 +1,16 @@
 // .eleventy.js
 module.exports = function (eleventyConfig) {
-  // Pass-through static assets
+  // Static assets
   eleventyConfig.addPassthroughCopy({ "src/img": "img" });
   eleventyConfig.addPassthroughCopy({ "src/css": "css" });
 
-  // Simple shortcode to print the current year (avoids missing date filter)
+  // Shortcodes
   eleventyConfig.addNunjucksShortcode("year", () => new Date().getFullYear());
 
   return {
     dir: {
       input: "src",
-      includes: ".",     // look for layouts/includes directly in /src
+      includes: ".",     // layouts/includes/components live directly in /src
       data: "_data",
       output: "_site"
     },
