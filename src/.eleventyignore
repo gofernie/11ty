@@ -1,2 +1,2 @@
-# Stop Eleventy from trying to render this stray file
+# stop Eleventy from rendering this stray file
 src/base.njk
