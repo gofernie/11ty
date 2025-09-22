@@ -8,7 +8,10 @@ permalink: "/neighbourhoods/{{ n.slug }}/"
 ---
 
 {% block top %}
-  {% include "components/hero.njk" with { mode: "thin", title: n.title, img: n.hero or n.img } %}
+  {% set mode = "thin" %}
+  {% set title = n.title %}
+  {% set img = n.hero or n.img %}
+  {% include "components/hero.njk" %}
 {% endblock %}
 
 {% block content %}
@@ -22,7 +25,5 @@ permalink: "/neighbourhoods/{{ n.slug }}/"
     </div>
   {% endif %}
 
-  {% if n.about %}
-    {{ n.about | safe }}
-  {% endif %}
+  {% if n.about %}{{ n.about | safe }}{% endif %}
 {% endblock %}
