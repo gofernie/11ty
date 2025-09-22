@@ -1,82 +1,79 @@
+{# src/neighbourhoods/index.njk #}
 ---
-layout: base.njk
-title: "Fernie · Neighbourhoods"
+permalink: "/neighbourhoods/"
 ---
 
-<section class="container">
-  <h1>Neighbourhoods</h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Neighbourhoods | Fernie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{
+      --ink:#0f172a; --muted:#475569; --card:#ffffff; --edge:#e5e7eb;
+    }
+    body{font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+         margin:0; color:var(--ink); background:#fafafa;}
+    .container{max-width:1200px; margin:0 auto; padding:24px;}
+    h1{font-size:clamp(1.6rem,2.5vw,2.2rem); margin:8px 0 24px;}
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    .card{
+      background:var(--card); border:1px solid var(--edge);
+      border-radius:16px; overflow:hidden; display:flex; flex-direction:column;
+      box-shadow:0 6px 18px rgba(0,0,0,.04);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{ transform: translateY(-3px);
+      box-shadow:0 10px 28px rgba(0,0,0,.08); }
+    .card a{ color:inherit; text-decoration:none; display:flex; flex-direction:column; height:100%; }
+    .thumb{
+      aspect-ratio: 16/9; width:100%; object-fit:cover; display:block;
+      background:#ddd;
+    }
+    .content{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; }
+    .title{ font-size:1.05rem; font-weight:650; line-height:1.25; }
+    .meta{ color:var(--muted); font-size:.92rem; }
+    .pillrow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+    .pill{
+      font-size:.72rem; color:#0b5; background:#e9f9f0; border:1px solid #cdeede;
+      padding:.2rem .5rem; border-radius:999px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Fernie Neighbourhoods</h1>
 
-  {% set rows = neighbourhoods | default([]) %}
-  <div class="hood-grid">
-    {% for r in rows %}
-      {% set slugSrc = r.slug or r.title %}
-      <a class="hood-card" href="/neighbourhoods/{{ slugSrc | slugifySafe }}/">
-        {% if r.hero_image %}
-          <div class="hood-media"><img src="{{ r.hero_image }}" alt="{{ r.title }}"></div>
-        {% endif %}
-        <div class="hood-body">
-          <h3 class="hood-title">{{ r.title }}</h3>
-          {% if r.desc %}<p class="hood-desc">{{ r.desc }}</p>{% endif %}
-          {% if r.pills %}
-            {% set pillsArr = r.pills | pillsArray %}
-            {% if pillsArr and pillsArr.length %}
-              <ul class="pill-list">
-                {% for p in pillsArr %}<li class="pill">{{ p }}</li>{% endfor %}
-              </ul>
-            {% endif %}
-          {% endif %}
-        </div>
-      </a>
-    {% endfor %}
-    {% if not rows or not rows.length %}
-      <p class="muted">No neighbourhoods to display.</p>
-    {% endif %}
-  </div>
-</section>
+    <div class="grid">
+      {# `neighbourhoods` is the array from the data file of the same name #}
+      {% for n in neighbourhoods %}
+        {% set href = "/neighbourhoods/" + n.slug + "/" %}
+        {% set img = n.img_url or ("/img/neighbourhoods/" + n.slug + ".jpg") %}
 
-<section class="container" style="margin-top:12px;">
-  <div class="promo-grid">
-    <article class="promo promo--a">
-      <div class="promo-icon" aria-hidden="true">🏡</div>
-      <h2>Personalized search</h2>
-      <p>Find your home, your way with customizable filters, saved searches, and smart recommendations.</p>
-      <p><a href="/search.html">Explore homes</a></p>
-    </article>
-    <article class="promo promo--b">
-      <div class="promo-icon" aria-hidden="true">💳</div>
-      <h2>Financial tools</h2>
-      <p>Estimate payments, compare scenarios, and get pre-approved online.</p>
-      <p><a href="/mortgage.html">Get pre-approved</a></p>
-    </article>
-    <article class="promo promo--c">
-      <div class="promo-icon" aria-hidden="true">🤝</div>
-      <h2>Expert guidance</h2>
-      <p>Matched with trusted local experts so you get the support you need, when you need it.</p>
-      <p><a href="/contact.html">Get connected</a></p>
-    </article>
-  </div>
-</section>
+        <article class="card">
+          <a href="{{ href }}">
+            <img class="thumb" src="{{ img | url }}" alt="{{ n.title }}">
+            <div class="content">
+              <div class="title">{{ n.title }}</div>
+              {% if n.desc %}
+                <div class="meta">{{ n.desc | safe }}</div>
+              {% endif %}
 
-<style>
-h1{font-size:clamp(26px,4vw,36px);margin:8px 0 18px}.muted{color:var(--muted)}
-.hood-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px)}
-@media (max-width:1000px){.hood-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){.hood-grid{grid-template-columns:1fr}}
-.hood-card{display:flex;flex-direction:column;text-decoration:none;background:#fff;color:inherit;border:1px solid var(--border);
-  border-radius:16px;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease}
-.hood-card:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(0,0,0,.10)}
-.hood-media{aspect-ratio:16/9;background:#f3f4f6;overflow:hidden}
-.hood-media img{width:100%;height:100%;object-fit:cover;display:block}
-.hood-body{padding:14px}
-.hood-title{margin:.2rem 0 .4rem;font-size:1.1rem}
-.hood-desc{margin:0 0 .6rem;color:#475569}
-.pill-list{display:flex;flex-wrap:wrap;gap:8px 10px;margin:.2rem 0 0;padding:0;list-style:none}
-.pill{background:#f3f4f6;border:1px solid var(--border);border-radius:9999px;padding:4px 10px;font-size:.85rem;color:#374151}
-.promo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px);margin:8px 0 24px}
-@media (max-width:900px){.promo-grid{grid-template-columns:1fr}}
-.promo{border:1px solid var(--border);border-radius:16px;padding:clamp(16px,2vw,22px);
-  box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
-.promo--a{background:var(--cozy)} .promo--b{background:var(--cozy-2)} .promo--c{background:var(--cozy-3)}
-.promo:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-.promo-icon{font-size:24px;line-height:1;margin-bottom:8px}
-</style>
+              {% if n.pills %}
+                {% set pills = n.pills | split(',') | slice(0,5) %}
+                <div class="pillrow">
+                  {% for p in pills %}<span class="pill">{{ p | trim }}</span>{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </main>
+</body>
+</html>
