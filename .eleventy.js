@@ -1,13 +1,13 @@
 // .eleventy.js
 module.exports = function (eleventyConfig) {
-  // pass-thru static assets (optional, keeps your /img and /css paths stable)
+  // Pass-through static assets
   eleventyConfig.addPassthroughCopy({ "src/img": "img" });
   eleventyConfig.addPassthroughCopy({ "src/css": "css" });
 
   return {
     dir: {
       input: "src",
-      includes: ".",     // <-- look in src/ for layouts/includes
+      includes: ".",     // look for layouts/includes directly in /src
       data: "_data",
       output: "_site"
     },
