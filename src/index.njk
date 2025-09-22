@@ -1,91 +1,18 @@
 ---
 layout: base.njk
-title: "Home – Fernie Real Estate"
+title: Home
 ---
 
-{# Full-bleed 70vh hero with overlay title #}
-<section class="home-hero" aria-label="Fernie">
-  <div class="home-hero__overlay">
-    <h1 class="home-hero__title">Everything you need to buy in Fernie</h1>
-  </div>
-</section>
+{% block top %}
+  <section class="hero">
+    <img src="/img/hero/fernie-hero.webp" alt="Fernie mountain panorama" width="1600" height="800" loading="eager" />
+  </section>
+{% endblock %}
 
-<section class="container">
-  <div class="promo-grid">
-    <article class="promo promo--a">
-      <div class="promo-icon" aria-hidden="true">🏡</div>
-      <h2>Personalized search</h2>
-      <p>Find your home, your way with customizable filters, saved searches, and smart recommendations.</p>
-      <p><a href="/search.html">Explore homes</a></p>
-    </article>
+{% block content %}
+  <h1>Where do you want to start?</h1>
+  <p>Explore Fernie real estate, fast.</p>
 
-    <article class="promo promo--b">
-      <div class="promo-icon" aria-hidden="true">💳</div>
-      <h2>Financial tools</h2>
-      <p>Estimate payments, compare scenarios, and get pre-approved online.</p>
-      <p><a href="/mortgage.html">Get pre-approved</a></p>
-    </article>
-
-    <article class="promo promo--c">
-      <div class="promo-icon" aria-hidden="true">🤝</div>
-      <h2>Expert guidance</h2>
-      <p>Matched with trusted local experts so you get the support you need, when you need it.</p>
-      <p><a href="/contact.html">Get connected</a></p>
-    </article>
-  </div>
-</section>
-
-<section class="container">
-  <h2 style="margin-top:8px;">Neighbourhoods</h2>
-
-  {% set rows = neighbourhoods | default([]) %}
-  <div class="mini-hoods">
-    {% for r in rows %}
-      {# Use r.slug if present, otherwise generate from title; then slugifySafe #}
-      {% set slugSrc = r.slug or r.title %}
-      <a class="mini-hood" href="/neighbourhoods/{{ slugSrc | slugifySafe }}/">
-        <span class="mini-hood__name">{{ r.title }}</span>
-        {% if r.desc %}<span class="mini-hood__snippet">{{ r.desc | snippet(20) }}</span>{% endif %}
-      </a>
-    {% endfor %}
-    {% if not rows or not rows.length %}
-      <p class="muted">No neighbourhoods to display.</p>
-    {% endif %}
-  </div>
-</section>
-
-<style>
-/* Hero */
-.home-hero{
-  height:70vh; min-height:420px;
-  background:url("/img/hero/fernie-hero.webp") center/cover no-repeat;
-  position:relative;
-}
-.home-hero__overlay{position:absolute; inset:0; display:grid; place-items:center;
-  background:linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.45))}
-.home-hero__title{color:#fff; font-size:clamp(28px,5vw,48px); line-height:1.05;
-  text-align:center; letter-spacing:.3px; padding:.25em .6em}
-
-/* Promos (spacing so they do not underlap hero) */
-.promo-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(12px,2vw,20px); margin:28px 0 28px}
-@media (max-width:900px){.promo-grid{grid-template-columns:1fr}}
-
-/* Very light modern neutrals (slight variations) */
-.promo{border:1px solid var(--border); border-radius:16px; padding:clamp(16px,2vw,22px);
-  box-shadow:0 1px 4px rgba(0,0,0,.06); transition:transform .18s ease, box-shadow .18s ease, background .18s ease}
-.promo--a{ background:var(--cozy) } .promo--b{ background:var(--cozy-2) } .promo--c{ background:var(--cozy-3) }
-.promo:hover{ transform:translateY(-4px); box-shadow:var(--shadow) }
-.promo-icon{ font-size:24px; line-height:1; margin-bottom:8px }
-
-/* Mini neighbourhood cards (title + snippet, no images) */
-.mini-hoods{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
-@media (max-width:900px){.mini-hoods{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.mini-hoods{grid-template-columns:1fr}}
-.mini-hood{display:flex; flex-direction:column; gap:4px; padding:12px 14px; background:#fff;
-  border:1px solid var(--border); border-radius:12px; text-decoration:none; color:inherit;
-  transition:transform .18s ease, box-shadow .18s ease, background .18s ease}
-.mini-hood:hover{ transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.08); background:#fbfbfb }
-.mini-hood__name{ font-weight:600 } .mini-hood__snippet{ color:var(--muted); font-size:.92rem; line-height:1.35 }
-.muted{ color:var(--muted) }
-</style>
+  {# Optional mini neighbourhoods component #}
+  {% include "components/mini-neighbourhoods.njk" ignore missing %}
+{% endblock %}
