@@ -1,37 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ title or "Fernie Real Estate" }}</title>
-  <link rel="stylesheet" href="/css/site.css" />
-</head>
-<body>
-  <!-- Full-width sticky header: logo far-left, links far-right -->
-  <header class="site-header" role="banner">
-    <div class="header__row">
-      <a class="brand" href="/">Fernie</a>
-      <nav class="nav" role="navigation" aria-label="Main">
-        <a href="/">Home</a>
-        <a href="/neighbourhoods/">Neighbourhoods</a>
-      </nav>
-    </div>
-  </header>
-
-  {# full-bleed region (home hero goes here) #}
-  {% block top_full %}{% endblock %}
-
-  {# in-container region (thin heroes for other pages) #}
-  <div class="container">
-    {% block top %}{% endblock %}
-  </div>
-
-  <main class="container">
-    {% block content %}{{ content | safe }}{% endblock %}
-  </main>
-
-  <footer class="container footer">
-    <small>&copy; {% year %} Fernie</small>
-  </footer>
-</body>
-</html>
+---
+permalink: false
+layout: false
+---
+{# legacy file disabled on purpose; do not render #}
