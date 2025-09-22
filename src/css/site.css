@@ -1,111 +1,76 @@
 /* === RESET & CORE === */
 :root {
-  --ink: #0f172a;
-  --bg: #fff;
-  --ring: #e2e8f0;
-  --muted: #4b5563;
-  --hover: rgba(0,0,0,.06);
-  --header-h: 60px;              /* <— single source of truth for header height */
+  --ink:#0f172a; --bg:#fff; --ring:#e2e8f0; --muted:#4b5563; --hover:rgba(0,0,0,.06);
+  --header-h:60px;           /* single source of truth for header height */
 }
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  font: 16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
-  color: var(--ink);
-  background: var(--bg);
-  overflow-x: hidden;
-  padding-top: var(--header-h);  /* <— reserve space for fixed header */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink); background:var(--bg); overflow-x:hidden;
+  padding-top:var(--header-h);       /* reserve space for the fixed header */
 }
-.container { max-width: 1200px; margin-inline: auto; padding: 1.25rem; }
+.container{max-width:1200px;margin-inline:auto;padding:1.25rem}
 
-/* === FIXED, FULL-WIDTH HEADER (logo far-left, links far-right) === */
-.site-header {
-  position: fixed;               /* <— fixed instead of sticky */
-  top: 0; left: 0; right: 0;
-  height: var(--header-h);
-  background: #fff;
-  z-index: 100;
-  border: 0;                     /* no border that could look like a gap */
-  box-shadow: 0 .5px 0 rgba(0,0,0,.05); /* hairline without affecting layout */
+/* === FIXED, FULL-WIDTH HEADER (logo hard-left, links hard-right) === */
+.site-header{
+  position:fixed; top:0; left:0; right:0; height:var(--header-h);
+  background:#fff; z-index:100; border:0; padding:0;
+  box-shadow:0 .5px 0 rgba(0,0,0,.05);
 }
-.header__row {
-  height: 100%;
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding: 0 20px;
+.header__row{
+  height:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  padding:0 20px;
 }
-.brand { font-weight: 800; font-size: 1.2rem; text-decoration: none; color: inherit; }
-.nav { display: flex; gap: 1rem; margin-left: auto; }
-.nav a { color: inherit; text-decoration: none; opacity: .9; }
-.nav a:hover { opacity: 1; text-decoration: underline; }
+.brand{font-weight:800;font-size:1.2rem;text-decoration:none;color:inherit}
+.nav{display:flex;gap:1rem;margin-left:auto}
+.nav a{color:inherit;text-decoration:none;opacity:.9}
+.nav a:hover{opacity:1;text-decoration:underline}
 
-/* === FULL-BLEED HERO (no gutters, flush under header) === */
-.full-bleed {
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw; max-width: 100vw;
-  margin: 0; padding: 0;
-  display: block;
-}
-.hero { position: relative; overflow: hidden; margin: 0; padding: 0; }
+/* === FULL-BLEED UTIL === */
+.full-bleed{position:relative; left:50%; transform:translateX(-50%); width:100vw; max-width:100vw; margin:0; padding:0; display:block}
 
-/* EXACT 80vh hero. If you want the hero to be the visible area under the header,
-   swap to: height: calc(100vh - var(--header-h)); */
-.hero--full { height: 80vh; min-height: 80vh; max-height: 80vh; border-radius: 0; }
-.hero--thin { min-height: 40vh; border-radius: 18px; }
+/* === HERO === */
+.hero{position:relative; overflow:hidden; margin:0; padding:0}
+.hero--full{height:80vh; min-height:80vh; max-height:80vh; border-radius:0} /* EXACT 80vh */
+.hero--thin{min-height:40vh; border-radius:18px}
 
-.hero__img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.hero__overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.25) 40%,rgba(0,0,0,.1) 70%,transparent);
+/* Background-image hero: no <img>, no alt-text flash */
+.hero--bg{
+  background-image: var(--hero-url);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-.hero__content {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center; color: #fff; padding: 1.5rem;
-}
-.hero__title { margin: 0; font-size: clamp(2rem,6vw,4rem); font-weight: 800; }
 
-/* === WEALTHSIMPLE-STYLE 3-UP CARDS === */
-.ws3 {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
-  margin: 2rem 0;
+/* Overlay + content */
+.hero__overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.25) 40%,rgba(0,0,0,.1) 70%,transparent);
 }
-@media (max-width: 900px) { .ws3 { grid-template-columns: 1fr; } }
-.ws3 .card {
-  background: #fff; border: 1px solid #e6e8f0; border-radius: 16px; padding: 1.5rem;
-  text-decoration: none; color: inherit;
-  transition: transform .18s, box-shadow .18s, border-color .18s;
+.hero__content{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  text-align:center; color:#fff; padding:1.5rem;
 }
-.ws3 .card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.08); border-color: #d9dce6; }
-.ws3 .card .icon {
-  width: 44px; height: 44px; border-radius: 8px; background: #f6f7fb;
-  display: flex; align-items: center; justify-content: center; margin-bottom: .75rem;
-}
-.ws3 .card h3 { margin: .25rem 0 .5rem; font-size: 1.25rem; }
-.ws3 .card p { margin: 0 0 1rem; color: var(--muted); }
-.ws3 .card .btn {
-  display: inline-block; padding: .6rem 1rem; border: 1px solid #cdd2de; border-radius: 999px;
-  background: #fff; color: #111827; text-decoration: none; font-weight: 500;
-  transition: box-shadow .18s, transform .18s, border-color .18s;
-}
-.ws3 .card .btn:hover { box-shadow: 0 8px 18px var(--hover); border-color: #bfc6d6; transform: translateY(-1px); }
+.hero__title{margin:0; font-size:clamp(2rem,6vw,4rem); font-weight:800}
 
-/* === MINI NEIGHBOURHOOD CARDS === */
-.mini-cards .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
-}
-.mini-cards .card {
-  border: 1px solid var(--ring); border-radius: 14px; overflow: hidden;
-  text-decoration: none; color: inherit; background: #fff;
-}
-.mini-cards .card img { width: 100%; height: 140px; object-fit: cover; display: block; }
-.mini-cards .card .txt { padding: .75rem 1rem; }
-.mini-cards .card strong { display: block; margin-bottom: .15rem; }
+/* Wealthsimple-style 3 cards */
+.ws3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.25rem; margin:2rem 0}
+@media (max-width:900px){.ws3{grid-template-columns:1fr}}
+.ws3 .card{background:#fff;border:1px solid #e6e8f0;border-radius:16px;padding:1.5rem;text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s,border-color .18s}
+.ws3 .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.08);border-color:#d9dce6}
+.ws3 .card .icon{width:44px;height:44px;border-radius:8px;background:#f6f7fb;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem}
+.ws3 .card h3{margin:.25rem 0 .5rem;font-size:1.25rem}
+.ws3 .card p{margin:0 0 1rem;color:var(--muted)}
+.ws3 .card .btn{display:inline-block;padding:.6rem 1rem;border:1px solid #cdd2de;border-radius:999px;background:#fff;color:#111827;text-decoration:none;font-weight:500;transition:box-shadow .18s,transform .18s,border-color .18s}
+.ws3 .card .btn:hover{box-shadow:0 8px 18px var(--hover);border-color:#bfc6d6;transform:translateY(-1px)}
 
-/* === FOOTER === */
-.footer { border-top: 1px solid var(--ring); margin-top: 2rem; padding-top: 1rem; }
+/* Mini neighbourhood cards */
+.mini-cards .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.mini-cards .card{border:1px solid var(--ring);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;background:#fff}
+.mini-cards .card img{width:100%;height:140px;object-fit:cover;display:block}
+.mini-cards .card .txt{padding:.75rem 1rem}
+.mini-cards .card strong{display:block;margin-bottom:.15rem}
+
+/* Footer */
+.footer{border-top:1px solid var(--ring);margin-top:2rem;padding-top:1rem}
