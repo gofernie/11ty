@@ -1,14 +1,18 @@
 // .eleventy.js
 module.exports = function (eleventyConfig) {
-  // Copy everything under src/img to /img in the output site
+  // pass-thru static assets (optional, keeps your /img and /css paths stable)
   eleventyConfig.addPassthroughCopy({ "src/img": "img" });
-
-  // Optional: passthrough a favicon or other static dirs if you have them
-  // eleventyConfig.addPassthroughCopy({ "src/static": "/" });
+  eleventyConfig.addPassthroughCopy({ "src/css": "css" });
 
   return {
-    dir: { input: "src", output: "_site" },
+    dir: {
+      input: "src",
+      includes: ".",     // <-- look in src/ for layouts/includes
+      data: "_data",
+      output: "_site"
+    },
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk",
+    templateFormats: ["njk", "md", "html"]
   };
 };
