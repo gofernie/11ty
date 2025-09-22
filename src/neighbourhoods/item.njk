@@ -6,19 +6,23 @@ pagination:
   alias: n
 permalink: "/neighbourhoods/{{ n.slug }}/"
 ---
+
 {% block top %}
-  {% if n.hero %}
-    <section class="hero">
-      <img src="{{ n.hero }}" alt="{{ n.title }} hero" loading="eager" />
-    </section>
-  {% endif %}
+  {% include "components/hero.njk" with { mode: "thin", title: n.title, img: n.hero or n.img } %}
 {% endblock %}
 
 {% block content %}
-  <article class="about">
-    <h1>{{ n.title }}</h1>
-    {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
-    {% if n.img %}<p><img src="{{ n.img }}" alt="{{ n.title }}"></p>{% endif %}
-    {% if n.about %}{{ n.about | safe }}{% endif %}
-  </article>
+  {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
+
+  {% if n.pills and n.pills.length %}
+    <div class="pills">
+      {% for p in n.pills %}
+        <span class="pill">{{ p }}</span>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if n.about %}
+    {{ n.about | safe }}
+  {% endif %}
 {% endblock %}
