@@ -3,7 +3,7 @@ layout: base.njk
 title: "Home – Fernie Real Estate"
 ---
 
-{# Full-bleed 70vh hero with overlay title (uses /img/hero/hero.webp) #}
+{# Full-bleed 70vh hero with overlay title #}
 <section class="home-hero" aria-label="Fernie">
   <div class="home-hero__overlay">
     <h1 class="home-hero__title">Everything you need to buy in Fernie</h1>
@@ -11,23 +11,23 @@ title: "Home – Fernie Real Estate"
 </section>
 
 <section class="container">
-  <!-- Cozy promo cards -->
+  <!-- Cozy promo cards (three subtle variations) -->
   <div class="promo-grid">
-    <article class="promo">
+    <article class="promo promo--a">
       <div class="promo-icon" aria-hidden="true">🏡</div>
       <h2>Personalized search</h2>
       <p>Find your home, your way with customizable filters, saved searches, and smart recommendations.</p>
       <p><a href="/search.html">Explore homes</a></p>
     </article>
 
-    <article class="promo">
+    <article class="promo promo--b">
       <div class="promo-icon" aria-hidden="true">💳</div>
       <h2>Financial tools</h2>
       <p>Estimate payments, compare scenarios, and get pre-approved online.</p>
       <p><a href="/mortgage.html">Get pre-approved</a></p>
     </article>
 
-    <article class="promo">
+    <article class="promo promo--c">
       <div class="promo-icon" aria-hidden="true">🤝</div>
       <h2>Expert guidance</h2>
       <p>Matched with trusted local experts so you get the support you need, when you need it.</p>
@@ -38,12 +38,21 @@ title: "Home – Fernie Real Estate"
 
 <section class="container">
   <h2 style="margin-top:8px;">Neighbourhoods</h2>
-  {# mini cards: titles only, no images #}
+
+  {# mini cards: title + first 20 words of desc (no images) #}
   {% set rows = neighbourhoods | default([]) %}
   <div class="mini-hoods">
     {% for r in rows %}
       <a class="mini-hood" href="/neighbourhoods/{{ r.slug }}/">
         <span class="mini-hood__name">{{ r.title }}</span>
+        {% if r.desc %}
+          {% set words = (r.desc | trim | split(' ')) %}
+          <span class="mini-hood__snippet">
+            {% for w in words %}
+              {% if loop.index0 < 20 %}{{ w }}{% if loop.index0 < 19 %} {% endif %}{% endif %}
+            {% endfor %}…
+          </span>
+        {% endif %}
       </a>
     {% endfor %}
     {% if not rows or not rows.length %}
@@ -54,24 +63,57 @@ title: "Home – Fernie Real Estate"
 
 <style>
 /* Hero */
-.home-hero{height:70vh;min-height:420px;background:url("/img/hero/hero.webp") center/cover no-repeat;position:relative}
-.home-hero__overlay{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(to bottom,rgba(0,0,0,.30),rgba(0,0,0,.45))}
-.home-hero__title{color:#fff;font-size:clamp(28px,5vw,48px);line-height:1.05;text-align:center;letter-spacing:.3px;padding:.25em .6em}
+.home-hero{
+  height:70vh; min-height:420px;
+  background:url("/img/hero/fernie-hero.webp") center/cover no-repeat;
+  position:relative;
+}
+.home-hero__overlay{
+  position:absolute; inset:0; display:grid; place-items:center;
+  background:linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.45));
+}
+.home-hero__title{
+  color:#fff; font-size:clamp(28px,5vw,48px); line-height:1.05;
+  text-align:center; letter-spacing:.3px; padding:.25em .6em;
+}
 
-/* Cozy promos with lift */
-.promo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px);margin:-36px 0 24px}
-@media (max-width:900px){.promo-grid{grid-template-columns:1fr;margin:12px 0 24px}}
-.promo{background:var(--cozy);border:1px solid var(--border);border-radius:16px;padding:clamp(16px,2vw,22px);
-  box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
-.promo:hover{transform:translateY(-4px);box-shadow:var(--shadow);background:var(--cozy-2)}
-.promo-icon{font-size:24px;line-height:1;margin-bottom:8px}
+/* Promos: add space below hero so they don't underlap */
+.promo-grid{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(12px,2vw,20px);
+  margin:24px 0 28px;                /* ⬅︎ spacing from hero */
+}
+@media (max-width:900px){.promo-grid{grid-template-columns:1fr}}
 
-/* Mini neighbourhood cards (titles only) */
-.mini-hoods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+/* Very light modern neutrals (slight variations) */
+.promo{
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:clamp(16px,2vw,22px);
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+}
+.promo--a{ background:#fafaf9 }                 /* warm off-white */
+.promo--b{ background:#f7f8f9 }                 /* cool near-white */
+.promo--c{ background:#f8f7f5 }                 /* neutral/beige hint */
+.promo:hover{ transform:translateY(-4px); box-shadow:0 10px 22px rgba(0,0,0,.10) }
+.promo-icon{ font-size:24px; line-height:1; margin-bottom:8px }
+
+/* Mini neighbourhood cards (title + 20-word snippet, no images) */
+.mini-hoods{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
 @media (max-width:900px){.mini-hoods{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.mini-hoods{grid-template-columns:1fr}}
-.mini-hood{display:flex;align-items:center;padding:12px 14px;background:#fff;border:1px solid var(--border);border-radius:12px;
-  text-decoration:none;color:inherit;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
-.mini-hood:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.08);background:#fbfbfb}
-.mini-hood__name{font-weight:600}.muted{color:var(--muted)}
+.mini-hood{
+  display:flex; flex-direction:column; gap:4px;
+  padding:12px 14px; background:#fff; border:1px solid var(--border); border-radius:12px;
+  text-decoration:none; color:inherit;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.mini-hood:hover{ transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.08); background:#fbfbfb }
+.mini-hood__name{ font-weight:600 }
+.mini-hood__snippet{ color:var(--muted); font-size:.92rem; line-height:1.35 }
+.muted{ color:var(--muted) }
 </style>
