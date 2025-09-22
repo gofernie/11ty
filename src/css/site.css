@@ -1,76 +1,24 @@
-/* src/css/site.css */
+/* Layout helpers */
+.container { max-width: 1200px; margin: 0 auto; padding: 1.25rem; }
 
-/* === SITE HEADER & NAVIGATION === */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem;
-}
-.brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-nav a {
-  margin-right: 1rem;
-  color: inherit;
-  text-decoration: none;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
-}
-nav a:hover {
-  opacity: 1;
-  text-decoration: underline;
-}
+/* Header / nav */
+.site-header { display:flex; align-items:center; justify-content:space-between; }
+.brand { font-size:1.5rem; font-weight:700; text-decoration:none; color:inherit; }
+.nav a { margin-left:1rem; text-decoration:none; color:inherit; opacity:.9; }
+.nav a:hover { opacity:1; text-decoration:underline; }
 
-/* === HERO SECTION === */
-.hero {
-  display: block;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 2rem;
-}
-.hero img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
+/* Hero */
+.hero { border-radius:16px; overflow:hidden; margin: 1rem 0 2rem; }
+.hero img { display:block; width:100%; height:auto; }
 
-/* === CARD GRID === */
-.cards .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-}
-.card {
-  display: block;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: #fff;
-  padding: 1rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-.card img {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-}
+/* Cards (optional block) */
+.cards .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; }
+.card { display:block; border:1px solid #e2e8f0; border-radius:12px; background:#fff; padding:1rem;
+  transition: transform .2s ease, box-shadow .2s ease; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.card img { width:100%; border-radius:8px; margin-bottom:.5rem; }
 
-/* === TYPOGRAPHY === */
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #0f172a;
-  background: #fff;
-}
-h1, h2, h3 {
-  margin-top: 0;
-}
+/* Typography */
+body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size:16px; line-height:1.6; color:#0f172a; background:#fff; }
+h1,h2,h3 { margin-top:0; }
