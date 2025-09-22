@@ -10,11 +10,30 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addLayoutAlias("base.njk", "base.njk");
   eleventyConfig.addLayoutAlias("layout/base.njk", "base.njk");
 
+  // ---- Custom filters ----
+  // Safe 20-word snippet (no dependency on Nunjucks' split)
+  eleventyConfig.addNunjucksFilter("snippet", function (str, count = 20) {
+    if (!str) return "";
+    const words = String(str).trim().split(/\s+/);
+    const body = words.slice(0, count).join(" ");
+    return body + (words.length > count ? "…" : "");
+  });
+
+  // Normalize 'pills' to array from CSV or array
+  eleventyConfig.addNunjucksFilter("pillsArray", function (val) {
+    if (!val) return [];
+    if (Array.isArray(val)) return val.filter(Boolean).map(s => String(s).trim()).filter(Boolean);
+    return String(val)
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean);
+  });
+
   return {
     dir: {
       input: "src",
-      includes: ".",   // layouts/partials live directly in src/
-      layouts: ".",    // so `layout: base.njk` maps to src/base.njk
+      includes: ".",    // layouts/partials live directly in src/
+      layouts: ".",     // `layout: base.njk` -> src/base.njk
       output: "_site",
     },
     htmlTemplateEngine: "njk",
