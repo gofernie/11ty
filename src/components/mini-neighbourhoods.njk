@@ -1,41 +1,17 @@
-{# Re-usable mini grid component.
-   Uses:
-   - global `neighbourhoods` data
-   - optional page vars:
-       miniGridTitle  (default "Neighbourhoods")
-       miniGridLimit  (default 6)
-#}
-
-{% set title = miniGridTitle or "Neighbourhoods" %}
-{% set limit = miniGridLimit or 6 %}
-{% set items = (neighbourhoods or []) | slice(0, limit) %}
-
-<section aria-labelledby="home-neighbourhoods">
-  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:1rem">
-    <h2 id="home-neighbourhoods">{{ title }}</h2>
-    <a href="/neighbourhoods/">View all →</a>
-  </div>
-
-  <div class="grid-tiles grid-tiles--home">
-    {% for n in items %}
-      {% set slug = n.slug or (n.name | lower | replace(' ', '-') | replace('&', 'and')) %}
-      {% set imgw = n.image or ("/img/neighbourhoods/" ~ slug ~ ".webp") %}
-      {% set imgj = n.image_jpg or (imgw | replace('.webp','.jpg')) %}
-      <article class="card">
-        <a href="/neighbourhoods/{{ slug }}/" style="display:block">
-          <div class="card__media">
-            <picture>
-              <source srcset="{{ imgw }}" type="image/webp">
-              <img src="{{ imgj }}" alt="{{ n.name }}">
-            </picture>
-            <span class="badge">{{ n.name }}</span>
-          </div>
-          <div class="card__body">
-            <h3 class="card__title">{{ n.name }}</h3>
-            <p class="card__text">{{ n.summary }}</p>
-          </div>
-        </a>
-      </article>
+{# src/components/mini-neighbourhoods.njk #}
+<section class="cards">
+  <h2>Popular Areas</h2>
+  <div class="grid">
+    {% for n in neighbourhoods | slice(0,6) %}
+      {% if n.slug %}
+      <a class="card" href="/neighbourhoods/{{ n.slug }}/">
+        {% if n.cardImg %}
+          <img src="{{ n.cardImg }}" alt="{{ n.title }}" loading="lazy" />
+        {% endif %}
+        <strong>{{ n.title }}</strong>
+        {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
+      </a>
+      {% endif %}
     {% endfor %}
   </div>
 </section>
