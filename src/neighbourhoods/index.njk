@@ -2,16 +2,25 @@
 layout: base.njk
 title: Neighbourhoods
 ---
-<h1>Neighbourhoods</h1>
 
-<ul class="neighbourhoods">
-  {% for n in neighbourhoods %}
-    {% if n.slug %}
-      <li>
-        <a href="/neighbourhoods/{{ n.slug }}/">
-          {{ n.title or (n.slug | replace("-", " ") | title) }}
+{% block top %}
+  {% include "components/hero.njk" with { mode: "thin", title: "Neighbourhoods", img: "/img/hero/fernie-hero.webp" } %}
+{% endblock %}
+
+{% block content %}
+  <div class="hood-grid">
+    {% for n in neighbourhoods %}
+      {% if n.slug %}
+        <a class="hood-card" href="/neighbourhoods/{{ n.slug }}/">
+          {% if n.cardImg or n.img %}
+            <img src="{{ n.cardImg or n.img }}" alt="{{ n.title or n.slug }}">
+          {% endif %}
+          <div class="box">
+            <strong>{{ n.title or (n.slug | replace('-', ' ') | title) }}</strong>
+            {% if n.desc %}<p class="desc">{{ n.desc }}</p>{% endif %}
+          </div>
         </a>
-      </li>
-    {% endif %}
-  {% endfor %}
-</ul>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
