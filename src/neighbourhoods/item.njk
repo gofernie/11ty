@@ -1,46 +1,24 @@
-{# src/neighbourhoods/item.njk #}
 ---
+layout: base.njk
 pagination:
   data: neighbourhoods
   size: 1
   alias: n
 permalink: "/neighbourhoods/{{ n.slug }}/"
 ---
+{% block top %}
+  {% if n.hero %}
+    <section class="hero">
+      <img src="{{ n.hero }}" alt="{{ n.title }} hero" loading="eager" />
+    </section>
+  {% endif %}
+{% endblock %}
 
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>{{ n.title }} | Fernie</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    .hero{ position:relative; }
-    .hero img{ width:100%; height:42vh; min-height:340px; object-fit:cover; display:block; }
-    .hero h1{ position:absolute; left:24px; bottom:18px; margin:0;
-              background:rgba(0,0,0,.45); color:#fff; padding:10px 14px; border-radius:10px; }
-    .container{ max-width:1200px; margin:0 auto; padding:24px; }
-    .about h3:first-of-type{ margin-top:0; }
-    :global(.about h3){
-      font-size:1.5rem; font-weight:400;
-      margin-top:1.2rem; margin-bottom:.4rem;
-      color:#0f172a;
-    }
-  </style>
-</head>
-<body>
-  {% set hero = n.img_url or ("/img/neighbourhoods/" + n.slug + ".jpg") %}
-  <header class="hero">
-    <img src="{{ hero | url }}" alt="{{ n.title }} hero">
+{% block content %}
+  <article class="about">
     <h1>{{ n.title }}</h1>
-  </header>
-
-  <main class="container">
-    <article class="about">
-      {% if n.about %}{{ n.about | safe }}
-      {% elseif n.desc %}<p>{{ n.desc | safe }}</p>
-      {% else %}<p>Explore {{ n.title }} in Fernie, BC.</p>
-      {% endif %}
-    </article>
-  </main>
-</body>
-</html>
+    {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
+    {% if n.img %}<p><img src="{{ n.img }}" alt="{{ n.title }}"></p>{% endif %}
+    {% if n.about %}{{ n.about | safe }}{% endif %}
+  </article>
+{% endblock %}
