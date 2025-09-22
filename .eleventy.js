@@ -1,21 +1,15 @@
-// .eleventy.js
 module.exports = function (eleventyConfig) {
-  // Static assets
-  eleventyConfig.addPassthroughCopy({ "src/img": "img" });
-  eleventyConfig.addPassthroughCopy({ "src/css": "css" });
-
-  // Shortcodes
-  eleventyConfig.addNunjucksShortcode("year", () => new Date().getFullYear());
-
   return {
     dir: {
       input: "src",
-      includes: ".",     // layouts/includes/components live directly in /src
+      includes: "_includes",
+      layouts: "layouts",
       data: "_data",
-      output: "_site"
+      output: "_site",
     },
+    templateFormats: ["njk", "md", "html"],
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk",
-    templateFormats: ["njk", "md", "html"]
+    dataTemplateEngine: "njk",
   };
 };
