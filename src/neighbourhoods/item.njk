@@ -1,47 +1,46 @@
+{# src/neighbourhoods/item.njk #}
 ---
-layout: base.njk
 pagination:
   data: neighbourhoods
-  alias: n
   size: 1
-permalink: "/neighbourhoods/{{ (n.slug or n.title) | slugifySafe }}/index.html"
-eleventyComputed:
-  title: "{{ n.title }}"
+  alias: n
+permalink: "/neighbourhoods/{{ n.slug }}/"
 ---
 
-<section class="hood-hero" {% if n.hero_image %}style="--img:url('{{ n.hero_image }}')" {% endif %} aria-label="{{ n.title }}">
-  <div class="hood-hero__overlay">
-    <h1 class="hood-hero__title">{{ n.title }}</h1>
-  </div>
-</section>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ n.title }} | Fernie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .hero{ position:relative; }
+    .hero img{ width:100%; height:42vh; min-height:340px; object-fit:cover; display:block; }
+    .hero h1{ position:absolute; left:24px; bottom:18px; margin:0;
+              background:rgba(0,0,0,.45); color:#fff; padding:10px 14px; border-radius:10px; }
+    .container{ max-width:1200px; margin:0 auto; padding:24px; }
+    .about h3:first-of-type{ margin-top:0; }
+    :global(.about h3){
+      font-size:1.5rem; font-weight:400;
+      margin-top:1.2rem; margin-bottom:.4rem;
+      color:#0f172a;
+    }
+  </style>
+</head>
+<body>
+  {% set hero = n.img_url or ("/img/neighbourhoods/" + n.slug + ".jpg") %}
+  <header class="hero">
+    <img src="{{ hero | url }}" alt="{{ n.title }} hero">
+    <h1>{{ n.title }}</h1>
+  </header>
 
-<section class="desc container">
-  {% if n.desc %}<p class="lead">{{ n.desc }}</p>{% endif %}
-</section>
-
-{% set pillsArr = n.pills | pillsArray %}
-{% if pillsArr and pillsArr.length %}
-<section class="pills container" aria-label="Highlights">
-  <ul class="pill-list">
-    {% for pill in pillsArr %}<li class="pill">{{ pill }}</li>{% endfor %}
-  </ul>
-</section>
-{% endif %}
-
-<section class="about container">
-  {{ n.about | safe }}
-</section>
-
-<style>
-.hood-hero{height:30vh;min-height:240px;background:var(--img, url("/img/hero/fernie-hero.webp")) center/cover no-repeat;position:relative}
-.hood-hero__overlay{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(to bottom,rgba(0,0,0,.25),rgba(0,0,0,.45))}
-.hood-hero__title{color:#fff;font-size:clamp(24px,4vw,36px);line-height:1.08;text-align:center;letter-spacing:.3px;padding:.25em .6em}
-.container{max-width:1200px;margin:0 auto;padding:clamp(12px,2vw,24px)}
-.desc .lead{font-size:clamp(18px,2.1vw,22px);text-align:center;margin:24px auto 8px;color:#111827}
-.pill-list{display:flex;flex-wrap:wrap;gap:8px 10px;justify-content:center;margin:14px 0 26px;padding:0;list-style:none}
-.pill{background:#f3f4f6;border:1px solid var(--border);color:#374151;border-radius:9999px;padding:6px 12px;font-size:.9rem;font-weight:500;white-space:nowrap}
-.about{background:#fff;border:1px solid var(--border);border-radius:16px;padding:clamp(18px,2.4vw,28px);color:#0f172a}
-.about h3{font-size:1.25rem;font-weight:600;margin:1.1rem 0 .5rem}
-.about h3:first-of-type{margin-top:0}
-.about p{margin:.6rem 0 1rem}
-</style>
+  <main class="container">
+    <article class="about">
+      {% if n.about %}{{ n.about | safe }}
+      {% elseif n.desc %}<p>{{ n.desc | safe }}</p>
+      {% else %}<p>Explore {{ n.title }} in Fernie, BC.</p>
+      {% endif %}
+    </article>
+  </main>
+</body>
+</html>
