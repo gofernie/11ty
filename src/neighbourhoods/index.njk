@@ -1,29 +1,52 @@
 ---
-layout: base.njk
-title: Neighbourhoods
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { getRows } from "../../lib/sheets";
+import Card from "../../components/NeighbourhoodCard.astro";
+
+const rows = (await getRows())?.filter(r => (r?.published ?? "").toLowerCase() === "yes") ?? [];
 ---
 
-{% block top %}
-  {% set mode = "thin" %}
-  {% set title = "Neighbourhoods" %}
-  {% set img = "/img/hero/fernie-hero.webp" %}
-  {% include "components/hero.njk" %}
-{% endblock %}
+<SiteLayout title="Fernie Neighbourhoods">
+  <!-- THIN HERO -->
+  <section class="neigh-hero">
+    <div class="container">
+      <h1 class="hero-title">Explore Fernie Neighbourhoods</h1>
+    </div>
+  </section>
 
-{% block content %}
-  <div class="hood-grid">
-    {% for n in neighbourhoods %}
-      {% if n.slug %}
-        <a class="hood-card" href="/neighbourhoods/{{ n.slug }}/">
-          {% if n.cardImg or n.img %}
-            <img src="{{ n.cardImg or n.img }}" alt="{{ n.title or n.slug }}">
-          {% endif %}
-          <div class="box">
-            <strong>{{ n.title or (n.slug | replace('-', ' ') | title) }}</strong>
-            {% if n.desc %}<p class="desc">{{ n.desc }}</p>{% endif %}
-          </div>
-        </a>
-      {% endif %}
-    {% endfor %}
-  </div>
-{% endblock %}
+  <!-- NEIGHBOURHOOD CARDS -->
+  <section class="neigh-cards container">
+    {rows.length > 0 ? (
+      <div class="card-grid">
+        {rows.map(r => <Card row={r} />)}
+      </div>
+    ) : (
+      <p>No neighbourhoods found.</p>
+    )}
+  </section>
+</SiteLayout>
+
+<style>
+.neigh-hero {
+  background: #e5e7eb; /* grey-200 */
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0; /* removes gap under nav */
+}
+.hero-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+.neigh-cards {
+  padding: 2rem 0;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+</style>
