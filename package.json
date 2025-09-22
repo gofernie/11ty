@@ -1,22 +1,12 @@
 {
+  "private": true,
   "name": "fernie-neighbourhoods",
   "version": "1.0.0",
-  "description": "Fernie neighbourhood site built with Eleventy",
-  "main": ".eleventy.js",
   "scripts": {
-    "dev": "npx @11ty/eleventy --serve --port=8080",
-    "build": "npx @11ty/eleventy"
+    "dev": "eleventy --serve",
+    "build": "eleventy"
   },
-  "keywords": [
-    "11ty",
-    "eleventy",
-    "fernie",
-    "neighbourhoods"
-  ],
-  "author": "Chris Crump",
-  "license": "MIT",
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.2",
-    "@11ty/eleventy-fetch": "^4.0.0"
+    "@11ty/eleventy": "^3.1.2"
   }
 }
