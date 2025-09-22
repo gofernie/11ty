@@ -4,6 +4,9 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/img": "img" });
   eleventyConfig.addPassthroughCopy({ "src/css": "css" });
 
+  // Simple shortcode to print the current year (avoids missing date filter)
+  eleventyConfig.addNunjucksShortcode("year", () => new Date().getFullYear());
+
   return {
     dir: {
       input: "src",
