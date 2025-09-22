@@ -7,20 +7,20 @@
   <link rel="stylesheet" href="/css/site.css" />
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" role="banner">
     <div class="container header__row">
       <a class="brand" href="/">Fernie</a>
-      <nav class="nav">
+      <nav class="nav" role="navigation" aria-label="Main">
         <a href="/">Home</a>
         <a href="/neighbourhoods/">Neighbourhoods</a>
       </nav>
     </div>
   </header>
 
-  {# full-bleed region for big heroes (e.g., home) #}
+  {# full-bleed region (home hero) #}
   {% block top_full %}{% endblock %}
 
-  {# in-container region (e.g., thin heroes) #}
+  {# in-container region (thin heroes) #}
   <div class="container">
     {% block top %}{% endblock %}
   </div>
