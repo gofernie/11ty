@@ -4,7 +4,10 @@ title: Neighbourhoods
 ---
 
 {% block top %}
-  {% include "components/hero.njk" with { mode: "thin", title: "Neighbourhoods", img: "/img/hero/fernie-hero.webp" } %}
+  {% set mode = "thin" %}
+  {% set title = "Neighbourhoods" %}
+  {% set img = "/img/hero/fernie-hero.webp" %}
+  {% include "components/hero.njk" %}
 {% endblock %}
 
 {% block content %}
