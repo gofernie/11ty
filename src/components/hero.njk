@@ -1,15 +1,12 @@
-{# Props: mode "full" | "thin" (default "thin"), title, img #}
+{# Props: mode "full" | "thin" (default "thin"), title, img (URL) #}
 {% set _mode = mode or "thin" %}
 {% if _mode == "full" %}
-  {% set _cls = "full-bleed hero hero--full" %}
+  {% set _cls = "full-bleed hero hero--full hero--bg" %}
 {% else %}
-  {% set _cls = "hero hero--thin" %}
+  {% set _cls = "hero hero--thin hero--bg" %}
 {% endif %}
 
-<section class="{{ _cls }}">
-  {% if img %}
-    <img class="hero__img" src="{{ img }}" alt="{{ title or '' }}" loading="eager">
-  {% endif %}
+<section class="{{ _cls }}" style="{% if img %}--hero-url: url('{{ img }}');{% endif %}">
   <div class="hero__overlay"></div>
   {% if title %}
     <div class="hero__content">
