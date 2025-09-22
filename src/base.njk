@@ -6,21 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ title or "Fernie Neighbourhoods" }}</title>
 
+  {# Properly link your external CSS file #}
   <link rel="stylesheet" href="/css/site.css" />
-  {% include "css/theme.njk" ignore missing %}
 
-  <style>
-    :root{--ink:#0f172a;--bg:#fff;--muted:#64748b}
-    *{box-sizing:border-box}
-    body{margin:0;font:16px/1.6 system-ui,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg)}
-    header,main,footer{max-width:1200px;margin:auto;padding:1.25rem}
-    header{display:flex;gap:1rem;align-items:center;justify-content:space-between}
-    .brand{font-weight:700}
-    nav a{margin-right:1rem;opacity:.9;text-decoration:none}
-    nav a:hover{opacity:1;text-decoration:underline}
-    .hero{border-radius:16px;overflow:hidden}
-    .hero img{display:block;width:100%;height:auto}
-  </style>
+  {# Optional: inline theme tokens if they exist #}
+  {% if collections and collections.all %}
+    {% include "css/theme.njk" ignore missing %}
+  {% endif %}
 </head>
 <body>
   <header>
