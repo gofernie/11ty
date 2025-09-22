@@ -1,14 +1,23 @@
+{# src/components/hero.njk #}
 {# Props:
-   mode: "full" | "thin" (default thin)
+   mode: "full" | "thin"  (default: "thin")
    title: string
    img: string (URL)
 #}
+
 {% set _mode = mode or "thin" %}
-<section class="{{ _mode == 'full' ? 'full-bleed ' : '' }}hero {{ _mode == 'full' ? 'hero--full' : 'hero--thin' }}">
+{% if _mode == "full" %}
+  {% set _cls = "full-bleed hero hero--full" %}
+{% else %}
+  {% set _cls = "hero hero--thin" %}
+{% endif %}
+
+<section class="{{ _cls }}">
   {% if img %}
-    <img class="hero__img" src="{{ img }}" alt="{{ title or '' }}" loading="eager" />
+    <img class="hero__img" src="{{ img }}" alt="{{ title or '' }}" loading="eager">
   {% endif %}
   <div class="hero__overlay"></div>
+
   {% if title %}
     <div class="hero__content">
       <h1 class="hero__title">{{ title }}</h1>
