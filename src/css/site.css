@@ -1,25 +1,26 @@
 /* === RESET & CORE === */
 :root {
   --ink:#0f172a; --bg:#fff; --ring:#e2e8f0; --muted:#4b5563; --hover:rgba(0,0,0,.06);
-  --header-h:60px;           /* single source of truth for header height */
+  --header-h:60px;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
   font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
   color:var(--ink); background:var(--bg); overflow-x:hidden;
-  padding-top:var(--header-h);       /* reserve space for the fixed header */
+  /* ⛔ removed padding-top so hero can sit flush at top */
 }
 .container{max-width:1200px;margin-inline:auto;padding:1.25rem}
 
-/* === FIXED, FULL-WIDTH HEADER (logo hard-left, links hard-right) === */
+/* === FIXED, TRANSPARENT HEADER === */
 .site-header{
   position:fixed; top:0; left:0; right:0; height:var(--header-h);
-  background:#fff; z-index:100; border:0; padding:0;
+  background:rgba(255,255,255,0.92); backdrop-filter:blur(6px);
+  z-index:100; border:0;
   box-shadow:0 .5px 0 rgba(0,0,0,.05);
 }
 .header__row{
-  height:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  height:100%; display:flex; align-items:center; justify-content:space-between;
   padding:0 20px;
 }
 .brand{font-weight:800;font-size:1.2rem;text-decoration:none;color:inherit}
@@ -27,23 +28,17 @@ body{
 .nav a{color:inherit;text-decoration:none;opacity:.9}
 .nav a:hover{opacity:1;text-decoration:underline}
 
-/* === FULL-BLEED UTIL === */
+/* === FULL-BLEED HERO (UNDERLAPS HEADER) === */
 .full-bleed{position:relative; left:50%; transform:translateX(-50%); width:100vw; max-width:100vw; margin:0; padding:0; display:block}
-
-/* === HERO === */
 .hero{position:relative; overflow:hidden; margin:0; padding:0}
-.hero--full{height:80vh; min-height:80vh; max-height:80vh; border-radius:0} /* EXACT 80vh */
+.hero--full{height:80vh; min-height:80vh; max-height:80vh; border-radius:0}
 .hero--thin{min-height:40vh; border-radius:18px}
-
-/* Background-image hero: no <img>, no alt-text flash */
 .hero--bg{
-  background-image: var(--hero-url);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image:var(--hero-url);
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
 }
-
-/* Overlay + content */
 .hero__overlay{
   position:absolute; inset:0;
   background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.25) 40%,rgba(0,0,0,.1) 70%,transparent);
@@ -54,9 +49,15 @@ body{
 }
 .hero__title{margin:0; font-size:clamp(2rem,6vw,4rem); font-weight:800}
 
-/* Wealthsimple-style 3 cards */
-.ws3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.25rem; margin:2rem 0}
-@media (max-width:900px){.ws3{grid-template-columns:1fr}}
+/* Give hero top padding so text/content isn't hidden behind header */
+.hero--full .hero__content,
+.hero--thin .hero__content {
+  padding-top: var(--header-h);
+}
+
+/* === WEALTHSIMPLE-STYLE 3-UP CARDS === */
+.ws3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;margin:2rem 0}
+@media(max-width:900px){.ws3{grid-template-columns:1fr}}
 .ws3 .card{background:#fff;border:1px solid #e6e8f0;border-radius:16px;padding:1.5rem;text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s,border-color .18s}
 .ws3 .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.08);border-color:#d9dce6}
 .ws3 .card .icon{width:44px;height:44px;border-radius:8px;background:#f6f7fb;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem}
