@@ -1,10 +1,14 @@
 ---
+# ⬅️ IMPORTANT: make this match your home page layout
 layout: layouts/base.njk
 title: Fernie Neighbourhoods
 permalink: /neighbourhoods/
 ---
 
-{% set rows = neighbourhoods | default([]) %}
+{# Get rows from _data/neighbourhoods first; if empty, fall back to the Eleventy collection named 'neighbourhoods' #}
+{% set dataRows = neighbourhoods or [] %}
+{% set collRows = collections and collections.neighbourhoods or [] %}
+{% set rows = dataRows | length ? dataRows : collRows %}
 
 <section class="neigh-hero" aria-label="Neighbourhoods hero">
   <div class="wrap">
@@ -14,24 +18,39 @@ permalink: /neighbourhoods/
 
 <section class="neigh-cards">
   <div class="wrap">
-    {% if rows and rows | length %}
+    {% if rows and (rows | length) %}
       <div class="grid">
-        {# Expect each row to have: slug, title, desc, img (or image) #}
-        {% for n in rows %}
+        {# Render each row.
+           Works with either:
+           - data object rows from _data/neighbourhoods.js, or
+           - collection items (page objects) from collections.neighbourhoods
+        #}
+        {% for item in rows %}
+          {% set isPage = item.url is defined %}
+          {% set title = isPage ? (item.data.title) : (item.title) %}
+          {% set slug  = isPage ? (item.fileSlug) : (item.slug) %}
+          {% set url   = isPage ? (item.url) : ('/neighbourhoods/' ~ (slug | url) ~ '/') %}
+          {% set img   = isPage 
+              ? (item.data.img or item.data.image) 
+              : (item.img or item.image) %}
+          {% set imgAlt = isPage 
+              ? (item.data.imgAlt or item.data.alt or title) 
+              : (item.imgAlt or item.alt or title) %}
+          {% set desc  = isPage 
+              ? (item.data.desc or item.data.description) 
+              : (item.desc or item.description) %}
+
           <article class="card">
-            <a class="card-link" href="/neighbourhoods/{{ n.slug | url }}/">
+            <a class="card-link" href="{{ url }}">
               <div class="imgwrap">
                 <img
-                  src="{{ n.img or n.image or '/img/placeholder-800x500.jpg' | url }}"
-                  alt="{{ n.imgAlt or n.title or 'Neighbourhood image' }}"
+                  src="{{ (img or '/img/placeholder-800x500.jpg') | url }}"
+                  alt="{{ imgAlt }}"
                   loading="lazy"
-                  decoding="async"
-                >
+                  decoding="async">
               </div>
-              <h2 class="title">{{ n.title }}</h2>
-              {% if n.desc %}
-                <p class="desc">{{ n.desc }}</p>
-              {% endif %}
+              <h2 class="title">{{ title }}</h2>
+              {% if desc %}<p class="desc">{{ desc }}</p>{% endif %}
             </a>
           </article>
         {% endfor %}
@@ -43,15 +62,16 @@ permalink: /neighbourhoods/
 </section>
 
 <style>
-/* Page chrome */
+/* Thin hero, flush under the nav (layout controls the nav) */
 .neigh-hero {
-  background:#e5e7eb; /* grey */
+  background:#e5e7eb; /* gray */
   height:28vh; min-height:160px; max-height:360px;
   display:flex; align-items:center;
-  margin:0; padding:0; /* keep flush under nav */
+  margin:0; padding:0;
+  border-bottom:1px solid #e2e8f0;
 }
 .neigh-hero .wrap { width:min(1200px, 92%); margin:0 auto; }
-.neigh-hero h1 { margin:0; font-size:2rem; font-weight:600; }
+.neigh-hero h1 { margin:0; font-size:2rem; font-weight:600; text-align:center; }
 
 /* Cards */
 .neigh-cards { padding:2rem 0 2.5rem; }
@@ -65,23 +85,20 @@ permalink: /neighbourhoods/
 
 .card {
   background:#fff; border-radius:16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
   overflow:hidden; transition: transform .18s ease, box-shadow .18s ease;
 }
 .card:hover { transform: translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.10); }
 
 .card-link { display:block; color:inherit; text-decoration:none; height:100%; }
 
-.imgwrap { aspect-ratio: 16/9; overflow:hidden; background:#f1f5f9; }
-.imgwrap img {
-  width:100%; height:100%; object-fit:cover; display:block;
-  transform: translateZ(0);
-}
+.imgwrap { aspect-ratio:16/9; overflow:hidden; background:#f1f5f9; }
+.imgwrap img { width:100%; height:100%; object-fit:cover; display:block; }
 
 .title { font-size:1.125rem; line-height:1.3; margin:.75rem .9rem 0; }
 .desc  { margin:.4rem .9rem 1rem; color:#475569; font-size:.95rem; }
 
-/* Remove any mysterious gap under fixed/sticky headers */
+/* Safety: ensure first section sits flush if the layout has a sticky header */
 body > main section:first-child,
 main > section:first-child { margin-top:0 !important; }
 </style>
