@@ -1,29 +1,36 @@
 ---
-layout: base.njk
+layout: layouts/site.njk
+permalink: /neighbourhoods/{{ slug | url }}/
 pagination:
   data: neighbourhoods
   size: 1
   alias: n
-permalink: "/neighbourhoods/{{ n.slug }}/"
 ---
 
-{% block top %}
-  {% set mode = "thin" %}
-  {% set title = n.title %}
-  {% set img = n.hero or n.img %}
-  {% include "components/hero.njk" %}
-{% endblock %}
+{% set title = n.title %}
+{% set hero = n.img or n.image or "/img/neighbourhoods/" ~ (n.slug) ~ ".webp" %}
+{% set desc = n.desc or n.description %}
 
-{% block content %}
-  {% if n.desc %}<p>{{ n.desc }}</p>{% endif %}
+<section class="neigh-hero" aria-label="{{ title }}">
+  <div class="wrap">
+    <h1>{{ title }}</h1>
+  </div>
+</section>
 
-  {% if n.pills and n.pills.length %}
-    <div class="pills">
-      {% for p in n.pills %}
-        <span class="pill">{{ p }}</span>
-      {% endfor %}
-    </div>
-  {% endif %}
+<section class="neigh-body">
+  <div class="wrap">
+    <figure class="leadimg"><img src="{{ hero | url }}" alt="{{ title }}"></figure>
+    {% if desc %}<p class="lede">{{ desc }}</p>{% endif %}
+    {{ content | safe }}
+  </div>
+</section>
 
-  {% if n.about %}{{ n.about | safe }}{% endif %}
-{% endblock %}
+<style>
+.neigh-hero{background:#e5e7eb;height:24vh;min-height:140px;display:flex;align-items:center;margin:0;padding:0;border-bottom:1px solid #e2e8f0}
+.neigh-hero .wrap,.neigh-body .wrap{width:min(900px,92%);margin:0 auto}
+.neigh-hero h1{margin:0;font-size:2rem;font-weight:600;text-align:center}
+.neigh-body{padding:1.5rem 0 2.5rem}
+.leadimg{margin:0 0 1rem}
+.leadimg img{width:100%;height:auto;display:block;border-radius:12px}
+.lede{color:#475569;font-size:1.05rem}
+</style>
