@@ -1,7 +1,9 @@
 ---
 layout: base.njk
-title: "{{ n and n.title ? n.title : 'Neighbourhood' }}"
+title: "Neighbourhood"
 ---
+
+{% set pageTitle = n.title if n and n.title is defined else "Neighbourhood" %}
 
 {# 30vh full-width header image with overlay title #}
 <section class="hood-hero" {% if n.hero_image %}style="--img:url('{{ n.hero_image }}')" {% endif %} aria-label="{{ n.title }}">
@@ -43,19 +45,9 @@ title: "{{ n and n.title ? n.title : 'Neighbourhood' }}"
 
 <style>
 /* 30vh header image */
-.hood-hero{
-  height:30vh; min-height:240px;
-  background:var(--img, url("/img/hero/hero.webp")) center/cover no-repeat;
-  position:relative;
-}
-.hood-hero__overlay{
-  position:absolute; inset:0; display:grid; place-items:center;
-  background:linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.45));
-}
-.hood-hero__title{
-  color:#fff; font-size:clamp(24px,4vw,36px); line-height:1.08;
-  text-align:center; letter-spacing:.3px; padding:.25em .6em;
-}
+.hood-hero{height:30vh;min-height:240px;background:var(--img, url("/img/hero/hero.webp")) center/cover no-repeat;position:relative}
+.hood-hero__overlay{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(to bottom,rgba(0,0,0,.25),rgba(0,0,0,.45))}
+.hood-hero__title{color:#fff;font-size:clamp(24px,4vw,36px);line-height:1.08;text-align:center;letter-spacing:.3px;padding:.25em .6em}
 
 /* Desc */
 .container{max-width:1200px;margin:0 auto;padding:clamp(12px,2vw,24px)}
