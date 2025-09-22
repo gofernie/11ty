@@ -6,16 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ title or "Fernie Neighbourhoods" }}</title>
 
-  {# External stylesheet (copied via passthrough to /css) #}
   <link rel="stylesheet" href="/css/site.css" />
-
-  {# Optional inline theme tokens (from src/css/theme.njk) #}
-  {% if collections and collections.all %}
-    {% include "css/theme.njk" ignore missing %}
-  {% endif %}
+  {% include "css/theme.njk" ignore missing %}
 
   <style>
-    /* Minimal safe defaults so nothing looks broken during bring-up */
     :root{--ink:#0f172a;--bg:#fff;--muted:#64748b}
     *{box-sizing:border-box}
     body{margin:0;font:16px/1.6 system-ui,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg)}
@@ -37,9 +31,7 @@
     </nav>
   </header>
 
-  {% block top %}
-  {# Optional area above main content (e.g., page hero) #}
-  {% endblock %}
+  {% block top %}{% endblock %}
 
   <main>
     {% block content %}
