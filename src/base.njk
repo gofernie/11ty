@@ -3,32 +3,33 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ title or "Fernie Neighbourhoods" }}</title>
-
-  <!-- Load external CSS normally -->
+  <title>{{ title or "Fernie Real Estate" }}</title>
   <link rel="stylesheet" href="/css/site.css" />
-
-  <!-- If theme.njk exists, FORCE it to be CSS by wrapping in <style> -->
-  {% if collections and collections.all %}
-    <style>{% include "css/theme.njk" ignore missing %}</style>
-  {% endif %}
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="/">Fernie</a>
-    <nav class="nav">
-      <a href="/">Home</a>
-      <a href="/neighbourhoods/">Neighbourhoods</a>
-    </nav>
+    <div class="container header__row">
+      <a class="brand" href="/">Fernie</a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/neighbourhoods/">Neighbourhoods</a>
+      </nav>
+    </div>
   </header>
 
-  {% block top %}{% endblock %}
+  {# full-bleed region for big heroes (e.g., home) #}
+  {% block top_full %}{% endblock %}
+
+  {# in-container region (e.g., thin heroes) #}
+  <div class="container">
+    {% block top %}{% endblock %}
+  </div>
 
   <main class="container">
     {% block content %}{{ content | safe }}{% endblock %}
   </main>
 
-  <footer class="container">
+  <footer class="container footer">
     <small>&copy; {% year %} Fernie</small>
   </footer>
 </body>
