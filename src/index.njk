@@ -1,17 +1,12 @@
 ---
-layout: base.njk
-title: Fernie Real Estate
+layout: layouts/site.njk
+title: Home
+permalink: /
 ---
 
-{# Full-bleed 80vh hero, flush under header #}
-{% block top_full %}
-  {% set mode = "full" %}
-  {% set title = "Fernie Real Estate" %}
-  {% set img = "/img/fernie-hero.webp" %}
-  {% include "components/hero.njk" %}
-{% endblock %}
+{% include "components/hero.njk" %}
 
-{% block content %}
-  {% include "components/wealth-cards.njk" %}
-  {% include "components/mini-neighbourhoods.njk" %}
-{% endblock %}
+<section class="wrap" style="padding:2rem 0">
+  <h2>Welcome</h2>
+  <p>Your intro content here.</p>
+</section>
