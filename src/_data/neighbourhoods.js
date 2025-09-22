@@ -1,115 +1,87 @@
 // src/_data/neighbourhoods.js
-const https = require("https");
-const { parse } = require("csv-parse/sync");
+// Reads a Google Sheet (CSV or JSON) and normalizes rows for templates.
+// Required ENV: GOOGLE_SHEET_URL  (CSV "output=csv" or a JSON endpoint)
 
-// Use either a full published CSV URL or the 2PACX ID (+ optional gid)
-const SHEET_URL = process.env.SHEET_URL || "";
-const SHEET_ID  = process.env.SHEET_ID  || "";
-const SHEET_GID = process.env.SHEET_GID || "";
+const EleventyFetch = require("@11ty/eleventy-fetch");
 
-function buildCsvUrl() {
-  if (SHEET_URL) {
-    try {
-      const u = new URL(SHEET_URL.trim());
-      const p = u.searchParams;
-      p.set("output", "csv");
-      p.set("single", "true");
-      if (SHEET_GID) p.set("gid", SHEET_GID);
-      p.set("cachebust", Date.now().toString());
-      u.search = p.toString();
-      return u.toString();
-    } catch {
-      /* fall through to ID mode */
+// ---- tiny CSV parser (handles commas & quotes well enough for typical sheets)
+function parseCSV(text) {
+  const rows = [];
+  let cur = "", row = [], inQ = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i + 1];
+
+    if (c === '"' && inQ && n === '"') { cur += '"'; i++; continue; } // escaped quote
+    if (c === '"') { inQ = !inQ; continue; }
+    if (!inQ && c === ",") { row.push(cur); cur = ""; continue; }
+    if (!inQ && (c === "\n" || c === "\r")) {
+      if (cur.length || row.length) { row.push(cur); rows.push(row); }
+      cur = ""; row = []; continue;
     }
+    cur += c;
   }
-  if (!SHEET_ID) return "";
-  const gid = SHEET_GID ? `&gid=${encodeURIComponent(SHEET_GID)}` : "";
-  return `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?single=true${gid}&output=csv&cachebust=${Date.now()}`;
-}
+  if (cur.length || row.length) { row.push(cur); rows.push(row); }
 
-function fetchFollow(url, redirectsLeft = 5) {
-  if (!url) return Promise.resolve("");
-  return new Promise((resolve, reject) => {
-    const req = https.get(url, {
-      headers: {
-        "User-Agent": "Netlify-Build/1.0 (+eleventy)",
-        "Accept": "text/csv, */*;q=0.8",
-      }
-    }, (res) => {
-      const { statusCode, headers } = res;
-      const isRedirect = [301, 302, 303, 307, 308].includes(statusCode);
-      if (isRedirect) {
-        if (!headers.location) return reject(new Error(`Redirect with no Location header from ${url}`));
-        if (redirectsLeft <= 0) return reject(new Error(`Too many redirects fetching ${url}`));
-        const next = new URL(headers.location, url).toString();
-        res.resume(); // drain
-        return resolve(fetchFollow(next, redirectsLeft - 1));
-      }
-
-      if (statusCode < 200 || statusCode >= 300) {
-        res.resume();
-        return reject(new Error(`HTTP ${statusCode} from Google Sheets. URL: ${url}`));
-      }
-
-      let data = "";
-      res.on("data", (c) => (data += c));
-      res.on("end", () => resolve(data));
-    });
-    req.on("error", reject);
+  const header = rows.shift()?.map(h => h.trim()) ?? [];
+  return rows.map(r => {
+    const o = {};
+    header.forEach((h, i) => { o[h] = (r[i] ?? "").trim(); });
+    return o;
   });
 }
 
-function isHtml(str = "") {
-  const head = str.slice(0, 200).trim().toLowerCase();
-  return head.startsWith("<!doctype html") || head.startsWith("<html");
+// ---- image resolver
+function resolveImgPath(val) {
+  if (!val) return null;
+  const s = String(val).trim();
+  if (/^https?:\/\//i.test(s) || s.startsWith("/")) return s; // already URL/path
+  // treat as a filename within src/img/neighbourhoods/
+  return `/img/neighbourhoods/${s}`;
 }
 
-function toSlug(s = "") {
-  return String(s).toLowerCase().trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+// ---- core fetch
+async function fetchRows() {
+  const url = process.env.GOOGLE_SHEET_URL;
+  if (!url) {
+    throw new Error("Missing GOOGLE_SHEET_URL env var (CSV 'output=csv' or JSON).");
+  }
+
+  const body = await EleventyFetch(url, {
+    duration: "10m", // cache to avoid hammering the sheet
+    type: "text",    // we'll detect CSV/JSON ourselves
+  });
+
+  // detect format
+  const isLikelyJson = body.trim().startsWith("{") || body.trim().startsWith("[");
+  if (isLikelyJson) {
+    return JSON.parse(body);
+  }
+  // else CSV
+  return parseCSV(body);
 }
 
 module.exports = async function () {
-  const url = buildCsvUrl();
-  if (!url) {
-    console.warn("[neighbourhoods] No SHEET_URL or SHEET_ID set; returning empty list.");
-    return [];
-  }
+  const rows = await fetchRows();
 
-  const text = await fetchFollow(url);
+  // Normalize each row into a shape the templates can rely on
+  const list = (rows || []).map(r => {
+    // flexible field names: adjust as needed for your sheet columns
+    const slug = String(r.slug || r.Slug || r.SLUG || "").trim().toLowerCase();
+    const title = (r.title || r.Title || r.name || r.Name || slug.replace(/-/g, " ")).trim();
+    const desc = r.desc || r.description || r.Description || "";
+    const about = r.about || r.About || "";
+    const pills = r.pills || r.Pills || ""; // CSV like "Trails, Quiet, Views"
 
-  if (isHtml(text)) {
-    const preview = text.slice(0, 180).replace(/\s+/g, " ");
-    throw new Error(
-      `Expected CSV but got HTML. Check that the sheet is 'Published to the web' and the URL/ID is correct.\n` +
-      `Requested: ${url}\nFirst 180 chars: ${preview}`
-    );
-  }
+    // *** THIS is the important part for your images ***
+    // Uses the sheet column `img` if present; otherwise other fallbacks.
+    const img_url = resolveImgPath(r.img || r.image || r.hero || r.photo);
 
-  const rows = parse(text, { columns: true, skip_empty_lines: true });
+    return { ...r, slug, title, desc, about, pills, img_url };
+  }).filter(r => r.slug);
 
-  const cleaned = (rows || [])
-    .map((r) => {
-      const title = r.title || r.Name || r.neighbourhood || r.Neighbourhood || "";
-      const desc  = r.desc  || r.description || r.Description || "";
-      const about = r.about || r.About || "";
-      const pubRaw = (r.published ?? r.Published ?? "true").toString().toLowerCase();
-      const published = !(pubRaw === "false" || pubRaw === "0" || pubRaw === "no");
+  // Sort by title by default (optional)
+  list.sort((a, b) => a.title.localeCompare(b.title));
 
-      return {
-        title,
-        slug: r.slug ? String(r.slug).trim() : toSlug(title),
-        desc,
-        about,
-        published,
-      };
-    })
-    .filter((r) => r.title && r.slug && r.published);
-
-  console.log("[neighbourhoods] Loaded rows:", cleaned.length);
-  if (cleaned[0]) console.log("[neighbourhoods] First:", cleaned[0].title, "—", cleaned[0].desc);
-  if (cleaned[1]) console.log("[neighbourhoods] Second:", cleaned[1].title, "—", cleaned[1].desc);
-
-  return cleaned;
+  return list;
 };
