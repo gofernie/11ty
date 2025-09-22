@@ -2,7 +2,6 @@
 layout: base.njk
 title: Home
 ---
-
 {% block top %}
   <section class="hero">
     <img src="/img/hero/fernie-hero.webp" alt="Fernie mountain panorama" width="1600" height="800" loading="eager" />
@@ -12,7 +11,5 @@ title: Home
 {% block content %}
   <h1>Where do you want to start?</h1>
   <p>Explore Fernie real estate, fast.</p>
-
-  {# Optional mini neighbourhoods component #}
   {% include "components/mini-neighbourhoods.njk" ignore missing %}
 {% endblock %}
