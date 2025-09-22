@@ -9,7 +9,8 @@ title: "Fernie · Neighbourhoods"
   {% set rows = neighbourhoods | default([]) %}
   <div class="hood-grid">
     {% for r in rows %}
-      <a class="hood-card" href="/neighbourhoods/{{ r.slug }}/">
+      {% set slugSrc = r.slug or r.title %}
+      <a class="hood-card" href="/neighbourhoods/{{ slugSrc | slugifySafe }}/">
         {% if r.hero_image %}
           <div class="hood-media"><img src="{{ r.hero_image }}" alt="{{ r.title }}"></div>
         {% endif %}
@@ -20,9 +21,7 @@ title: "Fernie · Neighbourhoods"
             {% set pillsArr = r.pills | pillsArray %}
             {% if pillsArr and pillsArr.length %}
               <ul class="pill-list">
-                {% for p in pillsArr %}
-                  <li class="pill">{{ p }}</li>
-                {% endfor %}
+                {% for p in pillsArr %}<li class="pill">{{ p }}</li>{% endfor %}
               </ul>
             {% endif %}
           {% endif %}
@@ -43,14 +42,12 @@ title: "Fernie · Neighbourhoods"
       <p>Find your home, your way with customizable filters, saved searches, and smart recommendations.</p>
       <p><a href="/search.html">Explore homes</a></p>
     </article>
-
     <article class="promo promo--b">
       <div class="promo-icon" aria-hidden="true">💳</div>
       <h2>Financial tools</h2>
       <p>Estimate payments, compare scenarios, and get pre-approved online.</p>
       <p><a href="/mortgage.html">Get pre-approved</a></p>
     </article>
-
     <article class="promo promo--c">
       <div class="promo-icon" aria-hidden="true">🤝</div>
       <h2>Expert guidance</h2>
@@ -62,8 +59,6 @@ title: "Fernie · Neighbourhoods"
 
 <style>
 h1{font-size:clamp(26px,4vw,36px);margin:8px 0 18px}.muted{color:var(--muted)}
-
-/* Neighbourhood cards */
 .hood-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px)}
 @media (max-width:1000px){.hood-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:640px){.hood-grid{grid-template-columns:1fr}}
@@ -75,12 +70,8 @@ h1{font-size:clamp(26px,4vw,36px);margin:8px 0 18px}.muted{color:var(--muted)}
 .hood-body{padding:14px}
 .hood-title{margin:.2rem 0 .4rem;font-size:1.1rem}
 .hood-desc{margin:0 0 .6rem;color:#475569}
-
-/* Pills */
 .pill-list{display:flex;flex-wrap:wrap;gap:8px 10px;margin:.2rem 0 0;padding:0;list-style:none}
 .pill{background:#f3f4f6;border:1px solid var(--border);border-radius:9999px;padding:4px 10px;font-size:.85rem;color:#374151}
-
-/* Promos */
 .promo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,20px);margin:8px 0 24px}
 @media (max-width:900px){.promo-grid{grid-template-columns:1fr}}
 .promo{border:1px solid var(--border);border-radius:16px;padding:clamp(16px,2vw,22px);
