@@ -1,11 +1,9 @@
 ---
-# IMPORTANT: make this match your home page layout exactly
 layout: layouts/site.njk
 title: Fernie Neighbourhoods
 permalink: /neighbourhoods/
 ---
 
-{# Prefer _data/neighbourhoods.js if present, else fall back to a collection #}
 {% set dataRows = neighbourhoods | default([]) %}
 {% set collRows = collections['neighbourhoods'] | default([]) %}
 
@@ -25,7 +23,6 @@ permalink: /neighbourhoods/
     {% if rows and (rows | length) %}
       <div class="grid">
         {% for item in rows %}
-          {# Works for either data objects or collection items #}
           {% set isPage = item.url is defined %}
           {% set title = isPage ? item.data.title : item.title %}
           {% set slug  = isPage ? item.fileSlug   : item.slug %}
@@ -51,6 +48,8 @@ permalink: /neighbourhoods/
     {% endif %}
   </div>
 </section>
+
+{% block head %}{% endblock %}
 
 <style>
 .neigh-hero{background:#e5e7eb;height:28vh;min-height:160px;max-height:360px;display:flex;align-items:center;margin:0;padding:0;border-bottom:1px solid #e2e8f0}
