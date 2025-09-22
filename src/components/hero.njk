@@ -1,0 +1,17 @@
+{# Props:
+   mode: "full" | "thin" (default thin)
+   title: string
+   img: string (URL)
+#}
+{% set _mode = mode or "thin" %}
+<section class="{{ _mode == 'full' ? 'full-bleed ' : '' }}hero {{ _mode == 'full' ? 'hero--full' : 'hero--thin' }}">
+  {% if img %}
+    <img class="hero__img" src="{{ img }}" alt="{{ title or '' }}" loading="eager" />
+  {% endif %}
+  <div class="hero__overlay"></div>
+  {% if title %}
+    <div class="hero__content">
+      <h1 class="hero__title">{{ title }}</h1>
+    </div>
+  {% endif %}
+</section>
