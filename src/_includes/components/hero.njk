@@ -1,0 +1,14 @@
+{# Reusable Home hero (not used on Neighbourhoods index) #}
+<section class="hero">
+  <div class="wrap">
+    <h1>{{ hero_title or title or "Welcome" }}</h1>
+    {% if hero_subtitle %}<p class="sub">{{ hero_subtitle }}</p>{% endif %}
+  </div>
+</section>
+
+<style>
+.hero{background:#e5e7eb;height:40vh;min-height:220px;display:flex;align-items:center;border-bottom:1px solid #e2e8f0;margin:0}
+.hero .wrap{width:min(1200px,92%);margin:0 auto}
+.hero h1{margin:0;font-weight:700;font-size:2rem}
+.hero .sub{margin:.5rem 0 0;color:#475569}
+</style>
