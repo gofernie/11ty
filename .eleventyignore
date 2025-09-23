@@ -1,0 +1,4 @@
+# legacy file that caused Liquid tag errors; keep it ignored
+src/base.njk
+# if you ever had a duplicate hero outside _includes, ignore it too
+src/components/hero.njk
