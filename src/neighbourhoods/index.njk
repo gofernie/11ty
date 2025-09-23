@@ -4,11 +4,10 @@ title: Fernie Neighbourhoods
 permalink: /neighbourhoods/
 ---
 
-{% set dataRows = neighbourhoods | default([]) %}
-{% set collRows = collections['neighbourhoods'] | default([]) %}
-{% set rows = dataRows %}
+{# Prefer _data/neighbourhoods.js; otherwise fall back to a collection #}
+{% set rows = neighbourhoods | default([]) %}
 {% if not rows or (rows | length) == 0 %}
-  {% set rows = collRows %}
+  {% set rows = collections['neighbourhoods'] | default([]) %}
 {% endif %}
 
 <section class="neigh-hero" aria-label="Neighbourhoods hero">
@@ -22,19 +21,32 @@ permalink: /neighbourhoods/
     {% if rows and (rows | length) %}
       <div class="grid">
         {% for item in rows %}
-          {% set isPage = item.url is defined %}
-          {% set title = isPage ? item.data.title : item.title %}
-          {% set slug  = isPage ? item.fileSlug   : item.slug %}
-          {% set url   = isPage ? item.url        : ('/neighbourhoods/' ~ (slug | url) ~ '/') %}
-          {% set img   = isPage ? (item.data.img or item.data.image) : (item.img or item.image) %}
-          {% set imgAlt = isPage ? (item.data.imgAlt or item.data.alt or title) : (item.imgAlt or item.alt or title) %}
-          {% set desc  = isPage ? (item.data.desc or item.data.description) : (item.desc or item.description) %}
+          {# Normalize fields WITHOUT ternaries or nested filters #}
+          {% if item.url is defined %}
+            {% set title = item.data.title %}
+            {% set slug  = item.fileSlug %}
+            {% set link  = item.url %}
+            {% set img   = item.data.img if item.data.img else item.data.image %}
+            {% set imgAlt = item.data.imgAlt if item.data.imgAlt else (item.data.alt if item.data.alt else title) %}
+            {% set desc  = item.data.desc if item.data.desc else item.data.description %}
+          {% else %}
+            {% set title = item.title %}
+            {% set slug  = item.slug %}
+            {% set link  = '/neighbourhoods/' ~ slug ~ '/' %}
+            {% set img   = item.img if item.img else item.image %}
+            {% set imgAlt = item.imgAlt if item.imgAlt else (item.alt if item.alt else title) %}
+            {% set desc  = item.desc if item.desc else item.description %}
+          {% endif %}
 
           <article class="card">
-            <a class="card-link" href="{{ url }}">
+            <a class="card-link" href="{{ link }}">
               <div class="imgwrap">
-                <img src="{{ (img or '/img/placeholder-800x500.jpg') | url }}"
-                     alt="{{ imgAlt }}" loading="lazy" decoding="async">
+                <img
+                  src="{{ (img or '/img/placeholder-800x500.jpg') | url }}"
+                  alt="{{ imgAlt }}"
+                  loading="lazy"
+                  decoding="async"
+                >
               </div>
               <h2 class="title">{{ title }}</h2>
               {% if desc %}<p class="desc">{{ desc }}</p>{% endif %}
